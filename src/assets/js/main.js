@@ -221,8 +221,8 @@ function setTransactionLists(transactionData) {
 }
 
 function getInfomationOfTransaction(amount,type,id,name){
+  $("#img_qrcode_info_1").remove();
   if(Number(type) > 1){
-    $("#img_qrcode_info_1").remove();
     return
   }
   let bank_note = encodeURIComponent(`${id} ${Number(amount)}G ${name}`)
