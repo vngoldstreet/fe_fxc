@@ -154,13 +154,18 @@
                           <h6 class="fw-semibold mb-0">Type</h6>
                         </th>
                         <th class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0">Created/Updated</h6>
+                          <h6 class="fw-semibold mb-0">CreatedAt</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">UpdatedAt</h6>
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Amount</h6>
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Status</h6>
+                        </th>
+                        <th class="border-bottom-0">
                         </th>
                       </tr>
                     </thead>
@@ -177,10 +182,7 @@
       </div>
     </div>
   </div>
-
-
-
-
+  
   <!-- Modal -->
   <div class="modal fade" id="modal_finance_deposit" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -192,22 +194,66 @@
         </div>
         <div class="modal-body">
           <form>
+            <p class="text-primary">1 gold is equivalent to 24,000 VND.</p>
             <div class="mb-3">
-              <label for="deposit_amount" class="form-label">Amount</label>
-              <input type="number" class="form-control" id="deposit_amount">
+              <div class="input-group mb-3">
+                <input type="number" step="50" value="" class="form-control" placeholder="Amount" aria-label="Amount" aria-describedby="basic-addon1" id="deposit_amount">
+                <span class="input-group-text" id="basic-addon1">Gold</span>
+              </div>
             </div>
+            <span id="modal-deposit"></span>
             <button id="create_qr_code" type="button" class="btn btn-primary w-100">Confirmation</button>
             <div id="qrcode"></div>
-
           </form>
         </div>
         <div class="modal-footer">
+          <br>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
           <!-- <button type="button" class="btn btn-success">Save changes</button> -->
         </div>
       </div>
     </div>
   </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modal_transacion_info" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Transaction infomation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="img_qrcode_info"></div>
+        </div>
+        <div class="modal-footer">
+          <br>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-success">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="join_contest" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation to join a competition!</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="contest_info"></div>
+      </div>
+      <div class="modal-footer">
+        <br>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" onclick="" class="btn btn-success">Join this competition</button>
+      </div>
+    </div>
+  </div>
+</div>
   <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
   <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
