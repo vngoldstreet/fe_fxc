@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -28,28 +27,7 @@ func main() {
 		fmt.Println("Error loading .env file")
 		return
 	}
-	apiUrl := os.Getenv("API_URL")
-	apiGetWallet := os.Getenv("API_GET_WALLET")
-	apiDeposit := os.Getenv("API_DEPOSIT")
-	apiWithdraw := os.Getenv("API_WITHDRAW")
-	apiGetHistoriesTransaction := os.Getenv("API_GET_HISTORIES")
-	apiGetDepWithdraw := os.Getenv("API_GET_DPERW")
-	apiGetContestByID := os.Getenv("API_GET_CONTEST_BYID")
-	apiGETAllContest := os.Getenv("API_GET_CONTEST")
-	apiJoinAContest := os.Getenv("API_JOIN_A_CONTEST")
-	r.GET("/get-env", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"API_URL":              apiUrl,
-			"API_GET_WALLET":       apiGetWallet,
-			"API_DEPOSIT":          apiDeposit,
-			"API_WITHDRAW":         apiWithdraw,
-			"API_GET_HISTORIES":    apiGetHistoriesTransaction,
-			"API_GET_DPERW":        apiGetDepWithdraw,
-			"API_GET_CONTEST_BYID": apiGetContestByID,
-			"API_GET_CONTEST":      apiGETAllContest,
-			"API_JOIN_A_CONTEST":   apiJoinAContest,
-		})
-	})
+
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "dashboard.html", gin.H{
 			"title": "Dashbard",
@@ -65,6 +43,26 @@ func main() {
 		c.HTML(http.StatusOK, "authentication-register.html", gin.H{
 			"title": "Register",
 			"code":  code,
+		})
+	})
+	r.GET("/user", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "user.html", gin.H{
+			"title": "User",
+		})
+	})
+	r.GET("/security", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "security.html", gin.H{
+			"title": "Security",
+		})
+	})
+	r.GET("/history", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "history.html", gin.H{
+			"title": "Leader board",
+		})
+	})
+	r.GET("/leader-board", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "history.html", gin.H{
+			"title": "Leader board",
 		})
 	})
 	r.Run(":4200")

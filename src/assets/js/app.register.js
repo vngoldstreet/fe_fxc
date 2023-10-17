@@ -1,12 +1,8 @@
-const redirectURL = "/dashboard";
-const apiRegisterUrl = "/api/register";
-// Function to perform the redirect
-function redirectToURL() {
-    window.location.href = redirectURL;
-}
+const redirectURL = "/";
+const baseUrl = "https://auth.fxchampionship.com"
+const apiRegisterUrl = baseUrl + "/public/register";
 // Get a reference to the HTML form element
 const form = document.getElementById("formreg");
-
 // Add a submit event listener to the form
 form.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent the default form submission
@@ -45,7 +41,7 @@ form.addEventListener("submit", function (event) {
             } else {
                 document.getElementById("messagefailure").classList.add("text-success")
                 document.getElementById("messagefailure").innerHTML = responseData.message;
-                setTimeout(redirectToURL, 1000);
+                setTimeout((window.location.href = "/login"), 500);
             }
         })
         .catch(error => {
