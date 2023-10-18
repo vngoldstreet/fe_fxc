@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <!--  Row 1 -->
         <div class="row">
-          <div class="col-lg-8 d-flex align-items-strech">
+          <div id="chart_div" class="col-lg-8 d-flex align-items-strech">
             <div class="card w-100">
               <div class="card-body">
                 <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
@@ -42,7 +42,7 @@
                     <h5 class="card-title mb-9 fw-semibold">Wallets</h5>
                     <div class="row align-items-center">
                       <div class="col-12">
-                        <h4 id="wallet_balance" class="fw-semibold mb-3"></h4>
+                        <h4 id="wallet_balance" class="fw-semibold mb-3 text-warning"></h4>
                         <div class="d-flex align-items-center mb-3">
                           <p id="wallet_time"></p>
                         </div>
@@ -50,14 +50,12 @@
                       <div class="col-12">
                         <div class="row">
                           <div class="col-6">
-                            <button id="deposits" type="button" class="btn btn-success m-1 w-100" data-bs-toggle="modal"
+                            <button id="deposits" type="button" class="btn btn-warning m-1 w-100" data-bs-toggle="modal"
                               data-bs-target="#modal_finance_deposit">Deposit</button>
-                            <script>
-
-                            </script>
                           </div>
                           <div class="col-6">
-                            <button type="button" class="btn btn-danger m-1 w-100">Withdraw</button>
+                            <button id="withdraws" type="button" class="btn btn-withdrawal m-1 w-100"
+                              data-bs-toggle="modal" data-bs-target="#modal_finance_withdraw">Withdraw</button>
                           </div>
                         </div>
                       </div>
@@ -68,22 +66,7 @@
                   <div class="card-body p-4">
                     <h5 class="card-title mb-9 fw-semibold">Competitions Entered</h5>
                     <div class="row align-items-center">
-                      <div class="col-12">
-                        <h4 id="wallet_balance" class="fw-semibold mb-3"></h4>
-                      </div>
                       <div class="container text-center" id="contest-list">
-                        <div class="row align-items-start">
-                          <div class="col">
-                            <span class="fw-bolder">CID</span>
-                          </div>
-                          <div class="col">
-                            <span class="fw-bolder">Price</span>
-                          </div>
-                          <div class="col">
-                            <span class="fw-bolder">Balance</span>
-                          </div>
-
-                        </div>
 
                       </div>
                     </div>
@@ -98,7 +81,7 @@
             <div class="card w-100">
               <div class="card-body p-4">
                 <h5 class="card-title fw-semibold mb-4">List of current competitions</h5>
-                <div class="table-responsive">
+                <div class="table-responsive table-option">
                   <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
                       <tr>
@@ -143,7 +126,7 @@
             <div class="card w-100">
               <div class="card-body p-4">
                 <h5 class="card-title fw-semibold mb-4">Transaction history</h5>
-                <div class="table-responsive">
+                <div class="table-responsive table-option">
                   <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
                       <tr>
@@ -182,7 +165,35 @@
       </div>
     </div>
   </div>
-  
+  <div class="modal fade" id="modal_finance_withdraw" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Withdraw</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <p class="text-primary">1 gold is equivalent to 24,000 VND.</p>
+            <div class="mb-3">
+              <div class="input-group mb-3">
+                <input type="number" step="50" value="" class="form-control" placeholder="Amount" aria-label="Amount"
+                  aria-describedby="basic-addon1" id="withdraw_amount">
+                <span class="input-group-text" id="basic-addon1">Gold</span>
+              </div>
+            </div>
+            <span id="msg_withdraw"></span>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <br>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <button id="wd_confirmation" type="button" class="btn btn-secondary">Confirmation</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modal -->
   <div class="modal fade" id="modal_finance_deposit" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -194,15 +205,16 @@
         </div>
         <div class="modal-body">
           <form>
-            <p class="text-primary">1 gold is equivalent to 24,000 VND.</p>
+            <p class="text-secondary">1 gold is equivalent to 24,000 VND.</p>
             <div class="mb-3">
               <div class="input-group mb-3">
-                <input type="number" step="50" value="" class="form-control" placeholder="Amount" aria-label="Amount" aria-describedby="basic-addon1" id="deposit_amount">
+                <input type="number" step="50" value="" class="form-control" placeholder="Amount" aria-label="Amount"
+                  aria-describedby="basic-addon1" id="deposit_amount">
                 <span class="input-group-text" id="basic-addon1">Gold</span>
               </div>
             </div>
-            <span id="modal-deposit"></span>
-            <button id="create_qr_code" type="button" class="btn btn-primary w-100">Confirmation</button>
+            <span id="msg_deposit"></span>
+            <button id="create_qr_code" type="button" class="btn btn-secondary w-100">Confirmation</button>
             <div id="qrcode"></div>
           </form>
         </div>
@@ -214,8 +226,8 @@
       </div>
     </div>
   </div>
-    <!-- Modal -->
-    <div class="modal fade" id="modal_transacion_info" tabindex="-1" aria-labelledby="exampleModalLabel"
+  <!-- Modal -->
+  <div class="modal fade" id="modal_transacion_info" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -235,25 +247,25 @@
     </div>
   </div>
 
-  <div class="modal fade" id="join_contest" tabindex="-1" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation to join a competition!</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="contest_info"></div>
-      </div>
-      <div class="modal-footer">
-        <br>
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" onclick="" class="btn btn-success">Join this competition</button>
+  <div class="modal fade" id="join_contest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation to join a competition!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="contest_info"></div>
+        </div>
+        <div class="modal-footer">
+          <br>
+          <button id="btn_close" type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="confirm_to_join" class="btn btn-secondary">Join this
+            competition</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
   <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
   <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
