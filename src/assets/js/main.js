@@ -1,9 +1,30 @@
-const baseUrl = "https://auth.fxchampionship.com"
-const urlGreetings = baseUrl + "/auth/greetings"
-const redirectLoginURL = "/login"
-const urlJoinContest = baseUrl + "/auth/contest/join-contest-by-uid"
-const urlDeposit = baseUrl + "/auth/user-wallet/deposit"
-const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw"
+const baseUrl = "https://auth.fxchampionship.com";
+const urlGreetings = baseUrl + "/auth/greetings";
+const redirectLoginURL = "/login";
+const urlJoinContest = baseUrl + "/auth/contest/join-contest-by-uid";
+const urlDeposit = baseUrl + "/auth/user-wallet/deposit";
+const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw";
+
+$(document).ready(function () {
+  const userInfo = JSON.parse(localStorage.getItem("user"))
+  const now = new Date();
+  const currentHour = now.getHours();
+  let text_getting = ""
+  if (currentHour >= 18) {
+    text_getting = "Good evening"
+  } else if (currentHour >= 12) {
+    text_getting = "Good afternoon"
+  } else {
+    text_getting = "Good morning"
+  }
+  const gettingValue = `${text_getting}: ${userInfo.name} (${userInfo.email})!`;
+  document.getElementById("username").innerHTML = gettingValue;
+
+  $("#submit_logout").click(function () {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.href = "/login"
+  })
+})
 
 function getCookie(cookieName) {
   var name = cookieName + "=";
@@ -24,30 +45,30 @@ function redirectToURL(targetUrl) {
 }
 
 function setAllContestLists(allContestListDatas) {
-  let htmlPrint = ""
+  let htmlPrint = "";
   for (let key in allContestListDatas) {
-    let text_status = ""
-    let text_class = ""
+    let text_status = "";
+    let text_class = "";
     switch (allContestListDatas[key].status_id) {
       case 0:
-        text_status = "Pending"
-        text_class = "bg-light"
+        text_status = "Pending";
+        text_class = "bg-light";
         break;
       case 1:
-        text_status = "Processing"
-        text_class = "bg-warning"
+        text_status = "Processing";
+        text_class = "bg-warning";
         break;
       case 2:
-        text_status = "Finished"
-        text_class = "bg-success"
+        text_status = "Finished";
+        text_class = "bg-success";
         break;
       case 3:
-        text_status = "Cancel"
-        text_class = "bg-light"
+        text_status = "Cancel";
+        text_class = "bg-light";
         break;
       default:
-        text_status = "Cancel"
-        text_class = "bg-danger"
+        text_status = "Cancel";
+        text_class = "bg-danger";
         break;
     }
 
@@ -94,52 +115,53 @@ function setAllContestLists(allContestListDatas) {
 }
 
 function setTransactionLists(transactionData) {
-  let htmlPrint = ""
+  let htmlPrint = "";
   for (let key in transactionData) {
-    let text_type = ""
-    let text_id_contest = ""
+    let text_type = "";
+    let text_id_contest = "";
     switch (transactionData[key].type_id) {
       case 1:
-        text_type = "Deposit"
+        text_type = "Deposit";
         break;
       case 2:
-        text_type = "Withdraw"
+        text_type = "Withdrawal";
         break;
-      case 3, 5: text_type = "Earning"
+      case 3, 5: text_type = "Earning";
         break;
       case 4:
-        text_type = "Join a contest"
+        text_type = "Join a contest";
         text_id_contest = `${transactionData[key].contest_id}`
         break;
       default:
         break;
     }
-    let text_status = ""
-    let text_class = ""
-    let bg_class = ""
+    let text_status = "";
+    let text_class = "";
+    let bg_class = "";
     switch (transactionData[key].status_id) {
       case 1:
-        text_status = "Processing"
-        text_class = "text-warning"
-        bg_class = "bg-warning"
+        text_status = "Processing";
+        text_class = "text-warning";
+        bg_class = "bg-warning";
         break;
       case 2:
-        text_status = "Success"
-        text_class = "text-success"
-        bg_class = "bg-success"
+        text_status = "Success";
+        text_class = "text-success";
+        bg_class = "bg-success";
         break;
       case 3:
-        text_status = "Cancel"
-        text_class = "text-danger"
-        bg_class = "bg-danger"
+        text_status = "Cancel";
+        text_class = "text-danger";
+        bg_class = "bg-danger";
         break;
     }
     const updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
     const created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
-    let number = Number(key) + 1
-    let amount = Number(transactionData[key].amount).toLocaleString()
+    let number = Number(key) + 1;
+    let amount = Number(transactionData[key].amount).toLocaleString();
 
-    const userInfo = JSON.parse(getCookie("user"))
+    const userInfo = JSON.parse(localStorage.getItem('user'));
+
     htmlPrint += `
             <tr>
               <td class="border-bottom-0">
@@ -163,8 +185,8 @@ function setTransactionLists(transactionData) {
                   </div>
               </td>
                <td class="border-bottom-0">
-               <button onclick="getInfomationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal"
-               data-bs-target="#modal_transacion_info">Info</button>
+                <button onclick="getInfomationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal"
+                data-bs-target="#modal_transacion_info">Info</button>
               </td>
             </tr>
             `
@@ -173,20 +195,46 @@ function setTransactionLists(transactionData) {
 }
 
 function getInfomationOfTransaction(amount, type, id, name) {
+  if (Number(type) == 1) {
+    let bank_note = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
+    const paymentInfo = {
+      bank: 'tpbank',
+      account: '08096868999',
+      name: 'VU DINH VIET',
+      amount: Number(amount) * 24000, // Số tiền cần chuyển
+      note: bank_note,
+    };
+    let img_url = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
+    let htmlPrintToContest = `<img id="img_qrcode_info_1" class="w-100" src="${img_url}">`;
+    $("#img_qrcode_info").html(htmlPrintToContest);
+    return;
+  }
   if (Number(type) > 1) {
+    let text_type = ""
+    switch (type) {
+      case 1:
+        text_type = "Deposit";
+        break;
+      case 2:
+        text_type = "Withdrawal";
+        break;
+      case 3, 5: text_type = "Earning";
+        break;
+      case 4:
+        text_type = "Join a contest";
+        break;
+      default:
+        break;
+    }
+    let html_text = `
+                      <div id="this_contest_info">
+                      <h6>Transaction type: ${text_type}</h6>
+                      <h6><span>Amount:</span> $${amount.toLocaleString()}</h6>
+                      </div>
+                    `
+    $("#img_qrcode_info").html(html_text);
     return
   }
-  let bank_note = encodeURIComponent(`${id} ${Number(amount)}G ${name}`)
-  const paymentInfo = {
-    bank: 'tpbank',
-    account: '08096868999',
-    name: 'VU DINH VIET',
-    amount: Number(amount) * 24000, // Số tiền cần chuyển
-    note: bank_note,
-  };
-  let img_url = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`
-  let htmlPrintToContest = `<img id="img_qrcode_info_1" class="w-100" src="${img_url}">`
-  $("#img_qrcode_info").html(htmlPrintToContest)
 }
 
 function setContestLists(contestLists) {
@@ -204,8 +252,8 @@ function setContestLists(contestLists) {
   </div>
   `
   for (let key in contestLists) {
-    let amount = Number(contestLists[key].amount).toLocaleString()
-    let balance = Number(contestLists[key].start_balance).toLocaleString()
+    let amount = Number(contestLists[key].amount).toLocaleString();
+    let balance = Number(contestLists[key].start_balance).toLocaleString();
 
     htmlPrintToContest += `
             <div class="row align-items-start mt-2">
@@ -236,7 +284,7 @@ function setChartGreetings(chartGreetings) {
     series: [
       { name: "Deposit:", data: chartGreetings.dep },
       { name: "Earn:", data: chartGreetings.earn },
-      { name: "Withdraw:", data: chartGreetings.withdraw },
+      { name: "Withdrawal:", data: chartGreetings.withdraw },
     ],
 
     chart: {
@@ -331,27 +379,17 @@ function setChartGreetings(chartGreetings) {
 }
 
 function setWallet(wallet) {
-  const wallet_time = new Date(wallet.UpdatedAt).toLocaleString()
-  $("#wallet_balance").html(`<i class="ti ti-wallet text-warning"></i> ${wallet.balance} Gold`)
-  $("#wallet_time").html(`<p class="text-dark me-1 fs-3 mb-0 text-success">Updated: ${wallet_time}</p>`)
+  const wallet_time = new Date(wallet.UpdatedAt).toLocaleString();
+  $("#wallet_balance").html(`<i class="ti ti-wallet text-warning"></i> ${wallet.balance} Gold`);
+  $("#wallet_time").html(`<p class="text-dark me-1 fs-3 mb-0 text-success">Updated: ${wallet_time}</p>`);
   // document.getElementById("wallet_balance").innerHTML = `<i class="ti ti-wallet text-warning"></i> ${wallet.balance} Gold`;
   // document.getElementById("wallet_time").innerHTML = `<p class="text-dark me-1 fs-3 mb-0 text-success">Updated: ${wallet_time}</p>`;
 }
 
-const myButtonLogout = document.getElementById("logout");
-function removeCokkies(name) {
-  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
-
-myButtonLogout.addEventListener("click", function () {
-  removeCokkies("token");
-  redirectToURL(redirectLoginURL)
-});
-
 function greetingFunc() {
   const jwtToken = getCookie("token");
   if (!jwtToken) {
-    redirectToURL(redirectLoginURL)
+    redirectToURL(redirectLoginURL);
   }
   const headers = new Headers({
     'Authorization': `Bearer ${jwtToken}`
@@ -368,28 +406,28 @@ function greetingFunc() {
       return response.json(); // Parse the response JSON if needed
     })
     .then(dataResponse => {
-      const dataToSaveString = JSON.stringify(dataResponse)
+      const dataToSaveString = JSON.stringify(dataResponse);
       // Save the data to local storage
       localStorage.setItem('data', dataToSaveString);
 
       //Wallet info
-      const wallet = dataResponse.wallet
-      setWallet(wallet)
+      const wallet = dataResponse.wallet;
+      setWallet(wallet);
 
       // Transactions list
-      const transactionData = dataResponse.transactions
-      setTransactionLists(transactionData)
+      const transactionData = dataResponse.transactions;
+      setTransactionLists(transactionData);
 
       //Contest lists by id
-      const contestLists = dataResponse.contest_info_list
-      setContestLists(contestLists)
+      const contestLists = dataResponse.contest_info_list;
+      setContestLists(contestLists);
 
       //All contest list
-      const allContestListDatas = dataResponse.contest_list
-      setAllContestLists(allContestListDatas)
+      const allContestListDatas = dataResponse.contest_list;
+      setAllContestLists(allContestListDatas);
       //Chart options
-      const chartGreetings = dataResponse.chart
-      setChartGreetings(chartGreetings)
+      const chartGreetings = dataResponse.chart;
+      setChartGreetings(chartGreetings);
 
     })
     .catch(error => {
@@ -404,18 +442,22 @@ $(function () {
 //Withdraw
 $(document).ready(function () {
   $("#withdraws").click(function () {
-    $("#withdraw_amount").value = 0
+    $("#withdraw_amount").value = 0;
     $("#msg_withdraw").empty();
   })
-
   $("#wd_confirmation").click(function () {
-    const userWallet = JSON.parse(localStorage.getItem("data")).wallet
+    const userInfo = JSON.parse(getCookie("user"));
+    if (userInfo.inreview == "not_yet") {
+      window.alert("Please verify your account first.");
+      return;
+    }
+    const userWallet = JSON.parse(localStorage.getItem("data")).wallet;
     const inpAmount = document.getElementById('withdraw_amount').value;
     if (inpAmount > userWallet.balance) {
       $("#msg_withdraw").html(`<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`);
       return
     }
-    $("#msg_withdraw").empty()
+    $("#msg_withdraw").empty();
 
     const jwtToken = getCookie("token");
     const inpWithdraw = {
@@ -456,7 +498,7 @@ $(document).ready(function () {
   })
 
   $("#create_qr_code").click(function () {
-    const userInfo = JSON.parse(getCookie("user"))
+    const userInfo = JSON.parse(localStorage.getItem("user"));
     const inpAmount = document.getElementById('deposit_amount').value;
 
     $("#qrcode").empty();
@@ -464,7 +506,7 @@ $(document).ready(function () {
 
     if (inpAmount <= 0) {
       $("#msg_deposit").html("<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>");
-      return
+      return;
     }
 
     let bank_note = encodeURIComponent(`${userInfo.ID} ${inpAmount}G ${userInfo.name}`)
@@ -475,9 +517,9 @@ $(document).ready(function () {
       amount: inpAmount * 24000, // Số tiền cần chuyển
       note: bank_note,
     };
-    let img_url = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`
-    let htmlPrintToContest = `<img id="img_qrcode" class="w-100" src="${img_url}">`
-    $("#qrcode").html(htmlPrintToContest)
+    let img_url = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
+    let htmlPrintToContest = `<img id="img_qrcode" class="w-100" src="${img_url}">`;
+    $("#qrcode").html(htmlPrintToContest);
     const jwtToken = getCookie("token");
     const inpJoinContest = {
       "amount": Number(inpAmount)
@@ -534,7 +576,6 @@ function saveJoinContest(contest_id) {
       return response.json(); // Parse the response JSON if needed
     })
     .then(dataResponse => {
-      console.log(dataResponse)
       setTimeout(function () {
         $("#join_contest_message").removeClass().addClass("fw-semibold text-success")
         $("#join_contest_message").html("You have successfully participated in the competition.")
@@ -563,3 +604,4 @@ function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
     saveJoinContest(contest_id);
   });
 }
+

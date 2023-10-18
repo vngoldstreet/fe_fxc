@@ -23,13 +23,17 @@
               <div class="card-body">
                 <h5 class="card-title fw-semibold mb-4">User information</h5>
                 <div id="user_info" class="card">
-                  <img src="src/assets/images/products/s4.jpg" class="card-img-top" alt="...">
+                  <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                  <label for="avatarInput" id="uploadLabel" style="cursor: pointer;">
+                    <img id="avatarImage" class="img-avata w-100" alt="Avatar">
+                  </label>
                   <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and
-                      make up the bulk of
-                      the
-                      card's content.</p>
+                    <h5 class="card-title" id="userinfo_name"></h5>
+                    <p class="card-text" id="userinfo_email"></p>
+                    <div id="userinfo_description"></div>
+
+                    </textarea>
+                    <button id="user_info_updated" type="submit" class="btn btn-secondary w-100 mt-3">Save</button>
                   </div>
                 </div>
               </div>
@@ -37,6 +41,25 @@
             <div class="col-8">
               <div class="card-body">
                 <h5 class="card-title fw-semibold mb-4">Advanced verification</h5>
+                <div class="row">
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">Front side of the national ID card</label>
+                      <input class="form-control" type="file" id="front_formFile">
+                      <img id="front_selectedImage">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">Back side of the national ID card</label>
+                      <input class="form-control" type="file" id="back_formFile">
+                      <img id="back_selectedImage">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button id="indentify_update" type="submit" class="btn btn-secondary w-100">Submit</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -48,6 +71,7 @@
   <script src="src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="src/assets/js/sidebarmenu.js"></script>
   <script src="src/assets/js/app.min.js"></script>
+  <script src="src/assets/js/user.js"></script>
   <script src="src/assets/libs/simplebar/dist/simplebar.js"></script>
 </body>
 

@@ -1,7 +1,18 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap");
+@import "../libs/simplebar/dist/simplebar.css";
+@import "../css/icons/tabler-icons/tabler-icons.css";
 
 
+.indentify-img {
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.img-avata {
+    aspect-ratio: 1/1;
+    object-fit: contain;
+}
 
 .table-option {
     max-height: 500px !important;
@@ -27,8 +38,7 @@
  * Copyright 2011-2022 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import "../libs/simplebar/dist/simplebar.css";
-@import "../css/icons/tabler-icons/tabler-icons.css";
+
 
 :root, [data-bs-theme=light] {
     --bs-blue: #608CFC;
@@ -4175,19 +4185,19 @@ textarea.form-control-lg {
 }
 
 .btn-outline-primary {
-    --bs-btn-color: #5D87FF;
-    --bs-btn-border-color: #5D87FF;
+    --bs-btn-color: #8957FF;
+    --bs-btn-border-color: #8957FF;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #5D87FF;
-    --bs-btn-hover-border-color: #5D87FF;
+    --bs-btn-hover-bg: #8957FF;
+    --bs-btn-hover-border-color: #8957FF;
     --bs-btn-focus-shadow-rgb: 93, 135, 255;
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: #5D87FF;
     --bs-btn-active-border-color: #5D87FF;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #5D87FF;
+    --bs-btn-disabled-color: #8957FF;
     --bs-btn-disabled-bg: transparent;
-    --bs-btn-disabled-border-color: #5D87FF;
+    --bs-btn-disabled-border-color: #8957FF;
     --bs-gradient: none
 }
 
@@ -19268,8 +19278,8 @@ textarea.form-control-lg {
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link:hover {
-    background-color: rgba(93, 135, 255, 0.1);
-    color: #5D87FF
+    background-color: #8957FF;
+    color: #fff
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link:hover.has-arrow:after {
@@ -19285,7 +19295,7 @@ textarea.form-control-lg {
 }
 
 .sidebar-nav ul .sidebar-item.selected>.sidebar-link, .sidebar-nav ul .sidebar-item.selected>.sidebar-link.active, .sidebar-nav ul .sidebar-item>.sidebar-link.active {
-    background-color: #5D87FF;
+    background-color: #8957FF;
     color: #fff
 }
 

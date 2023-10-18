@@ -7,11 +7,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <!-- <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                <i class="ti ti-bell-ringing"></i>
-                <div class="notification bg-primary rounded-circle"></div>
-              </a> -->
-                <!-- <h3>Thống kê </h3> -->
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                    <i class="ti ti-bell-ringing"></i>
+                    <div class="notification bg-primary rounded-circle"></div>
+                </a>
+                <h3>{{.title}}</h3>
             </li>
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
@@ -39,39 +39,14 @@
                                 <i class="ti ti-list-check fs-6"></i>
                                 <p class="mb-0 fs-3">My Task</p>
                             </a> -->
-                            <a href="/" class="btn btn-outline-primary mx-3 mt-2 d-block" id="logout">Logout</a>
+                            <!-- <a href="/" class="btn btn-outline-primary mx-3 mt-2 d-block" id="logout">Logout</a> -->
+                            <!-- <input id="submit_logout" class="btn btn-outline-primary mx-3 mt-2 d-block"> -->
+                            <button type="button" id="submit_logout"
+                                class="btn btn-outline-primary w-100 d-block">Logout</button>
                         </div>
                     </div>
                 </li>
             </ul>
         </div>
-        <script>
-            function getCookie(cookieName) {
-                var name = cookieName + "=";
-                var decodedCookie = decodeURIComponent(document.cookie);
-                var cookieArray = decodedCookie.split(';');
-
-                for (var i = 0; i < cookieArray.length; i++) {
-                    var cookie = cookieArray[i].trim();
-                    if (cookie.indexOf(name) === 0) {
-                        return cookie.substring(name.length, cookie.length);
-                    }
-                }
-                return "";
-            }
-            const userInfo = JSON.parse(getCookie("user"))
-            const now = new Date();
-            const currentHour = now.getHours();
-            let text_getting = ""
-            if (currentHour >= 18) {
-                text_getting = "Good evening"
-            } else if (currentHour >= 12) {
-                text_getting = "Good afternoon"
-            } else {
-                text_getting = "Good morning"
-            }
-            const gettingValue = `${text_getting}: ${userInfo.name} (${userInfo.email})!`;
-            document.getElementById("username").innerHTML = gettingValue;
-        </script>
     </nav>
 </header>
