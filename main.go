@@ -55,11 +55,11 @@ func main() {
 			"title": "Security",
 		})
 	})
-	r.GET("/history", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "history.html", gin.H{
-			"title": "Leader board",
-		})
-	})
+	// r.GET("/history", func(c *gin.Context) {
+	// 	c.HTML(http.StatusOK, "history.html", gin.H{
+	// 		"title": "Leader board",
+	// 	})
+	// })
 	r.GET("/leader-board", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "history.html", gin.H{
 			"title": "Leader board",

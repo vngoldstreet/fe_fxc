@@ -80,12 +80,11 @@ $(document).ready(function () {
                 const cookieString = `token=${token}; expires=${expires}; path=/`;
                 // Set the cookie
                 document.cookie = cookieString;
-
                 // Instead of immediately redirecting the user, provide a success message and then redirect
-                $("#messagefailure").addClass("text-success").html("Success! Redirecting...");
+                $("#messagefailure").removeClass("text-danger").addClass("text-success").html("Success! Redirecting...");
                 setTimeout(function () {
                     window.location.href = "/";
-                }, 1000);
+                }, 2000);
             })
             .catch(error => {
                 console.error("Error:", error);

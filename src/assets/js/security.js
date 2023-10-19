@@ -81,7 +81,6 @@ $(document).ready(function () {
     })
 })
 
-
 $(document).ready(function () {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const now = new Date();
