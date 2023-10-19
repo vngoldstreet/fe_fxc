@@ -51,7 +51,7 @@ $(document).ready(function () {
             "email": inpEmail,
             "password": inpPassword
         };
-
+        console.log(inpLoginData)
         // Create a custom request object for the fetch
         const requestOptions = {
             method: "POST",
@@ -71,7 +71,7 @@ $(document).ready(function () {
             .then(responseData => {
                 localStorage.setItem('user', JSON.stringify(responseData.user));
                 const token = responseData.token;
-            
+
                 // Enhanced security: Use HttpOnly and Secure flags for the cookie
                 const expirationDays = 7; // Adjust as needed
                 const expirationDate = new Date();
@@ -83,7 +83,7 @@ $(document).ready(function () {
 
                 // Instead of immediately redirecting the user, provide a success message and then redirect
                 $("#messagefailure").addClass("text-success").html("Success! Redirecting...");
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = "/";
                 }, 1000);
             })

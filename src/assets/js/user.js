@@ -25,8 +25,17 @@ $(document).ready(function () {
     } else {
         $("#avatarImage").attr("src", userInfo.image)
     }
+    if (userInfo.inreview === 'not_yet') {
+        $("#indentify_status").addClass('text-danger').html(`<i class="ti ti-ban"></i> Account has not been verified!.`)
+    } else {
+        $("#indentify_status").removeClass('text-danger').addClass('text-success').html(`<i class="ti ti-circle-check-filled"></i>Account has not been verified!`)
+    }
+    if (userInfo.description == '') {
+        $("#userinfo_description").html(`<p id="existing_description" class="card-text">Please introduce something about yourself!<br>Click here to edit.</p>`)
+    } else {
+        $("#userinfo_description").html(`<p id="existing_description" class="card-text">${userInfo.description}</p>`)
+    }
 
-    $("#userinfo_description").html(`<p id="existing_description" class="card-text">${userInfo.description}</p>`)
 
     // $("#userinfo_description").attr("placeholder", userInfo.description)
     if (localStorage.getItem("indentify") !== null) {
@@ -82,26 +91,24 @@ $(document).ready(function () {
             'Authorization': `Bearer ${jwtToken}`
         });
         $("#indentify_update").addClass("disabled")
-        console.log(inpReview)
-        // localStorage.setItem('indentify', JSON.stringify(inpReview));
-        // fetch(urlReviews, {
-        //     method: "POST",
-        //     headers: headers,
-        //     body: JSON.stringify(inpReview),
-        // })
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw new Error("Network response was not ok");
-        //         }
-        //         return response.json(); // Parse the response JSON if needed
-        //     })
-        //     .then(dataResponse => {
-        //         localStorage.setItem('indentify', inpReview);
-        //         window.alert("Success!")
-        //     })
-        //     .catch(error => {
-        //         console.error("Error:", error);
-        //     });
+        fetch(urlReviews, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(inpReview),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json(); // Parse the response JSON if needed
+            })
+            .then(dataResponse => {
+                localStorage.setItem('indentify', JSON.stringify(inpReview));
+                window.alert("Success!")
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     })
 });
 
@@ -154,12 +161,36 @@ $(document).ready(function () {
                 userInfo.image = img_avata;
                 userInfo.description = inpDescription;
                 const user = JSON.stringify(userInfo)
-                console.log(user)
                 localStorage.setItem('user', JSON.stringify(userInfo));
                 window.alert("Success!")
+                window.location.reload()
             })
             .catch(error => {
                 console.error("Error:", error);
             });
     })
 })
+
+
+$(document).ready(function () {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const now = new Date();
+    const currentHour = now.getHours();
+    let greetingText = "";
+
+    if (currentHour >= 18) {
+        greetingText = "Good evening";
+    } else if (currentHour >= 12) {
+        greetingText = "Good afternoon";
+    } else {
+        greetingText = "Good morning";
+    }
+    const greetingMessage = `${greetingText}: ${userInfo.name} (${userInfo.email})!`;
+    $("#username").text(greetingMessage);
+
+    $("#submit_logout").click(function () {
+        // Clear the 'token' cookie and redirect to the login page
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+        window.location.href = "/login";
+    });
+});

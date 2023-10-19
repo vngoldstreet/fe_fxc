@@ -397,11 +397,11 @@ function getInfomationOfTransaction(amount, type, id, name) {
 
 function setTransactionLists(transactionData) {
   let htmlPrint = "";
-  
+
   for (let key in transactionData) {
     let text_type = "";
     let text_id_contest = "";
-    
+
     switch (transactionData[key].type_id) {
       case 1:
         text_type = "Deposit";
@@ -420,11 +420,11 @@ function setTransactionLists(transactionData) {
       default:
         break;
     }
-    
+
     let text_status = "";
     let text_class = "";
     let bg_class = "";
-    
+
     switch (transactionData[key].status_id) {
       case 1:
         text_status = "Processing";
@@ -442,12 +442,12 @@ function setTransactionLists(transactionData) {
         bg_class = "bg-danger";
         break;
     }
-    
+
     const updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
     const created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
     const number = Number(key) + 1;
     const amount = Number(transactionData[key].amount).toLocaleString();
-    
+
     const userInfo = JSON.parse(localStorage.getItem('user'));
 
     htmlPrint += `
@@ -478,7 +478,7 @@ function setTransactionLists(transactionData) {
       </tr>
     `;
   }
-  
+
   $("#transaction-list").html(htmlPrint);
 }
 
@@ -723,7 +723,7 @@ function setChartGreetings(chartGreetings) {
 
     chart: {
       type: "bar",
-      height: 500,
+      // height: auto,
       offsetX: -15,
       toolbar: { show: true },
       foreColor: "#adb0bb",
@@ -1009,15 +1009,15 @@ $(document).ready(function () {
     };
 
     const imgURL = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
-    
+
     const htmlPrintToQRCode = `<img id="img_qrcode" class="w-100" src="${imgURL}">`;
     $("#qrcode").html(htmlPrintToQRCode);
-    
+
     const jwtToken = getCookie("token");
     const inpDeposit = {
       "amount": inpAmount
     };
-    
+
     const headers = new Headers({
       'Authorization': `Bearer ${jwtToken}`
     });
@@ -1027,18 +1027,19 @@ $(document).ready(function () {
       headers: headers,
       body: JSON.stringify(inpDeposit),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then(dataResponse => {
-      $("#deposit_amount").val(0);
-    })
-    .catch(error => {
-      console.error("Error:", error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(dataResponse => {
+        $("#deposit_amount").val(0);
+        greetingFunc();
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
   });
 });
 

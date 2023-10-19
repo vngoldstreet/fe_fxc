@@ -20,34 +20,47 @@
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
                   <img src="src/assets/images/logos/dark-logo.svg" width="180" alt="">
                 </a>
-                <p class="text-center">Your Social Campaigns</p>
+                <p class="text-center">Register to start a competition!</p>
                 <form id="formreg">
                   <div class="mb-3">
-                    <label for="Email" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" aria-describedby="textHelp">
+                    <label for="name" class="form-label">Name</label>
+                    <input placeholder="Please enter your name exactly as in your ID card" type="text"
+                      class="form-control" id="name" name="name" aria-describedby="textHelp" required>
+                    <span id="fb_name" class=""></span>
                   </div>
                   <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+                      required>
+                    <span id="fb_email"></span>
                   </div>
                   <div class="mb-3">
                     <label for="phone" class="form-label">Phone</label>
-                    <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone">
+                    <input type="text" class="form-control" value="+84" id="phone" name="phone" aria-describedby="phone"
+                      required>
+                    <span id="fb_phone" class=""></span>
                   </div>
                   <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <span id="fb_password"></span>
+                  </div>
+                  <div class="mb-4">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                    <span id="fb_confirm_password"></span>
                   </div>
                   <div class="mb-4">
                     <label for="parnercode" class="form-label">Partner Code</label>
                     <input type="text" class="form-control" id="parnercode" name="parnercode" value="{{.code}}">
                   </div>
                   <p class="" id="messagefailure"></p>
-                  <input class="btn btn-secondary w-100 py-8 fs-4 mb-4 rounded-2" type="submit" value="Sign Up">
-
+                  <!-- <input class="btn btn-secondary w-100 py-8 fs-4 mb-4 rounded-2" type="submit" value="Sign Up"> -->
+                  <button type="button" id="submit_form_signup" class="btn btn-secondary w-100 d-block">Sign
+                    Up</button>
                   <!-- <a href="/" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" type="submit">Sign Up</a> -->
                   <div class="d-flex align-items-center justify-content-center">
                     <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>

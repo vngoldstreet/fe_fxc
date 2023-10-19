@@ -20,20 +20,27 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title fw-semibold mb-4">Update Password</h5>
-            <form>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Old Password</label>
-                <input type="password" class="form-control" id="old_password">
+            <form id="formreg">
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                <span id="fb_cpassword"></span>
               </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">New Password</label>
-                <input type="password" class="form-control" id="new_password">
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="npassword" name="npassword" required>
+                <span id="fb_npassword"></span>
               </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Re-enter your password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+              <div class="mb-4">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                <span id="fb_confirm_password"></span>
               </div>
-              <button type="submit" class="btn btn-primary">Update</button>
+              <p class="" id="messagefailure"></p>
+              <!-- <input class="btn btn-secondary w-100 py-8 fs-4 mb-4 rounded-2" type="submit" value="Sign Up"> -->
+              <button type="button" id="user_info_change_password"
+                class="btn btn-secondary w-25 d-block">Submit</button>
+              <!-- <a href="/" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" type="submit">Sign Up</a> -->
             </form>
           </div>
         </div>
@@ -46,6 +53,7 @@
   <script src="src/assets/js/app.min.js"></script>
   <script src="src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="src/assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="src/assets/js/security.js"></script>
 </body>
 
 </html>
