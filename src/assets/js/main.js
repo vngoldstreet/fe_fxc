@@ -202,7 +202,7 @@ function setTransactionLists(transactionData) {
   $("#transaction-list").html(htmlPrint);
 }
 
-function getInfomationOfTransaction(amount, type, id, name) {
+function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) === 1) {
     const bankNote = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
     const paymentInfo = {
@@ -324,7 +324,7 @@ function setTransactionLists(transactionData) {
           </div>
         </td>
         <td class="border-bottom-0">
-          <button onclick="getInfomationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal" data-bs-target="#modal_transacion_info">Info</button>
+          <button onclick="getInformationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal" data-bs-target="#modal_transaction_info">Info</button>
         </td>
       </tr>
     `;
@@ -334,7 +334,7 @@ function setTransactionLists(transactionData) {
 }
 
 
-function getInfomationOfTransaction(amount, type, id, name) {
+function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) == 1) {
     let bank_note = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
     const paymentInfo = {
@@ -412,7 +412,7 @@ function setContestLists(contestLists) {
           $${balance}
         </div>
         <div class="col">
-          <button onclick="getLeaderBoard()" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#modal_transacion_info"><i class="ti ti-award"></i></button>
+          <button onclick="getLeaderBoard('${contestLists[key].contest_id}')" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#modal_transaction_info"><i class="ti ti-award"></i></button>
         </div>
         
         
