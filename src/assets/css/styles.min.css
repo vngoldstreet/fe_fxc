@@ -4,6 +4,10 @@
 @import "../css/icons/tabler-icons/tabler-icons.css";
 
 
+.ti-award:hover {
+    color: #FF8C00ff;
+}
+
 .indentify-img {
     aspect-ratio: 16/9;
     object-fit: cover;

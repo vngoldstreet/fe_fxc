@@ -119,75 +119,6 @@ function setAllContestLists(allContestListDatas) {
   $("#all-contest-list").html(htmlPrint);
 }
 
-// function setAllContestLists(allContestListDatas) {
-//   let htmlPrint = "";
-//   for (let key in allContestListDatas) {
-//     let text_status = "";
-//     let text_class = "";
-//     switch (allContestListDatas[key].status_id) {
-//       case 0:
-//         text_status = "Pending";
-//         text_class = "bg-light";
-//         break;
-//       case 1:
-//         text_status = "Processing";
-//         text_class = "bg-warning";
-//         break;
-//       case 2:
-//         text_status = "Finished";
-//         text_class = "bg-success";
-//         break;
-//       case 3:
-//         text_status = "Cancel";
-//         text_class = "bg-light";
-//         break;
-//       default:
-//         text_status = "Cancel";
-//         text_class = "bg-danger";
-//         break;
-//     }
-
-//     const expired_at = new Date(allContestListDatas[key].expired_at).toLocaleString();
-//     const start_at = new Date(allContestListDatas[key].start_at).toLocaleString();
-//     let number = Number(key) + 1
-//     let amount = Number(allContestListDatas[key].amount).toLocaleString()
-//     htmlPrint += `
-//             <tr>
-//               <td class="border-bottom-0">
-//                   <span class="fw-semibold">${number}</span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-semibold">${allContestListDatas[key].contest_id}</span> 
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal">${start_at}</span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal">${expired_at}</span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal mb-0">${amount} G </span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal mb-0">${allContestListDatas[key].current_person}/${allContestListDatas[key].maximum_person}</span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal mb-0">$${allContestListDatas[key].start_balance.toLocaleString()}</span>
-//               </td>
-//                <td class="border-bottom-0">
-//                   <div class="d-flex align-items-center gap-2">
-//                       <span class="badge ${text_class} rounded-1 fw-semibold">${text_status}</span>
-//                   </div>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <button id="joinToContest" onclick="joinContest('${allContestListDatas[key].contest_id}','${start_at}','${expired_at}',${amount},${allContestListDatas[key].start_balance})" type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal"
-//                               data-bs-target="#join_contest">Join</button>
-//               </td>
-//             </tr>
-//             `
-//   }
-//   $("#all-contest-list").html(htmlPrint);
-// }
 
 function setTransactionLists(transactionData) {
   let htmlPrint = "";
@@ -314,86 +245,6 @@ function getInfomationOfTransaction(amount, type, id, name) {
     $("#img_qrcode_info").html(htmlText);
   }
 }
-
-// function setTransactionLists(transactionData) {
-//   let htmlPrint = "";
-//   for (let key in transactionData) {
-//     let text_type = "";
-//     let text_id_contest = "";
-//     switch (transactionData[key].type_id) {
-//       case 1:
-//         text_type = "Deposit";
-//         break;
-//       case 2:
-//         text_type = "Withdrawal";
-//         break;
-//       case 3, 5: text_type = "Earning";
-//         break;
-//       case 4:
-//         text_type = "Join a contest";
-//         text_id_contest = `${transactionData[key].contest_id}`
-//         break;
-//       default:
-//         break;
-//     }
-//     let text_status = "";
-//     let text_class = "";
-//     let bg_class = "";
-//     switch (transactionData[key].status_id) {
-//       case 1:
-//         text_status = "Processing";
-//         text_class = "text-warning";
-//         bg_class = "bg-warning";
-//         break;
-//       case 2:
-//         text_status = "Success";
-//         text_class = "text-success";
-//         bg_class = "bg-success";
-//         break;
-//       case 3:
-//         text_status = "Cancel";
-//         text_class = "text-danger";
-//         bg_class = "bg-danger";
-//         break;
-//     }
-//     const updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
-//     const created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
-//     let number = Number(key) + 1;
-//     let amount = Number(transactionData[key].amount).toLocaleString();
-
-//     const userInfo = JSON.parse(localStorage.getItem('user'));
-
-//     htmlPrint += `
-//             <tr>
-//               <td class="border-bottom-0">
-//                   <span class="fw-semibold">${number}</span> <br>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-semibold">${text_type}<br>${text_id_contest}</span> 
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal">${created_at}</span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal">${updated_at}</span>
-//               </td>
-//               <td class="border-bottom-0">
-//                   <span class="fw-normal mb-0">${amount} G </span>
-//               </td>
-//                <td class="border-bottom-0">
-//                   <div class="d-flex align-items-center gap-2">
-//                       <span class="badge ${bg_class} rounded-1 fw-semibold">${text_status}</span>
-//                   </div>
-//               </td>
-//                <td class="border-bottom-0">
-//                 <button onclick="getInfomationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal"
-//                 data-bs-target="#modal_transacion_info">Info</button>
-//               </td>
-//             </tr>
-//             `
-//   }
-//   $("#transaction-list").html(htmlPrint);
-// }
 
 function setTransactionLists(transactionData) {
   let htmlPrint = "";
@@ -526,44 +377,10 @@ function getInfomationOfTransaction(amount, type, id, name) {
   }
 }
 
-// function setContestLists(contestLists) {
-//   let htmlPrintToContest = `
-//    <div class="row align-items-start">
-//     <div class="col">
-//       <span class="fw-bolder">CID</span>
-//     </div>
-//     <div class="col">
-//       <span class="fw-bolder">Price</span>
-//     </div>
-//     <div class="col">
-//       <span class="fw-bolder">Balance</span>
-//     </div>
-//   </div>
-//   `
-//   for (let key in contestLists) {
-//     let amount = Number(contestLists[key].amount).toLocaleString();
-//     let balance = Number(contestLists[key].start_balance).toLocaleString();
-
-//     htmlPrintToContest += `
-//             <div class="row align-items-start mt-2">
-//               <div class="col">
-//                   ${contestLists[key].contest_id}
-//               </div>
-//               <div class="col">
-//                  ${amount} Gold
-//               </div>
-//               <div class="col">
-//                   $${balance}
-//               </div>
-//           </div>
-//             `
-//   }
-//   $("#contest-list").html(htmlPrintToContest);
-// }
 
 function setContestLists(contestLists) {
   let htmlPrintToContest = `
-    <div class="row align-items-start">
+    <div class="row align-items-center">
       <div class="col">
         <span class="fw-bolder">CID</span>
       </div>
@@ -573,6 +390,9 @@ function setContestLists(contestLists) {
       <div class="col">
         <span class="fw-bolder">Balance</span>
       </div>
+      <div class="col">
+        
+      </div>
     </div>
   `;
 
@@ -581,16 +401,21 @@ function setContestLists(contestLists) {
     const balance = Number(contestLists[key].start_balance).toLocaleString();
 
     htmlPrintToContest += `
-      <div class="row align-items-start mt-2">
+      <div class="row align-items-center mt-2">
         <div class="col">
           ${contestLists[key].contest_id}
         </div>
         <div class="col">
-          ${amount} Gold
+          ${amount} G
         </div>
         <div class="col">
           $${balance}
         </div>
+        <div class="col">
+          <button onclick="getLeaderBoard()" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#modal_transacion_info"><i class="ti ti-award"></i></button>
+        </div>
+        
+        
       </div>
     `;
   }
@@ -598,112 +423,6 @@ function setContestLists(contestLists) {
   $("#contest-list").html(htmlPrintToContest);
 }
 
-
-// function setChartGreetings(chartGreetings) {
-//   const maxdep = Math.max(...chartGreetings.dep);
-//   const maxearn = Math.max(...chartGreetings.earn);
-//   const maxwithdraw = Math.max(...chartGreetings.withdraw);
-//   const array_value = [maxdep, maxearn, maxwithdraw]
-//   const max_value = Math.max(...array_value);
-//   const set_high = Math.round(max_value * 0.01 + 1) * 100
-
-//   var chart = {
-//     series: [
-//       { name: "Deposit:", data: chartGreetings.dep },
-//       { name: "Earn:", data: chartGreetings.earn },
-//       { name: "Withdrawal:", data: chartGreetings.withdraw },
-//     ],
-
-//     chart: {
-//       type: "bar",
-//       height: 500,
-//       offsetX: -15,
-//       toolbar: { show: true },
-//       foreColor: "#adb0bb",
-//       fontFamily: 'inherit',
-//       sparkline: { enabled: false },
-//     },
-
-//     colors: ["#FF8C00", "#8957FF", "#FFFFFF"],
-
-//     plotOptions: {
-//       bar: {
-//         horizontal: false,
-//         columnWidth: "35%",
-//         borderRadius: [5],
-//         borderRadiusApplication: 'end',
-//         borderRadiusWhenStacked: 'all'
-//       },
-//     },
-//     markers: { size: 0 },
-
-//     dataLabels: {
-//       enabled: false,
-//     },
-
-
-//     legend: {
-//       show: false,
-//     },
-
-
-//     grid: {
-//       borderColor: "rgba(0,0,0,0.1)",
-//       strokeDashArray: 3,
-//       xaxis: {
-//         lines: {
-//           show: false,
-//         },
-//       },
-//     },
-
-//     xaxis: {
-//       type: "category",
-//       categories: chartGreetings.date,
-//       labels: {
-//         style: { cssClass: "grey--text lighten-2--text fill-color" },
-//       },
-//     },
-
-
-//     yaxis: {
-//       show: true,
-//       min: 0,
-//       max: set_high,
-//       tickAmount: 4,
-//       labels: {
-//         style: {
-//           cssClass: "grey--text lighten-2--text fill-color",
-//         },
-//       },
-//     },
-//     stroke: {
-//       show: true,
-//       width: 3,
-//       lineCap: "butt",
-//       colors: ["transparent"],
-//     },
-
-
-//     tooltip: { theme: "light" },
-
-//     responsive: [
-//       {
-//         breakpoint: 600,
-//         options: {
-//           plotOptions: {
-//             bar: {
-//               borderRadius: 3,
-//             }
-//           },
-//         }
-//       }
-//     ]
-
-//   };
-//   var chart = new ApexCharts(document.querySelector("#chart"), chart);
-//   chart.render();
-// }
 
 function setChartGreetings(chartGreetings) {
   $("#chart").empty()
@@ -879,56 +598,6 @@ $(function () {
 });
 
 
-//Withdraw
-// $(document).ready(function () {
-//   $("#withdraws").click(function () {
-//     $("#withdraw_amount").value = 0;
-//     $("#msg_withdraw").empty();
-//   })
-//   $("#wd_confirmation").click(function () {
-//     const userInfo = JSON.parse(getCookie("user"));
-//     if (userInfo.inreview == "not_yet") {
-//       window.alert("Please verify your account first.");
-//       return;
-//     }
-//     const userWallet = JSON.parse(localStorage.getItem("data")).wallet;
-//     const inpAmount = document.getElementById('withdraw_amount').value;
-//     if (inpAmount > userWallet.balance) {
-//       $("#msg_withdraw").html(`<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`);
-//       return
-//     }
-//     $("#msg_withdraw").empty();
-
-//     const jwtToken = getCookie("token");
-//     const inpWithdraw = {
-//       "amount": Number(inpAmount)
-//     };
-//     const headers = new Headers({
-//       'Authorization': `Bearer ${jwtToken}`
-//     });
-
-//     fetch(urlWithdrawal, {
-//       method: "POST",
-//       headers: headers,
-//       body: JSON.stringify(inpWithdraw),
-//     })
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error("Network response was not ok");
-//         }
-//         return response.json(); // Parse the response JSON if needed
-//       })
-//       .then(dataResponse => {
-//         document.getElementById('withdraw_amount').value = 0
-//         $("#msg_withdraw").html(`<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`);
-//         greetingFunc();
-//       })
-//       .catch(error => {
-//         console.error("Error:", error);
-//       });
-//   });
-
-// })
 $(document).ready(function () {
   $("#withdraws").click(function () {
     $("#withdraw_amount").val(0); // Use .val() to set the input field value
@@ -1043,67 +712,6 @@ $(document).ready(function () {
   });
 });
 
-// $(document).ready(function () {
-//   $("#deposits").click(function () {
-//     $("#qrcode").empty();
-//     $("#msg_deposit").empty();
-//   })
-
-//   $("#create_qr_code").click(function () {
-//     const userInfo = JSON.parse(localStorage.getItem("user"));
-//     const inpAmount = document.getElementById('deposit_amount').value;
-
-//     $("#qrcode").empty();
-//     $("#msg_deposit").empty()
-
-//     if (inpAmount <= 0) {
-//       $("#msg_deposit").html("<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>");
-//       return;
-//     }
-
-//     let bank_note = encodeURIComponent(`${userInfo.ID} ${inpAmount}G ${userInfo.name}`)
-//     const paymentInfo = {
-//       bank: 'tpbank',
-//       account: '08096868999',
-//       name: 'VU DINH VIET',
-//       amount: inpAmount * 24000, // Số tiền cần chuyển
-//       note: bank_note,
-//     };
-//     let img_url = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
-//     let htmlPrintToContest = `<img id="img_qrcode" class="w-100" src="${img_url}">`;
-//     $("#qrcode").html(htmlPrintToContest);
-//     const jwtToken = getCookie("token");
-//     const inpJoinContest = {
-//       "amount": Number(inpAmount)
-//     };
-//     const headers = new Headers({
-//       'Authorization': `Bearer ${jwtToken}`
-//     });
-
-//     fetch(urlDeposit, {
-//       method: "POST",
-//       headers: headers,
-//       body: JSON.stringify(inpJoinContest),
-//     })
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error("Network response was not ok");
-//         }
-//         return response.json(); // Parse the response JSON if needed
-//       })
-//       .then(dataResponse => {
-//         document.getElementById('deposit_amount').value = 0
-//         greetingFunc();
-//       })
-//       .catch(error => {
-//         console.error("Error:", error);
-//       });
-//   });
-
-// });
-
-
-//Join to a contest
 // Join a contest
 function saveJoinContest(contest_id) {
   const jwtToken = getCookie("token");
@@ -1143,37 +751,6 @@ function saveJoinContest(contest_id) {
     });
 }
 
-// function saveJoinContest(contest_id) {
-//   const jwtToken = getCookie("token");
-//   const inpJoinContest = {
-//     "contest_id": contest_id
-//   };
-
-//   const headers = new Headers({
-//     'Authorization': `Bearer ${jwtToken}`
-//   });
-//   fetch(urlJoinContest, {
-//     method: "POST",
-//     headers: headers,
-//     body: JSON.stringify(inpJoinContest),
-//   })
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error("Network response was not ok");
-//       }
-//       return response.json(); // Parse the response JSON if needed
-//     })
-//     .then(dataResponse => {
-//       setTimeout(function () {
-//         $("#join_contest_message").removeClass().addClass("fw-semibold text-success")
-//         $("#join_contest_message").html("You have successfully participated in the competition.")
-//         greetingFunc();
-//       }, 2000);
-//     })
-//     .catch(error => {
-//       console.error("Error:", error);
-//     });
-// }
 
 function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
   $("#this_contest_info").remove();
