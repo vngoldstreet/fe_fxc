@@ -193,7 +193,7 @@ function setTransactionLists(transactionData) {
           </div>
         </td>
         <td class="border-bottom-0">
-          <button onclick="getInfomationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal" data-bs-target="#modal_transaction_info">Info</button>
+          <button onclick="getInformationOfTransaction(${transactionData[key].amount},${transactionData[key].type_id},${userInfo.ID},'${userInfo.name}')" type="button" class="btn btn-secondary p-1 w-100" data-bs-toggle="modal" data-bs-target="#modal_transaction_info">Info</button>
         </td>
       </tr>
     `;
