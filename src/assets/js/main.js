@@ -543,15 +543,15 @@ function setChartGreetings(chartGreetings) {
 
     chart: {
       type: "bar",
-      // height: auto,
+      height: 400,
       offsetX: -15,
       toolbar: { show: true },
       foreColor: "#adb0bb",
       fontFamily: 'inherit',
-      sparkline: { enabled: false },
+      sparkline: { enabled: true },
     },
 
-    colors: ["#FF8C00", "#8957FF", "#FFFFFF"],
+    colors: ["#FF8C00", "#8957FF", "#0F172Aff"],
 
     plotOptions: {
       bar: {
