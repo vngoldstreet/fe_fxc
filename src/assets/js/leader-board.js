@@ -54,75 +54,82 @@ $(document).ready(function () {
             let myRank = dataResponse.rank
             let myData = dataResponse.user
             let curLeaderBoard = dataResponse.leader_board
+            // console.log(curLeaderBoard)
             let htmlRender = `
-         <tr class="table-secondary fs-3">
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${myRank}</span> <br>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${contest_id}</span> 
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">${maskEmail(myData.email)}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">$${myData.balance}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${myData.equity}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${myData.floating}</span>
-          </td>
-        </tr>
-      `
+                            <tr class="table-secondary fs-3">
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold" style="color:#8957FF !important;">${myRank}</span> <br>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold" style="color:#8957FF !important;">${contest_id}</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold" style="color:#8957FF !important;">${myData.login}</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(myData.email)}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
+                            </td>
+                            </tr>
+                        `
             for (let key in curLeaderBoard) {
                 if (Number(key) > 9) continue;
                 htmlRender += `
-        <tr class="fs-3">
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${Number(key) + 1}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${curLeaderBoard[key].contest_id}</span> 
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">${maskEmail(curLeaderBoard[key].email)}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
-          </td>
-        </tr>
-        `
+                            <tr class="fs-3">
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">${Number(key) + 1}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">${curLeaderBoard[key].contest_id}</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold">${curLeaderBoard[key].login}</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">${maskEmail(curLeaderBoard[key].email)}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
+                            </td>
+                            </tr>
+                            `
             }
             htmlRender += `
-        <tr class="">
-          <td class="border-bottom-0">
-            <span class="fw-semibold">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-semibold">...</span> 
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">...</span>
-          </td>
-        </tr>
-      `
+                        <tr class="">
+                        <td class="border-bottom-0">
+                            <span class="fw-normal">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal mb-0">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal mb-0">...</span>
+                        </td>
+                        </tr>
+                    `
             $("#leader_board_infor").html(htmlRender)
         })
         .catch(error => {
@@ -165,7 +172,6 @@ function getLeaderBoard(contest_id) {
     const headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
     });
-    console.log(JSON.stringify(inpContest))
     fetch(urlLeaderBoard, {
         method: "POST",
         headers: headers,
@@ -178,80 +184,85 @@ function getLeaderBoard(contest_id) {
             return response.json();
         })
         .then(dataResponse => {
-            console.log(dataResponse)
             $("#leader_board_title").text(`Leader Board of competition: ${contest_id}`)
             let myRank = dataResponse.rank
             let myData = dataResponse.user
             let curLeaderBoard = dataResponse.leader_board
             let htmlRender = `
-         <tr class="table-secondary fs-3">
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${myRank}</span> <br>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${contest_id}</span> 
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">${maskEmail(myData.email)}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">$${myData.balance}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${myData.equity}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${myData.floating}</span>
-          </td>
-        </tr>
-      `
+                            <tr class="table-secondary fs-3">
+                                <td class="border-bottom-0">
+                                    <span class="fw-semibold" style="color:#8957FF !important;">${myRank}</span> <br>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-semibold" style="color:#8957FF !important;">${contest_id}</span> 
+                                </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-semibold" style="color:#8957FF !important;">${myData.login}</span> 
+                                </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(myData.email)}</span>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance}</span>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
+                                </td>
+                            </tr>
+                        `
             for (let key in curLeaderBoard) {
                 if (Number(key) > 9) continue;
                 htmlRender += `
-        <tr class="fs-3">
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${Number(key) + 1}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-semibold">${curLeaderBoard[key].contest_id}</span> 
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">${maskEmail(curLeaderBoard[key].email)}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
-          </td>
-        </tr>
-        `
+                            <tr class="fs-3">
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold">${Number(key) + 1}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold">${curLeaderBoard[key].contest_id}</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold">${curLeaderBoard[key].login}</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">${maskEmail(curLeaderBoard[key].email)}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
+                            </td>
+                            </tr>
+                            `
             }
             htmlRender += `
-        <tr class="">
-          <td class="border-bottom-0">
-            <span class="fw-semibold">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-semibold">...</span> 
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">...</span>
-          </td>
-          <td class="border-bottom-0">
-            <span class="fw-normal mb-0">...</span>
-          </td>
-        </tr>
-      `
+                            <tr class="">
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold">...</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold">...</span> 
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">...</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal">...</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">...</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">...</span>
+                            </td>
+                            </tr>
+                        `
             $("#leader_board_infor").html(htmlRender)
         })
         .catch(error => {
