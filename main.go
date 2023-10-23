@@ -61,7 +61,7 @@ func main() {
 	// 	})
 	// })
 	r.GET("/leader-board", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "history.html", gin.H{
+		c.HTML(http.StatusOK, "leaderboard.html", gin.H{
 			"title": "Leader board",
 		})
 	})

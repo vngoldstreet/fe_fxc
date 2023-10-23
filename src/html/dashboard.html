@@ -266,14 +266,60 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="leader_board" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="leader_board_title"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table mb-0 align-middle table-hover">
+            <thead class="fs-4 table-primary">
+              <tr>
+                <th class="border-bottom-0">
+                  <span class="fw-semibold mb-0">Rank</span>
+                </th>
+                <th class="border-bottom-0">
+                  <span class="fw-semibold mb-0">ContestID</span>
+                </th>
+                <th class="border-bottom-0">
+                  <span class="fw-semibold mb-0">Email</span>
+                </th>
+                <th class="border-bottom-0">
+                  <span class="fw-semibold mb-0">Balance</span>
+                </th>
+                <th class="border-bottom-0">
+                  <span class="fw-semibold mb-0">Equity</span>
+                </th>
+                <th class="border-bottom-0">
+                  <span class="fw-semibold mb-0">FloatingP/L</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="leader_board_infor">
+
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <br>
+          <button id="btn_close" type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <!-- <button type="button" id="confirm_to_join" class="btn btn-secondary">Join this
+            competition</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
   <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="src/assets/js/sidebarmenu.js"></script>
   <script src="src/assets/js/app.min.js"></script>
   <script src="src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="src/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="src/assets/js/main.js"></script>
+  <script src="src/assets/js/header.js"></script>
+  <script src="src/assets/js/sidebarmenu.js"></script>
 </body>
 
 </html>
