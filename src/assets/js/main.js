@@ -572,7 +572,7 @@ function setChartGreetings(chartGreetings) {
 
 
     legend: {
-      show: false,
+      show: true,
     },
 
 
