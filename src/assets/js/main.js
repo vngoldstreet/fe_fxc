@@ -534,8 +534,7 @@ function setChartGreetings(chartGreetings) {
   const array_value = [maxdep, maxearn, maxwithdraw];
   const max_value = Math.max(...array_value);
   const set_high = Math.round(max_value * 0.01 + 1) * 100;
-
-  const chart = {
+  var chart = {
     series: [
       { name: "Deposit:", data: chartGreetings.dep },
       { name: "Earn:", data: chartGreetings.earn },
@@ -544,35 +543,38 @@ function setChartGreetings(chartGreetings) {
 
     chart: {
       type: "bar",
-      height: 400,
+      height: 345,
       offsetX: -15,
       toolbar: { show: true },
       foreColor: "#adb0bb",
       fontFamily: 'inherit',
-      sparkline: { enabled: true },
+      sparkline: { enabled: false },
     },
+
+
     colors: ["#5D87FF", "#FF8C00", "#49BEFF"],
-    // colors: ["#FF8C00", "#8957FF", "#0F172Aff"],
+
 
     plotOptions: {
       bar: {
         horizontal: false,
         columnWidth: "35%",
-        borderRadius: 5,
+        borderRadius: [6],
         borderRadiusApplication: 'end',
         borderRadiusWhenStacked: 'all'
       },
     },
-
     markers: { size: 0 },
 
     dataLabels: {
       enabled: false,
     },
 
+
     legend: {
       show: false,
     },
+
 
     grid: {
       borderColor: "rgba(0,0,0,0.1)",
@@ -592,6 +594,7 @@ function setChartGreetings(chartGreetings) {
       },
     },
 
+
     yaxis: {
       show: true,
       min: 0,
@@ -603,13 +606,13 @@ function setChartGreetings(chartGreetings) {
         },
       },
     },
-
     stroke: {
       show: true,
       width: 3,
       lineCap: "butt",
       colors: ["transparent"],
     },
+
 
     tooltip: { theme: "light" },
 
@@ -625,16 +628,19 @@ function setChartGreetings(chartGreetings) {
         }
       }
     ]
+
+
   };
-  $("#chart").html(`<div id="chart_render"></div>`)
-  const chartInstance = new ApexCharts(document.querySelector("#chart_render"), chart);
-  chartInstance.render();
+
+  var chart = new ApexCharts(document.querySelector("#chart"), chart);
+  chart.render();
+
 }
 
 
 function setWallet(wallet) {
   const walletTime = new Date(wallet.UpdatedAt).toLocaleString();
-  const walletBalanceHtml = `<i class="ti ti-wallet text-warning"></i> ${wallet.balance} Gold`;
+  const walletBalanceHtml = `<i class="ti ti-wallet text-warning"></i> ${wallet.balance.toLocaleString()} Gold`;
   const walletTimeHtml = `<p class="text-dark me-1 fs-3 mb-0 text-success">Updated: ${walletTime}</p>`;
 
   $("#wallet_balance").html(walletBalanceHtml);

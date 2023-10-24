@@ -3,6 +3,22 @@
 @import "../libs/simplebar/dist/simplebar.css";
 @import "../css/icons/tabler-icons/tabler-icons.css";
 
+/* 
+Orange #ffa500 
+Violet #8f12fd
+*/
+
+.logo-small {
+    height: 100px;
+}
+
+.text-orange-fxc {
+    color: #ffa500;
+}
+
+.text-violet-fxc {
+    color: #8f12fd;
+}
 
 .ti-award:hover {
     color: #FF8C00ff;
