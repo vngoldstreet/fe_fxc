@@ -445,6 +445,7 @@ function getLeaderBoard(contest_id) {
       return response.json();
     })
     .then(dataResponse => {
+      console.log(dataResponse)
       $("#leader_board_title").text(`Leader Board of competition: ${contest_id}`)
       let myRank = dataResponse.rank
       let myData = dataResponse.user
@@ -452,22 +453,22 @@ function getLeaderBoard(contest_id) {
       let htmlRender = `
          <tr class="table-secondary fs-3">
           <td class="border-bottom-0">
-            <span class="fw-semibold">${myRank}</span> <br>
+            <span class="fw-semibold" style="color:#8957FF !important;">${myRank}</span> <br>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-semibold">${contest_id}</span> 
+            <span class="fw-semibold" style="color:#8957FF !important;">${contest_id}</span> 
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal">${maskEmail(myData.email)}</span>
+            <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(myData.email)}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal">$${myData.balance}</span>
+            <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${myData.equity}</span>
+            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${myData.floating}</span>
+            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
           </td>
         </tr>
       `
@@ -550,8 +551,8 @@ function setChartGreetings(chartGreetings) {
       fontFamily: 'inherit',
       sparkline: { enabled: true },
     },
-
-    colors: ["#FF8C00", "#8957FF", "#0F172Aff"],
+    colors: ["#5D87FF", "#FF8C00", "#49BEFF"],
+    // colors: ["#FF8C00", "#8957FF", "#0F172Aff"],
 
     plotOptions: {
       bar: {
