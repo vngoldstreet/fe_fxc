@@ -6,6 +6,12 @@ const urlDeposit = baseUrl + "/auth/user-wallet/deposit";
 const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw";
 const urlLeaderBoard = baseUrl + "/auth/contest/get-leaderboard-by-contestid";
 
+//---
+const bankName = "tpbank"
+const bankNumber = "08096868999"
+const bankUserName = "VU DINH VIET"
+const rateGold = 24000
+
 function getCookie(cookieName) {
   var name = cookieName + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -58,14 +64,24 @@ function setAllContestLists(allContestListDatas) {
     const start_at = new Date(allContestListDatas[key].start_at).toLocaleString();
     const number = Number(key) + 1;
     const amount = Number(allContestListDatas[key].amount).toLocaleString();
+    const numberPerson = Number(allContestListDatas[key].current_person);
+    const maximumPerson = Number(allContestListDatas[key].maximum_person);
+    const current_prize = amount * numberPerson;
+    const estimate_prize = maximumPerson * amount * 0.7;
+    let totalPrizes = 0.0;
+    if (current_prize < estimate_prize) {
+      totalPrizes = estimate_prize;
+    } else {
+      totalPrizes = current_prize;
+    }
 
     htmlPrint += `
       <tr>
         <td class="border-bottom-0">
-          <span class="fw-semibold">${number}</span>
+          <span class="fw-normal">${number}</span>
         </td>
         <td class="border-bottom-0">
-          <span class="fw-semibold">${allContestListDatas[key].contest_id}</span>
+          <span class="fw-normal">${allContestListDatas[key].contest_id}</span>
         </td>
         <td class="border-bottom-0">
           <span class="fw-normal">${start_at}</span>
@@ -74,10 +90,13 @@ function setAllContestLists(allContestListDatas) {
           <span class="fw-normal">${expired_at}</span>
         </td>
         <td class="border-bottom-0">
-          <span class="fw-normal mb-0">${amount} G </span>
+          <span class="fw-normal mb-0">${amount} G</span>
         </td>
         <td class="border-bottom-0">
           <span class="fw-normal mb-0">${allContestListDatas[key].current_person}/${allContestListDatas[key].maximum_person}</span>
+        </td>
+        <td class="border-bottom-0">
+          <span class="fw-normal mb-0">${totalPrizes.toLocaleString()} G</span>
         </td>
         <td class="border-bottom-0">
           <span class="fw-normal mb-0">$${allContestListDatas[key].start_balance.toLocaleString()}</span>
@@ -163,7 +182,7 @@ function setTransactionLists(transactionData) {
           <span class="fw-normal">${updated_at}</span>
         </td>
         <td class="border-bottom-0">
-          <span class="fw-normal mb-0">${amount} G </span>
+          <span class="fw-normal mb-0">${amount} G</span>
         </td>
         <td class="border-bottom-0">
           <div class="d-flex align-items-center gap-2">
@@ -180,14 +199,16 @@ function setTransactionLists(transactionData) {
   $("#transaction-list").html(htmlPrint);
 }
 
+
+
 function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) === 1) {
     const bankNote = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
     const paymentInfo = {
-      bank: 'tpbank',
-      account: '08096868999',
-      name: 'VU DINH VIET',
-      amount: Number(amount) * 24000, // The amount to transfer
+      bank: bankName,
+      account: bankNumber,
+      name: bankUserName,
+      amount: Number(amount) * rateGold, // The amount to transfer
       note: bankNote,
     };
     const imgUrl = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
@@ -311,15 +332,14 @@ function setTransactionLists(transactionData) {
   $("#transaction-list").html(htmlPrint);
 }
 
-
 function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) == 1) {
     let bank_note = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
     const paymentInfo = {
-      bank: 'tpbank',
-      account: '08096868999',
-      name: 'VU DINH VIET',
-      amount: Number(amount) * 24000, // Số tiền cần chuyển
+      bank: bankName,
+      account: bankNumber,
+      name: bankUserName,
+      amount: Number(amount) * rateGold, // Số tiền cần chuyển
       note: bank_note,
     };
     let img_url = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
@@ -379,21 +399,19 @@ function setContestLists(contestLists) {
     const balance = Number(contestLists[key].start_balance).toLocaleString();
 
     htmlPrintToContest += `
-      <div class="row align-items-center mt-2">
-        <div class="col">
+      <div class="row mt-2">
+        <div class="col-3 text-end">
           ${contestLists[key].contest_id}
         </div>
-        <div class="col">
+        <div class="col-3 text-end">
           ${amount} G
         </div>
-        <div class="col">
+        <div class="col-3 text-end">
           $${balance}
         </div>
-        <div class="col">
+        <div class="col-3">
           <button onclick="getLeaderBoard('${contestLists[key].contest_id}')" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#leader_board"><i class="ti ti-award"></i></button>
         </div>
-        
-        
       </div>
     `;
   }
@@ -778,10 +796,10 @@ $(document).ready(function () {
 
     const bankNote = encodeURIComponent(`${userInfo.ID} ${inpAmount}G ${userInfo.name}`);
     const paymentInfo = {
-      bank: 'tpbank',
-      account: '08096868999',
-      name: 'VU DINH VIET',
-      amount: inpAmount * 24000, // Amount to be transferred
+      bank: bankName,
+      account: bankNumber,
+      name: bankUserName,
+      amount: inpAmount * rateGold, // Amount to be transferred
       note: bankNote,
     };
 
@@ -864,11 +882,11 @@ function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
   $("#this_contest_info").remove();
   let html_text = `
   <div id="this_contest_info">
-  <h6>ID: ${contest_id}</h6>
+  <h6><span class="fw-semibold">ID:</span> ${contest_id}</h6>
   <p><span class="fw-semibold">StartAt:</span> ${start_at}</p>
   <p><span class="fw-semibold">ExpireAt:</span> ${expired_at}</p>
-  <p><span class="fw-semibold">Amount:</span> ${amount}</p>
-  <p><span>Start Balance:</span> $${start_balance.toLocaleString()}</p>
+  <p><span class="fw-semibold">Amount:</span> ${amount} G</p>
+  <p><span class="fw-semibold">Start Balance:</span> $${start_balance.toLocaleString()}</p>
   <p id="join_contest_message" class="fw-semibold"></p>
   </div>
   `

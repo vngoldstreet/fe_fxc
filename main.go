@@ -50,6 +50,11 @@ func main() {
 			"title": "User",
 		})
 	})
+	r.GET("/my-competitions", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "competition.html", gin.H{
+			"title": "My Competitions",
+		})
+	})
 	r.GET("/security", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "security.html", gin.H{
 			"title": "Security",

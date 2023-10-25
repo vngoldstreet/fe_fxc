@@ -9,15 +9,15 @@ Violet #8f12fd
 */
 
 .logo-small {
-    height: 100px;
+    height: 100px !important;
 }
 
 .text-orange-fxc {
-    color: #ffa500;
+    color: #ffa500 !important;
 }
 
 .text-violet-fxc {
-    color: #8f12fd;
+    color: #8f12fd !important;
 }
 
 .ti-award:hover {
@@ -19537,7 +19537,7 @@ textarea.form-control-lg {
 }
 
 .body-wrapper>.container-fluid, .body-wrapper>.container-lg, .body-wrapper>.container-md, .body-wrapper>.container-sm, .body-wrapper>.container-xl, .body-wrapper>.container-xxl {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 24px;
     -webkit-transition: 0.2s ease-in;
