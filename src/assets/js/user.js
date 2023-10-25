@@ -28,7 +28,8 @@ $(document).ready(function () {
     if (userInfo.inreview === 'not_yet') {
         $("#indentify_status").addClass('text-danger').html(`<i class="ti ti-ban"></i> Account has not been verified!.`)
     } else {
-        $("#indentify_status").removeClass('text-danger').addClass('text-success').html(`<i class="ti ti-circle-check-filled"></i>Account has not been verified!`)
+        $("#indentify_status").removeClass('text-danger').addClass('text-success').html(`<i class="ti ti-circle-check-filled"></i>Account has been verified!`)
+        $("#indentify_update").addClass("disabled")
     }
     if (userInfo.description == '') {
         $("#userinfo_description").html(`<p id="existing_description" class="card-text">Please introduce something about yourself!<br>Click here to edit.</p>`)
