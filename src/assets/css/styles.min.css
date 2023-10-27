@@ -34,9 +34,15 @@ Violet #8f12fd
     object-fit: contain;
 }
 
+table {
+    white-space: nowrap;
+}
+
 .table-option {
     max-height: 500px !important;
+
     overflow-y: auto;
+    overflow-x: auto;
     scrollbar-width: thin;
     /* Kiểu thanh cuộn: thin (mỏng) */
     scrollbar-color: rgb(255, 174, 31) transparent;

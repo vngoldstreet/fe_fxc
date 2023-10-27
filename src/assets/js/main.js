@@ -554,14 +554,14 @@ function setChartGreetings(chartGreetings) {
   const set_high = Math.round(max_value * 0.01 + 1) * 100;
   var chart = {
     series: [
-      { name: "Deposit:", data: chartGreetings.dep },
-      { name: "Earn:", data: chartGreetings.earn },
-      { name: "Withdrawal:", data: chartGreetings.withdraw },
+      { name: "Deposit", data: chartGreetings.dep },
+      { name: "Earn", data: chartGreetings.earn },
+      { name: "Withdrawal", data: chartGreetings.withdraw },
     ],
 
     chart: {
       type: "bar",
-      height: 345,
+      height: 500,
       offsetX: -15,
       toolbar: { show: true },
       foreColor: "#adb0bb",

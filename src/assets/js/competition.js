@@ -42,7 +42,7 @@ $(document).ready(function () {
 
             for (let key in myData) {
                 htmlRender += `
-                <div class="col-3">
+                <div class="col-lg-3 col-md-6 mt-3">
                     <img class="w-100 rounded" src="src/assets/images/fxcentrum-live-Contest.jpg">
                     <h5 class="fw-bolder mt-3 text-violet-fxc">Competition ID: ${myData[key].contest_id}</h5>
                     <p class="card-text"><span class="fw-bolder">FXID:</span> ${myData[key].fx_id}</p>
