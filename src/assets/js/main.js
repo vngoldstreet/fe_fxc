@@ -7,9 +7,9 @@ const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw";
 const urlLeaderBoard = baseUrl + "/auth/contest/get-leaderboard-by-contestid";
 
 //---
-const bankName = "tpbank"
-const bankNumber = "08096868999"
-const bankUserName = "VU DINH VIET"
+const bankName = "acb"
+const bankNumber = "966965488"
+const bankUserName = "BUI ANH LINH"
 const rateGold = 24000
 
 function getCookie(cookieName) {
