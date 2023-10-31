@@ -79,10 +79,13 @@ $(document).ready(function () {
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
                             </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
+                            </td>
                             </tr>
                         `
             for (let key in curLeaderBoard) {
-                if (Number(key) > 9) continue;
+                if (Number(key) > 11) continue;
                 htmlRender += `
                             <tr class="fs-3">
                             <td class="border-bottom-0">
@@ -106,9 +109,13 @@ $(document).ready(function () {
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
                             </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
+                            </td>
                             </tr>
                             `
             }
+
             htmlRender += `
                         <tr class="">
                         <td class="border-bottom-0">
@@ -122,6 +129,12 @@ $(document).ready(function () {
                         </td>
                         <td class="border-bottom-0">
                             <span class="fw-normal">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal mb-0">...</span>
+                        </td>
+                        <td class="border-bottom-0">
+                            <span class="fw-normal mb-0">...</span>
                         </td>
                         <td class="border-bottom-0">
                             <span class="fw-normal mb-0">...</span>
@@ -212,10 +225,13 @@ function getLeaderBoard(contest_id) {
                                 <td class="border-bottom-0">
                                     <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
                                 </td>
+                                <td class="border-bottom-0">
+                                    <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
+                                </td>
                             </tr>
                         `
             for (let key in curLeaderBoard) {
-                if (Number(key) > 9) continue;
+                if (Number(key) > 11) continue;
                 htmlRender += `
                             <tr class="fs-3">
                             <td class="border-bottom-0">
@@ -239,6 +255,9 @@ function getLeaderBoard(contest_id) {
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
                             </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
+                            </td>
                             </tr>
                             `
             }
@@ -255,6 +274,12 @@ function getLeaderBoard(contest_id) {
                             </td>
                             <td class="border-bottom-0">
                                 <span class="fw-normal">...</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">...</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">...</span>
                             </td>
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0">...</span>
