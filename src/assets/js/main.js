@@ -116,7 +116,6 @@ function setAllContestLists(allContestListDatas) {
   $("#all-contest-list").html(htmlPrint);
 }
 
-
 function setTransactionLists(transactionData) {
   let htmlPrint = "";
   const userInfo = JSON.parse(localStorage.getItem('user'));
@@ -198,8 +197,6 @@ function setTransactionLists(transactionData) {
 
   $("#transaction-list").html(htmlPrint);
 }
-
-
 
 function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) === 1) {
@@ -375,7 +372,6 @@ function getInformationOfTransaction(amount, type, id, name) {
   }
 }
 
-
 function setContestLists(contestLists) {
   let htmlPrintToContest = `
     <div class="row align-items-center">
@@ -463,7 +459,6 @@ function getLeaderBoard(contest_id) {
       return response.json();
     })
     .then(dataResponse => {
-      console.log(dataResponse)
       $("#leader_board_title").text(`Leader Board of competition: ${contest_id}`)
       let myRank = dataResponse.rank
       let myData = dataResponse.user
@@ -655,7 +650,6 @@ function setChartGreetings(chartGreetings) {
 
 }
 
-
 function setWallet(wallet) {
   const walletTime = new Date(wallet.UpdatedAt).toLocaleString();
   const walletBalanceHtml = `<i class="ti ti-wallet text-warning"></i> ${wallet.balance.toLocaleString()} Gold`;
@@ -722,7 +716,6 @@ function greetingFunc() {
 $(function () {
   greetingFunc();
 });
-
 
 $(document).ready(function () {
   $("#withdraws").click(function () {
@@ -866,17 +859,17 @@ function saveJoinContest(contest_id) {
       return response.json(); // Parse the response JSON if needed
     })
     .then(dataResponse => {
-      setTimeout(function () {
-        $("#join_contest_message").removeClass().addClass("fw-semibold text-success");
-        $("#join_contest_message").html("You have successfully participated in the competition.");
-        greetingFunc();
-      }, 2000);
+      $("#join_contest_message").removeClass().addClass("fw-semibold text-success");
+      $("#join_contest_message").html("You have successfully participated in the competition.");
+      greetingFunc();
     })
     .catch(error => {
+      $("#join_contest_message").removeClass().addClass("fw-semibold text-danger");
+      $("#join_contest_message").html("Error!");
+      greetingFunc();
       console.error("Error:", error);
     });
 }
-
 
 function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
   $("#this_contest_info").remove();
