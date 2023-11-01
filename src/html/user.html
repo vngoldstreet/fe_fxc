@@ -57,24 +57,58 @@
               <div class="card-body">
                 <h5 class="card-title fw-semibold">Advanced verification</h5>
                 <span id="indentify_status"></span>
-                <div class="row mt-3">
-                  <div class="col">
-                    <div class="mb-3">
-                      <label for="formFile" class="form-label">Front side of the national ID card</label>
-                      <input class="form-control" type="file" id="front_formFile">
-                      <img id="front_selectedImage">
-                    </div>
+                <div id="indentify_form" class="row mt-3">
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-4 mt-3">
+                    <h5 class="card-title fw-semibold">Add Payment Methob</h5>
+                    <form class=" mt-3">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text w-50">
+                          Bank name
+                          <span class="ms-1 text-danger">(*)</span>
+                        </span>
+                        <input id="bank_name" type="text" class="form-control" placeholder="Bank name"
+                          aria-label="Bank name" aria-describedby="basic-addon1">
+                        <span id="fb_bank_name"></span>
+                      </div>
+                      <div class="input-group mb-3">
+                        <label class="input-group-text w-50" for="inputGroupSelect01">Account type</label>
+                        <select class="form-select" id="is_card">
+                          <option selected value="0">Account number</option>
+                          <option value="1">Card number</option>
+                        </select>
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text w-50">Bank Account No
+                          <span class="ms-1 text-danger">(*)</span>
+                        </span>
+                        <input id="account_number" type="text" class="form-control" placeholder="Bank Account No"
+                          aria-label="Account number" aria-describedby="basic-addon1">
+                        <span id="fb_account_number"></span>
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text w-50">Account Name
+                          <span class="ms-1 text-danger">(*)</span>
+                        </span>
+                        <input id="account_name" type="text" class="form-control" placeholder="Account Name"
+                          aria-label="Bank name" aria-describedby="basic-addon1">
+                        <span id="fb_account_name"></span>
+                      </div>
+                      <span id="create_payment_methob_msg"></span>
+                      <button id="submit_payment_methob" type="button"
+                        class="btn btn-secondary w-100 mt-2">Submit</button>
+                    </form>
                   </div>
-                  <div class="col">
-                    <div class="mb-3">
-                      <label for="formFile" class="form-label">Back side of the national ID card</label>
-                      <input class="form-control" type="file" id="back_formFile">
-                      <img id="back_selectedImage">
-                    </div>
+                  <div class="col-lg-8 mt-3">
+                    <h6 class="card-title fw-semibold">Payment Methob List</h6>
+                    <div id="payment_methob_list" class=" mt-3"></div>
+                    <span id="payment_methob_msg"></span>
                   </div>
-                  <div class="col-12">
-                    <button id="indentify_update" type="submit" class="btn btn-secondary w-100">Submit</button>
-                  </div>
+                </div>
+                <div id="payment_methob_form" class="row mt-3">
                 </div>
               </div>
             </div>

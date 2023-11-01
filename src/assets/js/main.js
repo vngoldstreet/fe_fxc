@@ -5,6 +5,7 @@ const urlJoinContest = baseUrl + "/auth/contest/join-contest-by-uid";
 const urlDeposit = baseUrl + "/auth/user-wallet/deposit";
 const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw";
 const urlLeaderBoard = baseUrl + "/auth/contest/get-leaderboard-by-contestid";
+const urlGetPaymentMethob = baseUrl + "/auth/user-wallet/get-payment-method"
 
 //---
 const bankName = "acb"
@@ -718,54 +719,91 @@ $(function () {
 });
 
 $(document).ready(function () {
-  $("#withdraws").click(function () {
-    $("#withdraw_amount").val(0); // Use .val() to set the input field value
-    $("#msg_withdraw").empty();
+  const jwtToken = getCookie("token");
+  const headers = new Headers({
+    'Authorization': `Bearer ${jwtToken}`
   });
-
-  $("#wd_confirmation").click(function () {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    // if (userInfo.inreview === "not_yet") {
-    //   window.alert("Please verify your account first.");
-    //   return;
-    // }
-
-    const userWallet = JSON.parse(localStorage.getItem("data")).wallet;
-    const inpAmount = parseFloat($("#withdraw_amount").val()); // Parse input value to float
-    if (inpAmount > userWallet.balance) {
-      $("#msg_withdraw").html(`<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`);
-      return;
-    }
-    $("#msg_withdraw").empty();
-
-    const jwtToken = getCookie("token");
-    const inpWithdraw = {
-      "amount": inpAmount // Use the parsed input value
-    };
-    const headers = new Headers({
-      'Authorization': `Bearer ${jwtToken}`
+  fetch(urlGetPaymentMethob, {
+    method: "GET",
+    headers: headers,
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json(); // Parse the response JSON if needed
+    })
+    .then(dataResponse => {
+      let payment_methob = JSON.stringify(dataResponse.data)
+      localStorage.setItem("payment_methob", payment_methob)
+    })
+    .catch(error => {
+      console.error("Error:", error);
     });
 
-    fetch(urlWithdrawal, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(inpWithdraw),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then(dataResponse => {
-        document.getElementById('withdraw_amount').value = 0;
-        $("#msg_withdraw").html(`<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`);
-        greetingFunc();
-      })
-      .catch(error => {
-        console.error("Error:", error);
+  $("#withdraws").click(function () {
+    let payment_methob = JSON.parse(localStorage.getItem("payment_methob"));
+    $("#withdraw_amount").val(0); // Use .val() to set the input field value
+    $("#msg_withdraw").empty();
+    // console.log("data: ", payment_methob.length)
+    if (payment_methob == null) {
+      $("#msg_withdraw").addClass('text-danger').text("Please add payment methob first.");
+      return;
+    }
+    let htmlPaymentMethob = "<option selected>Choose a payment methob...</option>"
+    for (let key in payment_methob) {
+      htmlPaymentMethob += `
+      <option value="${payment_methob[key].ID}">${payment_methob[key].bank_name} - ${payment_methob[key].holder_name} - ${payment_methob[key].holder_number}</option>
+      `
+    }
+    $("#payment_methob_list").html(htmlPaymentMethob);
+    $("#wd_confirmation").click(function () {
+      const userInfo = JSON.parse(localStorage.getItem("user"));
+      if (userInfo.inreview === "not_yet") {
+        $("#msg_withdraw").addClass('text-danger').text("Please verify your account first.");
+        return;
+      }
+      const userWallet = JSON.parse(localStorage.getItem("data")).wallet;
+      const inpAmount = parseFloat($("#withdraw_amount").val()); // Parse input value to float
+      if (inpAmount > userWallet.balance) {
+        $("#msg_withdraw").html(`<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`);
+        return;
+      }
+      $("#msg_withdraw").empty();
+      let payid = $("#payment_methob_list").val();
+      const jwtToken = getCookie("token");
+      const inpWithdraw = {
+        "amount": inpAmount, // Use the parsed input value
+        "payment_methob": Number(payid)
+      };
+      console.log(inpWithdraw)
+      const headers = new Headers({
+        'Authorization': `Bearer ${jwtToken}`
       });
+
+      fetch(urlWithdrawal, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(inpWithdraw),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(dataResponse => {
+          document.getElementById('withdraw_amount').value = 0;
+          $("#msg_withdraw").html(`<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`);
+          greetingFunc();
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    });
   });
+
+
 });
 
 //Deposit
@@ -888,4 +926,3 @@ function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
     saveJoinContest(contest_id);
   });
 }
-

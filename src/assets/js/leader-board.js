@@ -50,7 +50,6 @@ $(document).ready(function () {
             return response.json();
         })
         .then(dataResponse => {
-            console.log(dataResponse)
             $("#leader_board_title").text(`Leader Board of competition: ${contest_id}`)
             let myRank = dataResponse.rank
             let myData = dataResponse.user
