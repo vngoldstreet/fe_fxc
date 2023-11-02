@@ -189,6 +189,7 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Withdraw</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
           <form>
             <p class="text-primary">1 gold is equivalent to 24,000 VND.</p>
@@ -198,9 +199,10 @@
             </div>
             <div class="mb-3">
               <div class="input-group mb-3">
-                <input type="number" step="50" value="" class="form-control" placeholder="Amount" aria-label="Amount"
+                <input type="number" step="50" value="0" class="form-control" placeholder="Amount" aria-label="Amount"
                   aria-describedby="basic-addon1" id="withdraw_amount">
                 <span class="input-group-text" id="basic-addon1">Gold</span>
+                <span id="fb_withdraw_amount"></span>
               </div>
             </div>
             <span id="msg_withdraw"></span>
@@ -209,7 +211,7 @@
         <div class="modal-footer">
           <br>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          <button id="wd_confirmation" type="button" class="btn btn-secondary">Confirmation</button>
+          <button id="wd_confirmation" type="button" class="btn btn-secondary" disabled>Confirmation</button>
         </div>
       </div>
     </div>

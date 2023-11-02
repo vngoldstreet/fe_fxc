@@ -648,7 +648,6 @@ function setChartGreetings(chartGreetings) {
 
   var chart = new ApexCharts(document.querySelector("#chart"), chart);
   chart.render();
-
 }
 
 function setWallet(wallet) {
@@ -743,32 +742,46 @@ $(document).ready(function () {
 
   $("#withdraws").click(function () {
     let payment_methob = JSON.parse(localStorage.getItem("payment_methob"));
-    $("#withdraw_amount").val(0); // Use .val() to set the input field value
-    $("#msg_withdraw").empty();
-    // console.log("data: ", payment_methob.length)
+    $("#msg_withdraw").text('');
     if (payment_methob == null) {
-      $("#msg_withdraw").addClass('text-danger').text("Please add payment methob first.");
+      let html_err = `<span class="text-danger">Please add payment methob first.<a href="https://crm.fxchampionship.com/user">Click
+            here!</a></span>`
+      $("#msg_withdraw").html(html_err);
       return;
     }
-    let htmlPaymentMethob = "<option selected>Choose a payment methob...</option>"
+    let htmlPaymentMethob = ""
     for (let key in payment_methob) {
       htmlPaymentMethob += `
       <option value="${payment_methob[key].ID}">${payment_methob[key].bank_name} - ${payment_methob[key].holder_name} - ${payment_methob[key].holder_number}</option>
       `
     }
     $("#payment_methob_list").html(htmlPaymentMethob);
+    $("#wd_confirmation").prop('disabled', false);
     $("#wd_confirmation").click(function () {
       const userInfo = JSON.parse(localStorage.getItem("user"));
       if (userInfo.inreview === "not_yet") {
         $("#msg_withdraw").addClass('text-danger').text("Please verify your account first.");
         return;
       }
+
       const userWallet = JSON.parse(localStorage.getItem("data")).wallet;
-      const inpAmount = parseFloat($("#withdraw_amount").val()); // Parse input value to float
+      const inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
+
+      if (inpAmount <= 0) {
+        $('#withdraw_amount').addClass('is-invalid');
+        $('#fb_withdraw_amount').addClass('invalid-feedback').text('The amount of Gold to be entered must be greater than 0.'); // Display an error message
+        return;
+      } else {
+        // Valid email format
+        $('#withdraw_amount').removeClass('is-invalid').addClass('is-valid');
+        $('#fb_withdraw_amount').removeClass('invalid-feedback').addClass('invalid-feedback').text('Look good'); // Clear the error message
+      }
+
       if (inpAmount > userWallet.balance) {
         $("#msg_withdraw").html(`<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`);
         return;
       }
+
       $("#msg_withdraw").empty();
       let payid = $("#payment_methob_list").val();
       const jwtToken = getCookie("token");
