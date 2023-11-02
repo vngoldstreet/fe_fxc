@@ -76,7 +76,7 @@ $(document).ready(function () {
                                 <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit}</span>
                             </td>
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
@@ -106,7 +106,7 @@ $(document).ready(function () {
                                 <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit}</span>
                             </td>
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
@@ -222,7 +222,7 @@ function getLeaderBoard(contest_id) {
                                     <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
                                 </td>
                                 <td class="border-bottom-0">
-                                    <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
+                                    <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit}</span>
                                 </td>
                                 <td class="border-bottom-0">
                                     <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
@@ -252,7 +252,7 @@ function getLeaderBoard(contest_id) {
                                 <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit}</span>
                             </td>
                             <td class="border-bottom-0">
                                 <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
