@@ -1,4 +1,5 @@
 const baseUrl = "https://auth.fxchampionship.com";
+// const baseUrl = "http://localhost:8082";
 const urlGreetings = baseUrl + "/auth/greetings";
 const redirectLoginURL = "/login";
 const urlJoinContest = baseUrl + "/auth/contest/join-contest-by-uid";
@@ -386,7 +387,7 @@ function setContestLists(contestLists) {
         <span class="fw-bolder">Balance</span>
       </div>
       <div class="col">
-        <span class="fw-bolder">Ranking</span>
+        <span class="fw-bolder">Rank</span>
       </div>
     </div>
   `;
@@ -397,13 +398,13 @@ function setContestLists(contestLists) {
 
     htmlPrintToContest += `
       <div class="row mt-2">
-        <div class="col-3 text-end">
-          ${contestLists[key].contest_id}
+        <div class="col-3 text-center">
+          ${contestLists[key].contest_id.slice(0, 3)}...${contestLists[key].contest_id.slice(-4)}
         </div>
-        <div class="col-3 text-end">
+        <div class="col-3 text-center">
           ${amount} G
         </div>
-        <div class="col-3 text-end">
+        <div class="col-3 text-center">
           $${balance}
         </div>
         <div class="col-3">
@@ -482,12 +483,15 @@ function getLeaderBoard(contest_id) {
             <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.floating}</span>
-          </td>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
+                            </td>
         </tr>
       `
       for (let key in curLeaderBoard) {
-        if (Number(key) > 9) continue;
+        if (Number(key) > 11) continue;
         htmlRender += `
         <tr class="fs-3">
           <td class="border-bottom-0">
@@ -506,8 +510,11 @@ function getLeaderBoard(contest_id) {
             <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal mb-0">$${curLeaderBoard[key].floating}</span>
-          </td>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
+                            </td>
         </tr>
         `
       }
@@ -524,6 +531,9 @@ function getLeaderBoard(contest_id) {
           </td>
           <td class="border-bottom-0">
             <span class="fw-normal">...</span>
+          </td>
+          <td class="border-bottom-0">
+            <span class="fw-normal mb-0">...</span>
           </td>
           <td class="border-bottom-0">
             <span class="fw-normal mb-0">...</span>
@@ -677,14 +687,13 @@ function greetingFunc() {
   })
     .then(response => {
       if (!response.ok) {
-        console.log(response)
         throw new Error("Network response was not ok");
       }
       return response.json(); // Parse the response JSON if needed
     })
     .then(dataResponse => {
       const dataToSaveString = JSON.stringify(dataResponse);
-      // Save the data to local storage
+      console.log(dataResponse)
       localStorage.setItem('data', dataToSaveString);
 
       // Wallet info
@@ -741,6 +750,7 @@ $(document).ready(function () {
     });
 
   $("#withdraws").click(function () {
+    $("#wd_confirmation").prop('disabled', false);
     let payment_methob = JSON.parse(localStorage.getItem("payment_methob"));
     $("#msg_withdraw").text('');
     if (payment_methob == null) {
@@ -758,6 +768,7 @@ $(document).ready(function () {
     $("#payment_methob_list").html(htmlPaymentMethob);
     $("#wd_confirmation").prop('disabled', false);
     $("#wd_confirmation").click(function () {
+      $("#wd_confirmation").prop('disabled', true);
       const userInfo = JSON.parse(localStorage.getItem("user"));
       if (userInfo.inreview === "not_yet") {
         $("#msg_withdraw").addClass('text-danger').text("Please verify your account first.");
@@ -789,7 +800,7 @@ $(document).ready(function () {
         "amount": inpAmount, // Use the parsed input value
         "payment_methob": Number(payid)
       };
-      console.log(inpWithdraw)
+      // console.log(inpWithdraw)
       const headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
       });
@@ -822,11 +833,13 @@ $(document).ready(function () {
 //Deposit
 $(document).ready(function () {
   $("#deposits").click(function () {
+    $("#create_qr_code").prop('disabled', false);
     $("#qrcode").empty();
     $("#msg_deposit").empty();
   });
 
   $("#create_qr_code").click(function () {
+    $("#create_qr_code").prop('disabled', true);
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
 
@@ -884,6 +897,7 @@ $(document).ready(function () {
 
 // Join a contest
 function saveJoinContest(contest_id) {
+  $("#confirm_to_join").prop('disabled', true);
   const jwtToken = getCookie("token");
   if (!jwtToken) {
     console.error("Error: JWT token is missing.");
@@ -916,13 +930,15 @@ function saveJoinContest(contest_id) {
     })
     .catch(error => {
       $("#join_contest_message").removeClass().addClass("fw-semibold text-danger");
-      $("#join_contest_message").html("Error!");
+      $("#join_contest_message").html("You have already participated in this competition!");
       greetingFunc();
       console.error("Error:", error);
     });
 }
 
 function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
+  $("#confirm_to_join").prop('disabled', false);
+
   $("#this_contest_info").remove();
   let html_text = `
   <div id="this_contest_info">
