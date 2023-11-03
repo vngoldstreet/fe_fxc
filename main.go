@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -22,12 +20,6 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		return
-	}
-
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "dashboard.html", gin.H{
 			"title": "Dashbard",
