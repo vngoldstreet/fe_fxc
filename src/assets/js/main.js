@@ -64,8 +64,9 @@ function setAllContestLists(allContestListDatas) {
     let amount = Number(allContestListDatas[key].amount).toLocaleString();
     let numberPerson = Number(allContestListDatas[key].current_person);
     let maximumPerson = Number(allContestListDatas[key].maximum_person);
-    let current_prize = amount * numberPerson;
-    let estimate_prize = maximumPerson * amount * 0.7;
+
+    let current_prize = Number(allContestListDatas[key].amount) * numberPerson;
+    let estimate_prize = maximumPerson * Number(allContestListDatas[key].amount) * 0.7;
     let totalPrizes = 0.0;
     if (current_prize < estimate_prize) {
       totalPrizes = estimate_prize;
