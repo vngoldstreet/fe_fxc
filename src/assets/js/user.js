@@ -20,7 +20,12 @@ function getCookie(cookieName) {
 }
 
 $(document).ready(function () {
-    const userInfo = JSON.parse(localStorage.getItem("user"))
+    let jwtToken = getCookie("token");
+    if (!jwtToken) {
+        window.location.href = "/login";
+    }
+
+    let userInfo = JSON.parse(localStorage.getItem("user"))
     $("#userinfo_name").html(userInfo.name)
     $("#userinfo_email").html(userInfo.email)
     if (userInfo.image === '') {
@@ -102,12 +107,15 @@ $(document).ready(function () {
             window.alert("Please upload the front and back images of the national ID card first.");
             return;
         }
-        const inpReview = {
+        let inpReview = {
             "image_front": img_front,
             "image_back": img_back
         };
-        const jwtToken = getCookie("token");
-        const headers = new Headers({
+        let jwtToken = getCookie("token");
+        if (!jwtToken) {
+            window.location.href = "/login";
+        }
+        let headers = new Headers({
             'Authorization': `Bearer ${jwtToken}`
         });
         $("#indentify_update").addClass("disabled")
@@ -133,7 +141,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    const userInfo = JSON.parse(localStorage.getItem("user"))
+    let userInfo = JSON.parse(localStorage.getItem("user"))
     let img_avata = userInfo.image
     let inpDescription = userInfo.description
     $("#avatarInput").on("change", function (event) {
@@ -157,15 +165,18 @@ $(document).ready(function () {
         if (inpDescription === undefined) {
             inpDescription = userInfo.description
         }
-        const jwtToken = getCookie("token");
-        const headers = new Headers({
+        let jwtToken = getCookie("token");
+        if (!jwtToken) {
+            window.location.href = "/login";
+        }
+        let headers = new Headers({
             'Authorization': `Bearer ${jwtToken}`
         });
-        const inpUserUpdate = {
+        let inpUserUpdate = {
             "image": img_avata,
             "description": inpDescription
         };
-        console.log(inpUserUpdate)
+        // console.log(inpUserUpdate)
         fetch(urlUpdateUser, {
             method: "POST",
             headers: headers,
@@ -180,9 +191,9 @@ $(document).ready(function () {
             .then(dataResponse => {
                 userInfo.image = img_avata;
                 userInfo.description = inpDescription;
-                const user = JSON.stringify(userInfo)
+                let user = JSON.stringify(userInfo)
                 localStorage.setItem('user', JSON.stringify(userInfo));
-                window.alert("Success!")
+                // window.alert("Success!")
                 window.location.reload()
             })
             .catch(error => {
@@ -230,12 +241,15 @@ $(document).ready(function () {
             $('#account_name').removeClass('is-invalid').addClass('is-valid');
             $('#fb_account_name').removeClass('invalid-feedback').addClass('invalid-feedback').text('Look good'); // Clear the error message
         }
-        const jwtToken = getCookie("token");
-        const headers = new Headers({
+        let jwtToken = getCookie("token");
+        if (!jwtToken) {
+            window.location.href = "/login";
+        }
+        let headers = new Headers({
             'Authorization': `Bearer ${jwtToken}`
         });
 
-        const inpPaymentMethob = {
+        let inpPaymentMethob = {
             "holder_name": account_name,
             "holder_number": account_number,
             "bank_name": bank_name,
@@ -264,8 +278,8 @@ $(document).ready(function () {
 })
 
 function getPaymentMethob() {
-    const jwtToken = getCookie("token");
-    const headers = new Headers({
+    let jwtToken = getCookie("token");
+    let headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
     });
     fetch(urlGetPaymentMethob, {

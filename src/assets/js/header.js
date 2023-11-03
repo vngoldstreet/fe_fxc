@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    const now = new Date();
-    const currentHour = now.getHours();
+    let userInfo = JSON.parse(localStorage.getItem("user"));
+    let now = new Date();
+    let currentHour = now.getHours();
     let greetingText = "";
 
     if (currentHour >= 18) {
@@ -11,7 +11,7 @@ $(document).ready(function () {
     } else {
         greetingText = "Good morning";
     }
-    const greetingMessage = `${greetingText}<br>${userInfo.name} (${userInfo.email})`;
+    let greetingMessage = `${greetingText}<br>${userInfo.name} (${userInfo.email})`;
     $("#username").html(greetingMessage);
     if (userInfo.image === '') {
         $("#avata-img").attr("src", "src/assets/images/profile/user-1.jpg")

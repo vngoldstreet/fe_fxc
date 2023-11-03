@@ -17,12 +17,16 @@ function getCookie(cookieName) {
 }
 
 $(document).ready(function () {
+    let jwtToken = getCookie("token");
+    if (!jwtToken) {
+        window.location.href = "/login";
+    }
     $("#user_info_change_password").click(function () {
-        const inpCPassword = $('#cpassword').val();
-        const inpNPassword = $('#npassword').val();
-        const confirmPassword = $("#confirm_password").val();
+        let inpCPassword = $('#cpassword').val();
+        let inpNPassword = $('#npassword').val();
+        let confirmPassword = $("#confirm_password").val();
 
-        const specialCharacterRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
+        let specialCharacterRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
         if (inpNPassword.length >= 8 && specialCharacterRegex.test(inpNPassword)) {
             // Password is valid
             $('#npassword').removeClass('is-invalid').addClass('is-valid');
@@ -42,16 +46,16 @@ $(document).ready(function () {
             $("#fb_confirm_password").removeClass('invalid-feedback').addClass('valid-feedback').text("Valid password!");
             // Here you can make an AJAX request to your registration API
         }
-        const updatePassword = {
+        let updatePassword = {
             "c_password": inpCPassword,
             "n_password": inpNPassword,
         };
-        const jwtToken = getCookie("token");
-        const headers = new Headers({
+        let jwtToken = getCookie("token");
+        let headers = new Headers({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${jwtToken}`
         });
-        console.log(updatePassword);
+        // console.log(updatePassword);
         fetch(urlUpdatePassword, {
             method: "POST",
             headers: headers,
@@ -82,9 +86,9 @@ $(document).ready(function () {
 })
 
 $(document).ready(function () {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    const now = new Date();
-    const currentHour = now.getHours();
+    let userInfo = JSON.parse(localStorage.getItem("user"));
+    let now = new Date();
+    let currentHour = now.getHours();
     let greetingText = "";
 
     if (currentHour >= 18) {
@@ -94,7 +98,7 @@ $(document).ready(function () {
     } else {
         greetingText = "Good morning";
     }
-    const greetingMessage = `${greetingText}: ${userInfo.name} (${userInfo.email})!`;
+    let greetingMessage = `${greetingText}: ${userInfo.name} (${userInfo.email})!`;
     $("#username").text(greetingMessage);
 
     $("#submit_logout").click(function () {

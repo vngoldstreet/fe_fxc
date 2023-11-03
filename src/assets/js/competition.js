@@ -18,8 +18,13 @@ function getCookie(cookieName) {
 }
 
 $(document).ready(function () {
-    const jwtToken = getCookie("token");
-    const headers = new Headers({
+    let jwtToken = getCookie("token");
+
+    if (!jwtToken) {
+        window.location.href = "/login";
+    }
+
+    let headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
     });
     fetch(urlCompetition, {
@@ -68,8 +73,6 @@ $(document).ready(function () {
         });
 })
 
-// onclick = "reJoinACompetition('${myData[key].contest_id}')"
-
 function showpassword(param) {
     let id_master = "#master-" + param
     let id_invester = "#invester-" + param
@@ -99,11 +102,11 @@ function confirmToReJoin(param_contest_id) {
     `
     $("#contest_info").html(html_text);
     $("#confirm_to_re_join").click(function () {
-        const jwtToken = getCookie("token");
-        const headers = new Headers({
+        let jwtToken = getCookie("token");
+        let headers = new Headers({
             'Authorization': `Bearer ${jwtToken}`
         });
-        const rejoinContest = {
+        let rejoinContest = {
             "contest_id": param_contest_id
         };
         $("#confirm_to_re_join").prop('disabled', true);
@@ -119,7 +122,7 @@ function confirmToReJoin(param_contest_id) {
                 return response.json();
             })
             .then(dataResponse => {
-                console.log(dataResponse)
+                // console.log(dataResponse)
                 $("#fb_rejoin").addClass('text-success').text(`Success to re-join: ${param_contest_id}`)
             })
             .catch(error => {

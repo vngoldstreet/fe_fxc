@@ -28,10 +28,6 @@ function getCookie(cookieName) {
   return "";
 }
 
-function redirectToURL(targetUrl) {
-  window.location.href = targetUrl;
-}
-
 function setAllContestLists(allContestListDatas) {
   let htmlPrint = "";
 
@@ -62,14 +58,14 @@ function setAllContestLists(allContestListDatas) {
         break;
     }
 
-    const expired_at = new Date(allContestListDatas[key].expired_at).toLocaleString();
-    const start_at = new Date(allContestListDatas[key].start_at).toLocaleString();
-    const number = Number(key) + 1;
-    const amount = Number(allContestListDatas[key].amount).toLocaleString();
-    const numberPerson = Number(allContestListDatas[key].current_person);
-    const maximumPerson = Number(allContestListDatas[key].maximum_person);
-    const current_prize = amount * numberPerson;
-    const estimate_prize = maximumPerson * amount * 0.7;
+    let expired_at = new Date(allContestListDatas[key].expired_at).toLocaleString();
+    let start_at = new Date(allContestListDatas[key].start_at).toLocaleString();
+    let number = Number(key) + 1;
+    let amount = Number(allContestListDatas[key].amount).toLocaleString();
+    let numberPerson = Number(allContestListDatas[key].current_person);
+    let maximumPerson = Number(allContestListDatas[key].maximum_person);
+    let current_prize = amount * numberPerson;
+    let estimate_prize = maximumPerson * amount * 0.7;
     let totalPrizes = 0.0;
     if (current_prize < estimate_prize) {
       totalPrizes = estimate_prize;
@@ -120,7 +116,7 @@ function setAllContestLists(allContestListDatas) {
 
 function setTransactionLists(transactionData) {
   let htmlPrint = "";
-  const userInfo = JSON.parse(localStorage.getItem('user'));
+  let userInfo = JSON.parse(localStorage.getItem('user'));
 
   for (let key in transactionData) {
     let text_type = "";
@@ -163,10 +159,10 @@ function setTransactionLists(transactionData) {
         bg_class = "bg-danger";
         break;
     }
-    const updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
-    const created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
-    const number = Number(key) + 1;
-    const amount = Number(transactionData[key].amount).toLocaleString();
+    let updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
+    let created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
+    let number = Number(key) + 1;
+    let amount = Number(transactionData[key].amount).toLocaleString();
 
     htmlPrint += `
       <tr>
@@ -202,16 +198,16 @@ function setTransactionLists(transactionData) {
 
 function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) === 1) {
-    const bankNote = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
-    const paymentInfo = {
+    let bankNote = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
+    let paymentInfo = {
       bank: bankName,
       account: bankNumber,
       name: bankUserName,
       amount: Number(amount) * rateGold, // The amount to transfer
       note: bankNote,
     };
-    const imgUrl = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
-    const htmlPrintToContest = `<img id="img_qrcode_info_1" class="w-100" src="${imgUrl}">`;
+    let imgUrl = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
+    let htmlPrintToContest = `<img id="img_qrcode_info_1" class="w-100" src="${imgUrl}">`;
     $("#img_qrcode_info").html(htmlPrintToContest);
   } else if (Number(type) > 1) {
     let textType = "";
@@ -234,7 +230,7 @@ function getInformationOfTransaction(amount, type, id, name) {
         break;
     }
 
-    const htmlText = `
+    let htmlText = `
       <div id="this_contest_info">
         <h6>Transaction type: ${textType}</h6>
         <h6><span>Amount:</span> $${amount.toLocaleString()}</h6>
@@ -292,12 +288,12 @@ function setTransactionLists(transactionData) {
         break;
     }
 
-    const updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
-    const created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
-    const number = Number(key) + 1;
-    const amount = Number(transactionData[key].amount).toLocaleString();
+    let updated_at = new Date(transactionData[key].UpdatedAt).toLocaleString();
+    let created_at = new Date(transactionData[key].CreatedAt).toLocaleString();
+    let number = Number(key) + 1;
+    let amount = Number(transactionData[key].amount).toLocaleString();
 
-    const userInfo = JSON.parse(localStorage.getItem('user'));
+    let userInfo = JSON.parse(localStorage.getItem('user'));
 
     htmlPrint += `
       <tr>
@@ -334,7 +330,7 @@ function setTransactionLists(transactionData) {
 function getInformationOfTransaction(amount, type, id, name) {
   if (Number(type) == 1) {
     let bank_note = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
-    const paymentInfo = {
+    let paymentInfo = {
       bank: bankName,
       account: bankNumber,
       name: bankUserName,
@@ -393,8 +389,8 @@ function setContestLists(contestLists) {
   `;
 
   for (let key in contestLists) {
-    const amount = Number(contestLists[key].amount).toLocaleString();
-    const balance = Number(contestLists[key].start_balance).toLocaleString();
+    let amount = Number(contestLists[key].amount).toLocaleString();
+    let balance = Number(contestLists[key].start_balance).toLocaleString();
 
     htmlPrintToContest += `
       <div class="row mt-2">
@@ -419,8 +415,8 @@ function setContestLists(contestLists) {
 
 function splitStringByIndex(inputString, index) {
   if (index >= 0 && index < inputString.length) {
-    const firstPart = inputString.substring(0, index); // Get characters from the beginning up to the index
-    const secondPart = inputString.substring(index); // Get characters from the index to the end
+    let firstPart = inputString.substring(0, index); // Get characters from the beginning up to the index
+    let secondPart = inputString.substring(index); // Get characters from the index to the end
 
     return [firstPart, secondPart];
   } else {
@@ -432,7 +428,7 @@ function splitStringByIndex(inputString, index) {
 function maskEmail(email) {
   let parts = email.split('@');
   if (parts.length === 2) {
-    const [firstPart, secondPart] = splitStringByIndex(parts[0], 3);
+    let [firstPart, secondPart] = splitStringByIndex(parts[0], 3);
     let maskedName = firstPart + secondPart.replace(/./g, '*');
     return maskedName + '@' + parts[1];
   } else {
@@ -441,14 +437,18 @@ function maskEmail(email) {
 }
 
 function getLeaderBoard(contest_id) {
-  const jwtToken = getCookie("token");
-  const inpContest = {
+  let jwtToken = getCookie("token");
+  if (!jwtToken) {
+    window.location.href = "/login";
+  }
+  let inpContest = {
     "contest_id": contest_id
   };
 
-  const headers = new Headers({
+  let headers = new Headers({
     'Authorization': `Bearer ${jwtToken}`
   });
+
   fetch(urlLeaderBoard, {
     method: "POST",
     headers: headers,
@@ -552,12 +552,12 @@ function getLeaderBoard(contest_id) {
 
 function setChartGreetings(chartGreetings) {
   $("#chart").empty()
-  const maxdep = Math.max(...chartGreetings.dep);
-  const maxearn = Math.max(...chartGreetings.earn);
-  const maxwithdraw = Math.max(...chartGreetings.withdraw);
-  const array_value = [maxdep, maxearn, maxwithdraw];
-  const max_value = Math.max(...array_value);
-  const set_high = Math.round(max_value * 0.01 + 1) * 100;
+  let maxdep = Math.max(...chartGreetings.dep);
+  let maxearn = Math.max(...chartGreetings.earn);
+  let maxwithdraw = Math.max(...chartGreetings.withdraw);
+  let array_value = [maxdep, maxearn, maxwithdraw];
+  let max_value = Math.max(...array_value);
+  let set_high = Math.round(max_value * 0.01 + 1) * 100;
   var chart = {
     series: [
       { name: "Deposit", data: chartGreetings.dep },
@@ -661,23 +661,21 @@ function setChartGreetings(chartGreetings) {
 }
 
 function setWallet(wallet) {
-  const walletTime = new Date(wallet.UpdatedAt).toLocaleString();
-  const walletBalanceHtml = `<i class="ti ti-wallet text-warning"></i> ${wallet.balance.toLocaleString()} Gold`;
-  const walletTimeHtml = `<p class="text-dark me-1 fs-3 mb-0 text-success">Updated: ${walletTime}</p>`;
+  let walletTime = new Date(wallet.UpdatedAt).toLocaleString();
+  let walletBalanceHtml = `<i class="ti ti-wallet text-warning"></i> ${wallet.balance.toLocaleString()} Gold`;
+  let walletTimeHtml = `<p class="text-dark me-1 fs-3 mb-0 text-success">Updated: ${walletTime}</p>`;
 
   $("#wallet_balance").html(walletBalanceHtml);
   $("#wallet_time").html(walletTimeHtml);
 }
 
 function greetingFunc() {
-  const jwtToken = getCookie("token");
-
+  let jwtToken = getCookie("token");
   if (!jwtToken) {
-    redirectToURL(redirectLoginURL);
-    return; // Add a return statement to prevent further execution
+    window.location.href = "/login";
   }
 
-  const headers = new Headers({
+  let headers = new Headers({
     "Content-Type": "application/json",
     'Authorization': `Bearer ${jwtToken}`
   });
@@ -692,30 +690,28 @@ function greetingFunc() {
       return response.json(); // Parse the response JSON if needed
     })
     .then(dataResponse => {
-      const dataToSaveString = JSON.stringify(dataResponse);
-      console.log(dataResponse)
+      let dataToSaveString = JSON.stringify(dataResponse);
       localStorage.setItem('data', dataToSaveString);
 
       // Wallet info
-      const wallet = dataResponse.wallet;
+      let wallet = dataResponse.wallet;
       setWallet(wallet);
 
       // Transactions list
-      const transactionData = dataResponse.transactions;
+      let transactionData = dataResponse.transactions;
       setTransactionLists(transactionData);
 
       // Contest lists by ID
-      const contestLists = dataResponse.contest_info_list;
+      let contestLists = dataResponse.contest_info_list;
       setContestLists(contestLists);
 
       // All contest list
-      const allContestListDatas = dataResponse.contest_list;
+      let allContestListDatas = dataResponse.contest_list;
       setAllContestLists(allContestListDatas);
 
       // Chart options
-      const chartGreetings = dataResponse.chart;
+      let chartGreetings = dataResponse.chart;
       setChartGreetings(chartGreetings);
-
     })
     .catch(error => {
       console.error("Error:", error);
@@ -727,8 +723,11 @@ $(function () {
 });
 
 $(document).ready(function () {
-  const jwtToken = getCookie("token");
-  const headers = new Headers({
+  let jwtToken = getCookie("token");
+  if (!jwtToken) {
+    window.location.href = "/login";
+  }
+  let headers = new Headers({
     'Authorization': `Bearer ${jwtToken}`
   });
   fetch(urlGetPaymentMethob, {
@@ -769,14 +768,14 @@ $(document).ready(function () {
     $("#wd_confirmation").prop('disabled', false);
     $("#wd_confirmation").click(function () {
       $("#wd_confirmation").prop('disabled', true);
-      const userInfo = JSON.parse(localStorage.getItem("user"));
+      let userInfo = JSON.parse(localStorage.getItem("user"));
       if (userInfo.inreview === "not_yet") {
         $("#msg_withdraw").addClass('text-danger').text("Please verify your account first.");
         return;
       }
 
-      const userWallet = JSON.parse(localStorage.getItem("data")).wallet;
-      const inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
+      let userWallet = JSON.parse(localStorage.getItem("data")).wallet;
+      let inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
 
       if (inpAmount <= 0) {
         $('#withdraw_amount').addClass('is-invalid');
@@ -795,13 +794,17 @@ $(document).ready(function () {
 
       $("#msg_withdraw").empty();
       let payid = $("#payment_methob_list").val();
-      const jwtToken = getCookie("token");
-      const inpWithdraw = {
+      let jwtToken = getCookie("token");
+      if (!jwtToken) {
+        window.location.href = "/login";
+      }
+
+      let inpWithdraw = {
         "amount": inpAmount, // Use the parsed input value
         "payment_methob": Number(payid)
       };
-      // console.log(inpWithdraw)
-      const headers = new Headers({
+
+      let headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
       });
 
@@ -817,7 +820,6 @@ $(document).ready(function () {
           return response.json();
         })
         .then(dataResponse => {
-          document.getElementById('withdraw_amount').value = 0;
           $("#msg_withdraw").html(`<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`);
           greetingFunc();
         })
@@ -840,8 +842,8 @@ $(document).ready(function () {
 
   $("#create_qr_code").click(function () {
     $("#create_qr_code").prop('disabled', true);
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    const inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
+    let userInfo = JSON.parse(localStorage.getItem("user"));
+    let inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
 
     $("#qrcode").empty();
     $("#msg_deposit").empty();
@@ -851,8 +853,8 @@ $(document).ready(function () {
       return;
     }
 
-    const bankNote = encodeURIComponent(`${userInfo.ID} ${inpAmount}G ${userInfo.name}`);
-    const paymentInfo = {
+    let bankNote = encodeURIComponent(`${userInfo.ID} ${inpAmount}G ${userInfo.name}`);
+    let paymentInfo = {
       bank: bankName,
       account: bankNumber,
       name: bankUserName,
@@ -860,17 +862,20 @@ $(document).ready(function () {
       note: bankNote,
     };
 
-    const imgURL = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
+    let imgURL = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
 
-    const htmlPrintToQRCode = `<img id="img_qrcode" class="w-100" src="${imgURL}">`;
+    let htmlPrintToQRCode = `<img id="img_qrcode" class="w-100" src="${imgURL}">`;
     $("#qrcode").html(htmlPrintToQRCode);
 
-    const jwtToken = getCookie("token");
-    const inpDeposit = {
+    let jwtToken = getCookie("token");
+    if (!jwtToken) {
+      window.location.href = "/login";
+    }
+    let inpDeposit = {
       "amount": inpAmount
     };
 
-    const headers = new Headers({
+    let headers = new Headers({
       'Authorization': `Bearer ${jwtToken}`
     });
 
@@ -898,17 +903,16 @@ $(document).ready(function () {
 // Join a contest
 function saveJoinContest(contest_id) {
   $("#confirm_to_join").prop('disabled', true);
-  const jwtToken = getCookie("token");
+  let jwtToken = getCookie("token");
   if (!jwtToken) {
-    console.error("Error: JWT token is missing.");
-    return;
+    window.location.href = "/login";
   }
 
-  const inpJoinContest = {
+  let inpJoinContest = {
     "contest_id": contest_id
   };
 
-  const headers = new Headers({
+  let headers = new Headers({
     'Authorization': `Bearer ${jwtToken}`
   });
 

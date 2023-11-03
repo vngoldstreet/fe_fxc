@@ -14,8 +14,14 @@ function getCookie(cookieName) {
     }
     return "";
 }
+
 $(document).ready(function () {
-    const dataLGreeting = JSON.parse(localStorage.getItem("data"))
+    let jwtToken = getCookie("token");
+    if (!jwtToken) {
+        window.location.href = "/login";
+    }
+
+    let dataLGreeting = JSON.parse(localStorage.getItem("data"))
     let contest_list = dataLGreeting.contest_info_list
     let listContestRender = ""
     let contest_id = ""
@@ -30,12 +36,11 @@ $(document).ready(function () {
               type="button" role="tab" aria-controls="${contest_list[key].contest_id}" aria-selected="true">${contest_list[key].contest_id}</button>
         `
     }
-    const jwtToken = getCookie("token");
-    const inpContest = {
+    let inpContest = {
         "contest_id": contest_id
     };
 
-    const headers = new Headers({
+    let headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
     });
     fetch(urlLeaderBoard, {
@@ -114,7 +119,6 @@ $(document).ready(function () {
                             </tr>
                             `
             }
-
             htmlRender += `
                         <tr class="">
                         <td class="border-bottom-0">
@@ -155,9 +159,8 @@ $(document).ready(function () {
 
 function splitStringByIndex(inputString, index) {
     if (index >= 0 && index < inputString.length) {
-        const firstPart = inputString.substring(0, index); // Get characters from the beginning up to the index
-        const secondPart = inputString.substring(index); // Get characters from the index to the end
-
+        let firstPart = inputString.substring(0, index); // Get characters from the beginning up to the index
+        let secondPart = inputString.substring(index); // Get characters from the index to the end
         return [firstPart, secondPart];
     } else {
         // Index is out of bounds, return an error message or handle the situation as needed.
@@ -168,7 +171,7 @@ function splitStringByIndex(inputString, index) {
 function maskEmail(email) {
     let parts = email.split('@');
     if (parts.length === 2) {
-        const [firstPart, secondPart] = splitStringByIndex(parts[0], 3);
+        let [firstPart, secondPart] = splitStringByIndex(parts[0], 3);
         let maskedName = firstPart + secondPart.replace(/./g, '*');
         return maskedName + '@' + parts[1];
     } else {
@@ -177,14 +180,19 @@ function maskEmail(email) {
 }
 
 function getLeaderBoard(contest_id) {
-    const jwtToken = getCookie("token");
-    const inpContest = {
+    let jwtToken = getCookie("token");
+    if (!jwtToken) {
+        window.location.href = "/login";
+    }
+
+    let inpContest = {
         "contest_id": contest_id
     };
 
-    const headers = new Headers({
+    let headers = new Headers({
         'Authorization': `Bearer ${jwtToken}`
     });
+
     fetch(urlLeaderBoard, {
         method: "POST",
         headers: headers,
