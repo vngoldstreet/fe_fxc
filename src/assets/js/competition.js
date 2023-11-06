@@ -2,6 +2,7 @@ const baseUrl = "https://auth.fxchampionship.com"
 // const baseUrl = "http://localhost:8082"
 const urlCompetition = baseUrl + "/auth/contest/get-contest-by-uid";
 const urlRejoinCompetition = baseUrl + "/auth/contest/rejoin-a-competition";
+const urlGetPromotion = baseUrl + "/auth/promotion";
 
 function getCookie(cookieName) {
     var name = cookieName + "=";
@@ -97,10 +98,27 @@ function showpassword(param) {
 function confirmToReJoin(param_contest_id) {
     $("#this_contest_info").remove();
     $("#fb_rejoin").text('')
-    let html_text = `
-        <h6><span class="fw-semibold">ID:</span> ${param_contest_id}</h6>
-    `
-    $("#contest_info").html(html_text);
+    $("#contest_info").val(param_contest_id);
+    let jwtToken = getCookie("token");
+    let headers = new Headers({
+        'Authorization': `Bearer ${jwtToken}`
+    });
+    fetch(urlGetPromotion, {
+        method: "GET",
+        headers: headers,
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(dataResponse => {
+            $("#promo_code").val(dataResponse.data.promo_code);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
     $("#confirm_to_re_join").click(function () {
         let jwtToken = getCookie("token");
         let headers = new Headers({
@@ -110,7 +128,15 @@ function confirmToReJoin(param_contest_id) {
             "contest_id": param_contest_id
         };
         $("#confirm_to_re_join").prop('disabled', true);
-        fetch(urlRejoinCompetition, {
+        let promo = $("#promo_code").val()
+        let url = ""
+        if (promo === "") {
+            url = urlRejoinCompetition
+        } else {
+            url = urlRejoinCompetition + "?promo_code=" + promo;
+        }
+        console.log(url)
+        fetch(url, {
             method: "POST",
             headers: headers,
             body: JSON.stringify(rejoinContest),
