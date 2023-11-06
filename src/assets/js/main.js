@@ -137,6 +137,10 @@ function setTransactionLists(transactionData) {
         text_type = "Join a contest";
         text_id_contest = `${transactionData[key].contest_id}`;
         break;
+      case 6:
+        text_type = "Re-Join a contest";
+        text_id_contest = `${transactionData[key].contest_id}`;
+        break;
       default:
         break;
     }
@@ -227,6 +231,10 @@ function getInformationOfTransaction(amount, type, id, name) {
       case 4:
         textType = "Join a contest";
         break;
+      case 6:
+        text_type = "Re-Join a contest";
+        text_id_contest = `${transactionData[key].contest_id}`;
+        break;
       default:
         break;
     }
@@ -261,6 +269,10 @@ function setTransactionLists(transactionData) {
         break;
       case 4:
         text_type = "Join a contest";
+        text_id_contest = `${transactionData[key].contest_id}`;
+        break;
+      case 6:
+        text_type = "Re-Join a contest";
         text_id_contest = `${transactionData[key].contest_id}`;
         break;
       default:
@@ -356,6 +368,10 @@ function getInformationOfTransaction(amount, type, id, name) {
         break;
       case 4:
         text_type = "Join a contest";
+        break;
+      case 6:
+        text_type = "Re-Join a contest";
+        text_id_contest = `${transactionData[key].contest_id}`;
         break;
       default:
         break;
