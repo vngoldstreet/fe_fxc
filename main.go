@@ -62,6 +62,11 @@ func main() {
 			"title": "Leader board",
 		})
 	})
+	r.GET("/partner", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "partners.html", gin.H{
+			"title": "Partner",
+		})
+	})
 	r.Run(":4200")
 
 }
