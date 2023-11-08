@@ -114,9 +114,10 @@ function confirmToReJoin(param_contest_id) {
             return response.json();
         })
         .then(dataResponse => {
-            $("#promo_code").val(dataResponse.data.promo_code);
-            $("#fb_promo_code").addClass("text-success").text(`Use the code '${dataResponse.data.promo_code}' to get a ${dataResponse.data.discount * 100}% discount`);
-
+            if (dataResponse.data.promo_code) {
+                $("#promo_code").val(dataResponse.data.promo_code);
+                $("#fb_promo_code").addClass("text-success").text(`Use the code '${dataResponse.data.promo_code}' to get a ${dataResponse.data.discount * 100}% discount`);
+            }
         })
         .catch(error => {
             console.error("Error:", error);
