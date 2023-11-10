@@ -6,18 +6,18 @@ const urlJoinContest = baseUrl + "/auth/contest/join-contest-by-uid";
 const urlDeposit = baseUrl + "/auth/user-wallet/deposit";
 const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw";
 const urlLeaderBoard = baseUrl + "/auth/contest/get-leaderboard-by-contestid";
-const urlGetPaymentMethob = baseUrl + "/auth/user-wallet/get-payment-method"
+const urlGetPaymentMethob = baseUrl + "/auth/user-wallet/get-payment-method";
 
 //---
-const bankName = "acb"
-const bankNumber = "966965488"
-const bankUserName = "BUI ANH LINH"
-const rateGold = 24000
+const bankName = "acb";
+const bankNumber = "966965488";
+const bankUserName = "BUI ANH LINH";
+const rateGold = 24000;
 
 function getCookie(cookieName) {
   var name = cookieName + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
-  var cookieArray = decodedCookie.split(';');
+  var cookieArray = decodedCookie.split(";");
 
   for (var i = 0; i < cookieArray.length; i++) {
     var cookie = cookieArray[i].trim();
@@ -58,7 +58,9 @@ function setAllContestLists(allContestListDatas) {
         break;
     }
 
-    let expired_at = new Date(allContestListDatas[key].expired_at).toLocaleString();
+    let expired_at = new Date(
+      allContestListDatas[key].expired_at
+    ).toLocaleString();
     let start_at = new Date(allContestListDatas[key].start_at).toLocaleString();
     let number = Number(key) + 1;
     let amount = Number(allContestListDatas[key].amount).toLocaleString();
@@ -66,7 +68,8 @@ function setAllContestLists(allContestListDatas) {
     let maximumPerson = Number(allContestListDatas[key].maximum_person);
 
     let current_prize = Number(allContestListDatas[key].amount) * numberPerson;
-    let estimate_prize = maximumPerson * Number(allContestListDatas[key].amount) * 0.7;
+    let estimate_prize =
+      maximumPerson * Number(allContestListDatas[key].amount) * 0.7;
     let totalPrizes = 0.0;
     if (current_prize < estimate_prize) {
       totalPrizes = estimate_prize;
@@ -92,13 +95,17 @@ function setAllContestLists(allContestListDatas) {
           <span class="fw-normal mb-0">${amount} G</span>
         </td>
         <td class="border-bottom-0">
-          <span class="fw-normal mb-0">${allContestListDatas[key].current_person}/${allContestListDatas[key].maximum_person}</span>
+          <span class="fw-normal mb-0">${
+            allContestListDatas[key].current_person
+          }/${allContestListDatas[key].maximum_person}</span>
         </td>
         <td class="border-bottom-0">
           <span class="fw-normal mb-0">${totalPrizes.toLocaleString()} G</span>
         </td>
         <td class="border-bottom-0">
-          <span class="fw-normal mb-0">$${allContestListDatas[key].start_balance.toLocaleString()}</span>
+          <span class="fw-normal mb-0">$${allContestListDatas[
+            key
+          ].start_balance.toLocaleString()}</span>
         </td>
         <td class="border-bottom-0">
           <div class="d-flex align-items-center gap-2">
@@ -106,7 +113,11 @@ function setAllContestLists(allContestListDatas) {
           </div>
         </td>
         <td class="border-bottom-0">
-          <button id="joinToContest" onclick="joinContest('${allContestListDatas[key].contest_id}','${start_at}','${expired_at}',${amount},${allContestListDatas[key].start_balance})" type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal" data-bs-target="#join_contest">Join</button>
+          <button id="joinToContest" onclick="joinContest('${
+            allContestListDatas[key].contest_id
+          }','${start_at}','${expired_at}',${amount},${
+      allContestListDatas[key].start_balance
+    })" type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal" data-bs-target="#join_contest">Join</button>
         </td>
       </tr>
     `;
@@ -117,7 +128,7 @@ function setAllContestLists(allContestListDatas) {
 
 function setTransactionLists(transactionData) {
   let htmlPrint = "";
-  let userInfo = JSON.parse(localStorage.getItem('user'));
+  let userInfo = JSON.parse(localStorage.getItem("user"));
 
   for (let key in transactionData) {
     let text_type = "";
@@ -306,7 +317,7 @@ function setTransactionLists(transactionData) {
     let number = Number(key) + 1;
     let amount = Number(transactionData[key].amount).toLocaleString();
 
-    let userInfo = JSON.parse(localStorage.getItem('user'));
+    let userInfo = JSON.parse(localStorage.getItem("user"));
 
     htmlPrint += `
       <tr>
@@ -356,7 +367,7 @@ function getInformationOfTransaction(amount, type, id, name) {
     return;
   }
   if (Number(type) > 1) {
-    let text_type = ""
+    let text_type = "";
     switch (type) {
       case 1:
         text_type = "Deposit";
@@ -364,7 +375,8 @@ function getInformationOfTransaction(amount, type, id, name) {
       case 2:
         text_type = "Withdrawal";
         break;
-      case 3, 5: text_type = "Earning";
+      case (3, 5):
+        text_type = "Earning";
         break;
       case 4:
         text_type = "Join a contest";
@@ -381,9 +393,9 @@ function getInformationOfTransaction(amount, type, id, name) {
                       <h6>Transaction type: ${text_type}</h6>
                       <h6><span>Amount:</span> $${amount.toLocaleString()}</h6>
                       </div>
-                    `
+                    `;
     $("#img_qrcode_info").html(html_text);
-    return
+    return;
   }
 }
 
@@ -412,7 +424,9 @@ function setContestLists(contestLists) {
     htmlPrintToContest += `
       <div class="row mt-2">
         <div class="col-3 text-center">
-          ${contestLists[key].contest_id.slice(0, 3)}...${contestLists[key].contest_id.slice(-4)}
+          ${contestLists[key].contest_id.slice(0, 3)}...${contestLists[
+      key
+    ].contest_id.slice(-4)}
         </div>
         <div class="col-3 text-center">
           ${amount} G
@@ -421,7 +435,9 @@ function setContestLists(contestLists) {
           $${balance}
         </div>
         <div class="col-3">
-          <button onclick="getLeaderBoard('${contestLists[key].contest_id}')" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#leader_board"><i class="ti ti-award"></i></button>
+          <button onclick="getLeaderBoard('${
+            contestLists[key].contest_id
+          }')" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#leader_board"><i class="ti ti-award"></i></button>
         </div>
       </div>
     `;
@@ -443,11 +459,11 @@ function splitStringByIndex(inputString, index) {
 }
 
 function maskEmail(email) {
-  let parts = email.split('@');
+  let parts = email.split("@");
   if (parts.length === 2) {
     let [firstPart, secondPart] = splitStringByIndex(parts[0], 3);
-    let maskedName = firstPart + secondPart.replace(/./g, '*');
-    return maskedName + '@' + parts[1];
+    let maskedName = firstPart + secondPart.replace(/./g, "*");
+    return maskedName + "@" + parts[1];
   } else {
     return email;
   }
@@ -459,11 +475,11 @@ function getLeaderBoard(contest_id) {
     window.location.href = "/login";
   }
   let inpContest = {
-    "contest_id": contest_id
+    contest_id: contest_id,
   };
 
   let headers = new Headers({
-    'Authorization': `Bearer ${jwtToken}`
+    Authorization: `Bearer ${jwtToken}`,
   });
 
   fetch(urlLeaderBoard, {
@@ -471,17 +487,19 @@ function getLeaderBoard(contest_id) {
     headers: headers,
     body: JSON.stringify(inpContest),
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       return response.json();
     })
-    .then(dataResponse => {
-      $("#leader_board_title").text(`Leader Board of competition: ${contest_id}`)
-      let myRank = dataResponse.rank
-      let myData = dataResponse.user
-      let curLeaderBoard = dataResponse.leader_board
+    .then((dataResponse) => {
+      $("#leader_board_title").text(
+        `Leader Board of competition: ${contest_id}`
+      );
+      let myRank = dataResponse.rank;
+      let myData = dataResponse.user;
+      let curLeaderBoard = dataResponse.leader_board;
       let htmlRender = `
          <tr class="table-secondary fs-3">
           <td class="border-bottom-0">
@@ -491,22 +509,32 @@ function getLeaderBoard(contest_id) {
             <span class="fw-semibold" style="color:#8957FF !important;">${contest_id}</span> 
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(myData.email)}</span>
+            <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(
+              myData.email
+            )}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance}</span>
+            <span class="fw-normal" style="color:#8957FF !important;">$${
+              myData.balance
+            }</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
+            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${
+              myData.equity
+            }</span>
           </td>
           <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit}</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${
+                                  myData.profit
+                                }</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${
+                                  myData.estimate_prize
+                                }</span>
                             </td>
         </tr>
-      `
+      `;
       for (let key in curLeaderBoard) {
         if (Number(key) > 11) continue;
         htmlRender += `
@@ -518,7 +546,9 @@ function getLeaderBoard(contest_id) {
             <span class="fw-semibold">${curLeaderBoard[key].contest_id}</span> 
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal">${maskEmail(curLeaderBoard[key].email)}</span>
+            <span class="fw-normal">${maskEmail(
+              curLeaderBoard[key].email
+            )}</span>
           </td>
           <td class="border-bottom-0">
             <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
@@ -527,13 +557,17 @@ function getLeaderBoard(contest_id) {
             <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
           </td>
           <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit}</span>
+                                <span class="fw-normal mb-0">$${
+                                  curLeaderBoard[key].profit
+                                }</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
+                                <span class="fw-normal mb-0">$${
+                                  curLeaderBoard[key].estimate_prize
+                                }</span>
                             </td>
         </tr>
-        `
+        `;
       }
       htmlRender += `
         <tr class="">
@@ -559,16 +593,16 @@ function getLeaderBoard(contest_id) {
             <span class="fw-normal mb-0">...</span>
           </td>
         </tr>
-      `
-      $("#leader_board_infor").html(htmlRender)
+      `;
+      $("#leader_board_infor").html(htmlRender);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error:", error);
     });
 }
 
 function setChartGreetings(chartGreetings) {
-  $("#chart").empty()
+  $("#chart").empty();
   let maxdep = Math.max(...chartGreetings.dep);
   let maxearn = Math.max(...chartGreetings.earn);
   let maxwithdraw = Math.max(...chartGreetings.withdraw);
@@ -588,21 +622,19 @@ function setChartGreetings(chartGreetings) {
       offsetX: -15,
       toolbar: { show: true },
       foreColor: "#adb0bb",
-      fontFamily: 'inherit',
+      fontFamily: "inherit",
       sparkline: { enabled: false },
     },
 
-
     colors: ["#5D87FF", "#FF8C00", "#49BEFF"],
-
 
     plotOptions: {
       bar: {
         horizontal: false,
         columnWidth: "35%",
         borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all'
+        borderRadiusApplication: "end",
+        borderRadiusWhenStacked: "all",
       },
     },
     markers: { size: 0 },
@@ -611,11 +643,9 @@ function setChartGreetings(chartGreetings) {
       enabled: false,
     },
 
-
     legend: {
       show: true,
     },
-
 
     grid: {
       borderColor: "rgba(0,0,0,0.1)",
@@ -635,7 +665,6 @@ function setChartGreetings(chartGreetings) {
       },
     },
 
-
     yaxis: {
       show: true,
       min: 0,
@@ -654,7 +683,6 @@ function setChartGreetings(chartGreetings) {
       colors: ["transparent"],
     },
 
-
     tooltip: { theme: "light" },
 
     responsive: [
@@ -664,13 +692,11 @@ function setChartGreetings(chartGreetings) {
           plotOptions: {
             bar: {
               borderRadius: 3,
-            }
+            },
           },
-        }
-      }
-    ]
-
-
+        },
+      },
+    ],
   };
 
   var chart = new ApexCharts(document.querySelector("#chart"), chart);
@@ -694,21 +720,21 @@ function greetingFunc() {
 
   let headers = new Headers({
     "Content-Type": "application/json",
-    'Authorization': `Bearer ${jwtToken}`
+    Authorization: `Bearer ${jwtToken}`,
   });
   fetch(urlGreetings, {
     method: "GET",
-    headers: headers
+    headers: headers,
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       return response.json(); // Parse the response JSON if needed
     })
-    .then(dataResponse => {
+    .then((dataResponse) => {
       let dataToSaveString = JSON.stringify(dataResponse);
-      localStorage.setItem('data', dataToSaveString);
+      localStorage.setItem("data", dataToSaveString);
 
       // Wallet info
       let wallet = dataResponse.wallet;
@@ -730,7 +756,7 @@ function greetingFunc() {
       let chartGreetings = dataResponse.chart;
       setChartGreetings(chartGreetings);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error:", error);
     });
 }
@@ -745,49 +771,51 @@ $(document).ready(function () {
     window.location.href = "/login";
   }
   let headers = new Headers({
-    'Authorization': `Bearer ${jwtToken}`
+    Authorization: `Bearer ${jwtToken}`,
   });
   fetch(urlGetPaymentMethob, {
     method: "GET",
     headers: headers,
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       return response.json(); // Parse the response JSON if needed
     })
-    .then(dataResponse => {
-      let payment_methob = JSON.stringify(dataResponse.data)
-      localStorage.setItem("payment_methob", payment_methob)
+    .then((dataResponse) => {
+      let payment_methob = JSON.stringify(dataResponse.data);
+      localStorage.setItem("payment_methob", payment_methob);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error:", error);
     });
 
   $("#withdraws").click(function () {
-    $("#wd_confirmation").prop('disabled', false);
+    $("#wd_confirmation").prop("disabled", false);
     let payment_methob = JSON.parse(localStorage.getItem("payment_methob"));
-    $("#msg_withdraw").text('');
+    $("#msg_withdraw").text("");
     if (payment_methob == null) {
       let html_err = `<span class="text-danger">Please add payment methob first.<a href="https://crm.fxchampionship.com/user">Click
-            here!</a></span>`
+            here!</a></span>`;
       $("#msg_withdraw").html(html_err);
       return;
     }
-    let htmlPaymentMethob = ""
+    let htmlPaymentMethob = "";
     for (let key in payment_methob) {
       htmlPaymentMethob += `
       <option value="${payment_methob[key].ID}">${payment_methob[key].bank_name} - ${payment_methob[key].holder_name} - ${payment_methob[key].holder_number}</option>
-      `
+      `;
     }
     $("#payment_methob_list").html(htmlPaymentMethob);
-    $("#wd_confirmation").prop('disabled', false);
+    $("#wd_confirmation").prop("disabled", false);
     $("#wd_confirmation").click(function () {
-      $("#wd_confirmation").prop('disabled', true);
+      $("#wd_confirmation").prop("disabled", true);
       let userInfo = JSON.parse(localStorage.getItem("user"));
       if (userInfo.inreview === "not_yet") {
-        $("#msg_withdraw").addClass('text-danger').text("Please verify your account first.");
+        $("#msg_withdraw")
+          .addClass("text-danger")
+          .text("Please verify your account first.");
         return;
       }
 
@@ -795,17 +823,24 @@ $(document).ready(function () {
       let inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
 
       if (inpAmount <= 0) {
-        $('#withdraw_amount').addClass('is-invalid');
-        $('#fb_withdraw_amount').addClass('invalid-feedback').text('The amount of Gold to be entered must be greater than 0.'); // Display an error message
+        $("#withdraw_amount").addClass("is-invalid");
+        $("#fb_withdraw_amount")
+          .addClass("invalid-feedback")
+          .text("The amount of Gold to be entered must be greater than 0."); // Display an error message
         return;
       } else {
         // Valid email format
-        $('#withdraw_amount').removeClass('is-invalid').addClass('is-valid');
-        $('#fb_withdraw_amount').removeClass('invalid-feedback').addClass('invalid-feedback').text('Look good'); // Clear the error message
+        $("#withdraw_amount").removeClass("is-invalid").addClass("is-valid");
+        $("#fb_withdraw_amount")
+          .removeClass("invalid-feedback")
+          .addClass("invalid-feedback")
+          .text("Look good"); // Clear the error message
       }
 
       if (inpAmount > userWallet.balance) {
-        $("#msg_withdraw").html(`<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`);
+        $("#msg_withdraw").html(
+          `<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`
+        );
         return;
       }
 
@@ -817,12 +852,12 @@ $(document).ready(function () {
       }
 
       let inpWithdraw = {
-        "amount": inpAmount, // Use the parsed input value
-        "payment_methob": Number(payid)
+        amount: inpAmount, // Use the parsed input value
+        payment_methob: Number(payid),
       };
 
       let headers = new Headers({
-        'Authorization': `Bearer ${jwtToken}`
+        Authorization: `Bearer ${jwtToken}`,
       });
 
       fetch(urlWithdrawal, {
@@ -830,35 +865,35 @@ $(document).ready(function () {
         headers: headers,
         body: JSON.stringify(inpWithdraw),
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
           return response.json();
         })
-        .then(dataResponse => {
-          $("#msg_withdraw").html(`<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`);
+        .then((dataResponse) => {
+          $("#msg_withdraw").html(
+            `<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`
+          );
           greetingFunc();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Error:", error);
         });
     });
   });
-
-
 });
 
 //Deposit
 $(document).ready(function () {
   $("#deposits").click(function () {
-    $("#create_qr_code").prop('disabled', false);
+    $("#create_qr_code").prop("disabled", false);
     $("#qrcode").empty();
     $("#msg_deposit").empty();
   });
 
   $("#create_qr_code").click(function () {
-    $("#create_qr_code").prop('disabled', true);
+    $("#create_qr_code").prop("disabled", true);
     let userInfo = JSON.parse(localStorage.getItem("user"));
     let inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
 
@@ -866,11 +901,15 @@ $(document).ready(function () {
     $("#msg_deposit").empty();
 
     if (inpAmount <= 0) {
-      $("#msg_deposit").html("<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>");
+      $("#msg_deposit").html(
+        "<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>"
+      );
       return;
     }
 
-    let bankNote = encodeURIComponent(`${userInfo.ID} ${inpAmount}G ${userInfo.name}`);
+    let bankNote = encodeURIComponent(
+      `${userInfo.ID} ${inpAmount}G ${userInfo.name}`
+    );
     let paymentInfo = {
       bank: bankName,
       account: bankNumber,
@@ -889,11 +928,11 @@ $(document).ready(function () {
       window.location.href = "/login";
     }
     let inpDeposit = {
-      "amount": inpAmount
+      amount: inpAmount,
     };
 
     let headers = new Headers({
-      'Authorization': `Bearer ${jwtToken}`
+      Authorization: `Bearer ${jwtToken}`,
     });
 
     fetch(urlDeposit, {
@@ -901,17 +940,17 @@ $(document).ready(function () {
       headers: headers,
       body: JSON.stringify(inpDeposit),
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then(dataResponse => {
+      .then((dataResponse) => {
         $("#deposit_amount").val(0);
         greetingFunc();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error:", error);
       });
   });
@@ -919,18 +958,18 @@ $(document).ready(function () {
 
 // Join a contest
 function saveJoinContest(contest_id) {
-  $("#confirm_to_join").prop('disabled', true);
+  $("#confirm_to_join").prop("disabled", true);
   let jwtToken = getCookie("token");
   if (!jwtToken) {
     window.location.href = "/login";
   }
 
   let inpJoinContest = {
-    "contest_id": contest_id
+    contest_id: contest_id,
   };
 
   let headers = new Headers({
-    'Authorization': `Bearer ${jwtToken}`
+    Authorization: `Bearer ${jwtToken}`,
   });
 
   fetch(urlJoinContest, {
@@ -938,27 +977,36 @@ function saveJoinContest(contest_id) {
     headers: headers,
     body: JSON.stringify(inpJoinContest),
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not successful");
       }
       return response.json(); // Parse the response JSON if needed
     })
-    .then(dataResponse => {
-      $("#join_contest_message").removeClass().addClass("fw-semibold text-success");
-      $("#join_contest_message").html("You have successfully participated in the competition.");
+    .then((dataResponse) => {
+      $("#join_contest_message")
+        .removeClass()
+        .addClass("fw-semibold text-success");
+      $("#join_contest_message").html(`
+        You have successfully participated in the competition. <br>
+        If you do not receive login information via email within 10 minutes, please contact us via email: support@fxchampionship.com or hotline: +84 919 720 567.
+      `);
       greetingFunc();
     })
-    .catch(error => {
-      $("#join_contest_message").removeClass().addClass("fw-semibold text-danger");
-      $("#join_contest_message").html("You have already participated in this competition!");
+    .catch((error) => {
+      $("#join_contest_message")
+        .removeClass()
+        .addClass("fw-semibold text-danger");
+      $("#join_contest_message").html(
+        "You have already participated in this competition!"
+      );
       greetingFunc();
       console.error("Error:", error);
     });
 }
 
 function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
-  $("#confirm_to_join").prop('disabled', false);
+  $("#confirm_to_join").prop("disabled", false);
 
   $("#this_contest_info").remove();
   let html_text = `
@@ -970,7 +1018,7 @@ function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
   <p><span class="fw-semibold">Start Balance:</span> $${start_balance.toLocaleString()}</p>
   <p id="join_contest_message" class="fw-semibold"></p>
   </div>
-  `
+  `;
   $("#contest_info").html(html_text);
   $("#confirm_to_join").click(function () {
     saveJoinContest(contest_id);
