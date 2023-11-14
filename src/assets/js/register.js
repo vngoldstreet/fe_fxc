@@ -4,33 +4,35 @@ const apiRegisterUrl = baseUrl + "/public/register";
 
 $(document).ready(function () {
     $("#submit_form_signup").click(function () {
-        const inpName = $('#name').val();
-        const inpEmail = $('#email').val();
-        const inpPassword = $('#password').val();
-        const confirmPassword = $("#confirm_password").val();
-        const inpPhone = $('#phone').val();
-        const inpPartnerCode = $('#partnercode').val();
+        let inpName = $('#name').val();
+        let inpEmail = $('#email').val();
+        let inpPassword = $('#password').val();
+        let confirmPassword = $("#confirm_password").val();
+        let inpPhone = $('#phone').val();
+        let inpPartnerCode = $('#partnercode').val();
 
         if (inpName === '') {
             $('#name').addClass('is-invalid');
             $('#fb_name').addClass('invalid-feedback').text('Name is required'); // Display an error message
+            return;
         } else {
             // Valid email format
             $('#name').removeClass('is-invalid').addClass('is-valid');
             $('#fb_name').removeClass('invalid-feedback').addClass('invalid-feedback').text('Look good'); // Clear the error message
         }
 
-        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/; // Regular expression for email validation
+        let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/; // Regular expression for email validation
         if (!inpEmail.match(emailRegex)) {
             // Invalid email format
             $('#email').addClass('is-invalid');
             $('#fb_email').addClass('invalid-feedback').text('Invalid email format'); // Display an error message
+            return;
         } else {
             // Valid email format
             $('#email').removeClass('is-invalid').addClass('is-valid');
             $('#fb_email').removeClass('invalid-feedback').addClass('valid-feedback').text('Looks good!');// Clear the error message
         }
-        const phonePattern = /^\+84\d{9,11}$/;
+        let phonePattern = /^\+84\d{9,11}$/;
         if (phonePattern.test(inpPhone)) {
             // Valid phone number format
             $('#phone').removeClass('is-invalid').addClass('is-valid');
@@ -39,9 +41,10 @@ $(document).ready(function () {
             // Invalid phone number format
             $('#phone').addClass('is-invalid');
             $('#fb_phone').removeClass('valid-feedback').addClass('invalid-feedback').text('Invalid Vietnamese phone number format!');
+            return;
         }
 
-        const specialCharacterRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
+        let specialCharacterRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
         if (inpPassword.length >= 8 && specialCharacterRegex.test(inpPassword)) {
             // Password is valid
             $('#password').removeClass('is-invalid').addClass('is-valid');
@@ -50,30 +53,30 @@ $(document).ready(function () {
             // Password is invalid
             $('#password').addClass('is-invalid');
             $('#fb_password').removeClass('valid-feedback').addClass('invalid-feedback').text('Password must be at least 8 characters and contain special characters');
+            return;
         }
 
         if (inpPassword !== confirmPassword) {
             $('#confirm_password').addClass('is-invalid');
             $("#fb_confirm_password").addClass('invalid-feedback').text("Passwords do not match!");
+            return;
         } else {
-            // Passwords match, you can proceed with registration
             $('#confirm_password').removeClass('is-invalid').addClass('is-valid');
             $("#fb_confirm_password").removeClass('invalid-feedback').addClass('valid-feedback').text("Valid password!");
-            // Here you can make an AJAX request to your registration API
         }
 
         if (inpPartnerCode === '') {
             inpPartnerCode = "";
         }
 
-        const registrationData = {
+        let registrationData = {
             "name": inpName,
             "email": inpEmail,
             "password": inpPassword,
             "phone": inpPhone,
             "partnercode": inpPartnerCode
         };
-
+        console.log(JSON.stringify(registrationData))
         fetch(apiRegisterUrl, {
             method: "POST",
             headers: {
