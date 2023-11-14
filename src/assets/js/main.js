@@ -970,6 +970,7 @@ function saveJoinContest(contest_id) {
   let headers = new Headers({
     Authorization: `Bearer ${jwtToken}`,
   });
+  // console.log(JSON.stringify(inpJoinContest));
 
   fetch(urlJoinContest, {
     method: "POST",
@@ -983,30 +984,20 @@ function saveJoinContest(contest_id) {
       return response.json(); // Parse the response JSON if needed
     })
     .then((dataResponse) => {
+      console.log(dataResponse);
       $("#join_contest_message")
         .removeClass()
         .addClass("fw-semibold text-success");
-      $("#join_contest_message").html(`
-        You have successfully participated in the competition. <br>
-        If you do not receive login information via email within 10 minutes, please contact us via email: support@fxchampionship.com or hotline: +84 919 720 567.
-      `);
+      $("#join_contest_message").text(dataResponse.message);
       greetingFunc();
     })
     .catch((error) => {
-      $("#join_contest_message")
-        .removeClass()
-        .addClass("fw-semibold text-danger");
-      $("#join_contest_message").html(
-        "You have already participated in this competition!"
-      );
-      greetingFunc();
       console.error("Error:", error);
     });
 }
 
 function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
   $("#confirm_to_join").prop("disabled", false);
-
   $("#this_contest_info").remove();
   let html_text = `
   <div id="this_contest_info">
