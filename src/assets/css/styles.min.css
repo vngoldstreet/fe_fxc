@@ -8,6 +8,30 @@ Orange #ffa500
 Violet #8f12fd
 */
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Màu nền của thanh cuộn */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Màu của thanh cuộn chính (thanh cuộn vị trí) */
+::-webkit-scrollbar-thumb {
+    background: rgb(93, 135, 255);
+    border-radius: 5px;
+}
+
+/* Màu của thanh cuộn khi di chuột lên */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(93, 135, 255);
+}
+
 /*** Footer ***/
 .footer {
     margin-top: 9rem;
@@ -19763,8 +19787,8 @@ ul {
 }
 
 .timeline-widget .timeline-item .timeline-time {
-    padding: 6px 16px 6px 0;
-    min-width: 90px
+    padding: 6px 6px 6px 0;
+    min-width: 60px;
 }
 
 .timeline-widget .timeline-item .timeline-badge-wrap .timeline-badge {
@@ -19786,4 +19810,9 @@ ul {
 
 .timeline-widget .timeline-item .timeline-badge.badge-primary {
     border: 2px solid #5D87FF
+}
+
+#out_notification{
+    max-height: 400px;
+    overflow-y: scroll;
 }

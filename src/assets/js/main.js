@@ -399,53 +399,6 @@ function getInformationOfTransaction(amount, type, id, name) {
   }
 }
 
-function setContestLists(contestLists) {
-  let htmlPrintToContest = `
-    <div class="row align-items-center">
-      <div class="col">
-        <span class="fw-bolder">CID</span>
-      </div>
-      <div class="col">
-        <span class="fw-bolder">Price</span>
-      </div>
-      <div class="col">
-        <span class="fw-bolder">Balance</span>
-      </div>
-      <div class="col">
-        <span class="fw-bolder">Rank</span>
-      </div>
-    </div>
-  `;
-
-  for (let key in contestLists) {
-    let amount = Number(contestLists[key].amount).toLocaleString();
-    let balance = Number(contestLists[key].start_balance).toLocaleString();
-
-    htmlPrintToContest += `
-      <div class="row mt-2">
-        <div class="col-3 text-center">
-          ${contestLists[key].contest_id.slice(0, 3)}...${contestLists[
-      key
-    ].contest_id.slice(-4)}
-        </div>
-        <div class="col-3 text-center">
-          ${amount} G
-        </div>
-        <div class="col-3 text-center">
-          $${balance}
-        </div>
-        <div class="col-3">
-          <button onclick="getLeaderBoard('${
-            contestLists[key].contest_id
-          }')" type="button" class="btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#leader_board"><i class="ti ti-award"></i></button>
-        </div>
-      </div>
-    `;
-  }
-
-  $("#contest-list").html(htmlPrintToContest);
-}
-
 function splitStringByIndex(inputString, index) {
   if (index >= 0 && index < inputString.length) {
     let firstPart = inputString.substring(0, index); // Get characters from the beginning up to the index
@@ -456,6 +409,59 @@ function splitStringByIndex(inputString, index) {
     // Index is out of bounds, return an error message or handle the situation as needed.
     return "Invalid index.";
   }
+}
+
+function setNotification(notifications) {
+  if (notifications.length === 0) {
+    $("#out_notification").html(
+      `<p>You have not received any notifications.</p>`
+    );
+    return;
+  }
+  let htmlPrint = `<ul class="timeline-widget mb-0 position-relative mb-n5">`;
+  let text_title = "";
+  let text_class = "";
+  for (let key in notifications) {
+    switch (notifications[key].type) {
+      case 1:
+        text_title = "Deposit";
+        text_class = "text-primary";
+        break;
+      case 2:
+        text_title = "Withdrawal";
+        text_class = "text-danger";
+        break;
+      case 3:
+        text_title = "Join a contest";
+        text_class = "text-primary";
+        break;
+      case 4:
+        text_title = "Re-join a contest";
+        text_class = "text-primary";
+        break;
+      default:
+        text_title = "";
+        break;
+    }
+
+    htmlPrint += `
+    <li class="timeline-item d-flex position-relative overflow-hidden">
+      <div class="timeline-time text-dark flex-shrink-0 text-end">${new Date(
+        notifications[key].CreatedAt
+      ).toLocaleDateString()}</div>
+        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+            <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+        </div>
+      <div class="timeline-desc fs-3 text-dark mt-n1">
+        <h6 class="${text_class}">${text_title}</h6>
+        <p class="fs-3">${notifications[key].message}</p>
+      </div>
+    </li> 
+    `;
+  }
+  htmlPrint += `</ul>`;
+  $("#out_notification").html(htmlPrint);
 }
 
 function maskEmail(email) {
@@ -735,18 +741,16 @@ function greetingFunc() {
     .then((dataResponse) => {
       let dataToSaveString = JSON.stringify(dataResponse);
       localStorage.setItem("data", dataToSaveString);
-
+      console.log(dataResponse);
       // Wallet info
       let wallet = dataResponse.wallet;
       setWallet(wallet);
 
+      let notification = dataResponse.notification;
+      setNotification(notification);
       // Transactions list
       let transactionData = dataResponse.transactions;
       setTransactionLists(transactionData);
-
-      // Contest lists by ID
-      let contestLists = dataResponse.contest_info_list;
-      setContestLists(contestLists);
 
       // All contest list
       let allContestListDatas = dataResponse.contest_list;
