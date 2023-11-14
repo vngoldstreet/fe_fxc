@@ -412,12 +412,6 @@ function splitStringByIndex(inputString, index) {
 }
 
 function setNotification(notifications) {
-  if (notifications.length === 0) {
-    $("#out_notification").html(
-      `<p>You have not received any notifications.</p>`
-    );
-    return;
-  }
   let htmlPrint = `<ul class="timeline-widget mb-0 position-relative mb-n5">`;
   let text_title = "";
   let text_class = "";
