@@ -810,7 +810,6 @@ $(document).ready(function () {
     $("#payment_methob_list").html(htmlPaymentMethob);
     $("#wd_confirmation").prop("disabled", false);
     $("#wd_confirmation").click(function () {
-      $("#wd_confirmation").prop("disabled", true);
       let userInfo = JSON.parse(localStorage.getItem("user"));
       if (userInfo.inreview === "not_yet") {
         $("#msg_withdraw")
@@ -822,19 +821,12 @@ $(document).ready(function () {
       let userWallet = JSON.parse(localStorage.getItem("data")).wallet;
       let inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
 
-      if (inpAmount <= 0) {
+      if (!isValidAmount(inpAmount)) {
         $("#withdraw_amount").addClass("is-invalid");
         $("#fb_withdraw_amount")
           .addClass("invalid-feedback")
           .text("The amount of Gold to be entered must be greater than 0."); // Display an error message
         return;
-      } else {
-        // Valid email format
-        $("#withdraw_amount").removeClass("is-invalid").addClass("is-valid");
-        $("#fb_withdraw_amount")
-          .removeClass("invalid-feedback")
-          .addClass("invalid-feedback")
-          .text("Look good"); // Clear the error message
       }
 
       if (inpAmount > userWallet.balance) {
@@ -844,7 +836,10 @@ $(document).ready(function () {
         return;
       }
 
+      $("#withdraw_amount").removeClass("is-invalid").addClass("is-valid");
+      $("#wd_confirmation").prop("disabled", true);
       $("#msg_withdraw").empty();
+
       let payid = $("#payment_methob_list").val();
       let jwtToken = getCookie("token");
       if (!jwtToken) {
@@ -897,7 +892,6 @@ $(document).ready(function () {
   });
 
   $("#create_qr_code").click(function () {
-    $("#create_qr_code").prop("disabled", true);
     let userInfo = JSON.parse(localStorage.getItem("user"));
     let inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
 
@@ -910,10 +904,11 @@ $(document).ready(function () {
 
     $("#qrcode").empty();
     $("#msg_deposit").empty();
-
+    $("#create_qr_code").prop("disabled", true);
     let bankNote = encodeURIComponent(
       `${userInfo.ID} ${inpAmount}G ${userInfo.name}`
     );
+
     let paymentInfo = {
       bank: bankName,
       account: bankNumber,
