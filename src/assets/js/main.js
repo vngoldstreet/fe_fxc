@@ -884,6 +884,10 @@ $(document).ready(function () {
   });
 });
 
+function isValidAmount(amount) {
+  return amount > 0 && amount !== null && amount !== undefined;
+}
+
 //Deposit
 $(document).ready(function () {
   $("#deposits").click(function () {
@@ -897,15 +901,15 @@ $(document).ready(function () {
     let userInfo = JSON.parse(localStorage.getItem("user"));
     let inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
 
-    $("#qrcode").empty();
-    $("#msg_deposit").empty();
-
-    if (inpAmount <= 0) {
+    if (!isValidAmount(inpAmount)) {
       $("#msg_deposit").html(
         "<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>"
       );
       return;
     }
+
+    $("#qrcode").empty();
+    $("#msg_deposit").empty();
 
     let bankNote = encodeURIComponent(
       `${userInfo.ID} ${inpAmount}G ${userInfo.name}`
