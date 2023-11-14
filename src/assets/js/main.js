@@ -735,7 +735,7 @@ function greetingFunc() {
     .then((dataResponse) => {
       let dataToSaveString = JSON.stringify(dataResponse);
       localStorage.setItem("data", dataToSaveString);
-      console.log(dataResponse);
+      // console.log(dataResponse);
       // Wallet info
       let wallet = dataResponse.wallet;
       setWallet(wallet);
