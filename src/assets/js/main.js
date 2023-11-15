@@ -95,17 +95,16 @@ function setAllContestLists(allContestListDatas) {
           <span class="fw-normal mb-0">${amount} G</span>
         </td>
         <td class="border-bottom-0">
-          <span class="fw-normal mb-0">${
-            allContestListDatas[key].current_person
-          }/${allContestListDatas[key].maximum_person}</span>
+          <span class="fw-normal mb-0">${allContestListDatas[key].current_person
+      }/${allContestListDatas[key].maximum_person}</span>
         </td>
         <td class="border-bottom-0">
           <span class="fw-normal mb-0">${totalPrizes.toLocaleString()} G</span>
         </td>
         <td class="border-bottom-0">
           <span class="fw-normal mb-0">$${allContestListDatas[
-            key
-          ].start_balance.toLocaleString()}</span>
+        key
+      ].start_balance.toLocaleString()}</span>
         </td>
         <td class="border-bottom-0">
           <div class="d-flex align-items-center gap-2">
@@ -113,11 +112,9 @@ function setAllContestLists(allContestListDatas) {
           </div>
         </td>
         <td class="border-bottom-0">
-          <button id="joinToContest" onclick="joinContest('${
-            allContestListDatas[key].contest_id
-          }','${start_at}','${expired_at}',${amount},${
-      allContestListDatas[key].start_balance
-    })" type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal" data-bs-target="#join_contest">Join</button>
+          <button id="joinToContest" onclick="joinContest('${allContestListDatas[key].contest_id
+      }','${start_at}','${expired_at}',${amount},${allContestListDatas[key].start_balance
+      })" type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal" data-bs-target="#join_contest">Join</button>
         </td>
       </tr>
     `;
@@ -441,8 +438,8 @@ function setNotification(notifications) {
     htmlPrint += `
     <li class="timeline-item d-flex position-relative overflow-hidden">
       <div class="timeline-time text-dark flex-shrink-0 text-end">${new Date(
-        notifications[key].CreatedAt
-      ).toLocaleDateString()}</div>
+      notifications[key].CreatedAt
+    ).toLocaleDateString()}</div>
         <div class="timeline-badge-wrap d-flex flex-column align-items-center">
             <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
             <span class="timeline-badge-border d-block flex-shrink-0"></span>
@@ -510,28 +507,24 @@ function getLeaderBoard(contest_id) {
           </td>
           <td class="border-bottom-0">
             <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(
-              myData.email
-            )}</span>
+        myData.email
+      )}</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal" style="color:#8957FF !important;">$${
-              myData.balance
-            }</span>
+            <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance
+        }</span>
           </td>
           <td class="border-bottom-0">
-            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${
-              myData.equity
-            }</span>
+            <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity
+        }</span>
           </td>
           <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${
-                                  myData.profit
-                                }</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit
+        }</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${
-                                  myData.estimate_prize
-                                }</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize
+        }</span>
                             </td>
         </tr>
       `;
@@ -547,8 +540,8 @@ function getLeaderBoard(contest_id) {
           </td>
           <td class="border-bottom-0">
             <span class="fw-normal">${maskEmail(
-              curLeaderBoard[key].email
-            )}</span>
+          curLeaderBoard[key].email
+        )}</span>
           </td>
           <td class="border-bottom-0">
             <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
@@ -557,14 +550,12 @@ function getLeaderBoard(contest_id) {
             <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
           </td>
           <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${
-                                  curLeaderBoard[key].profit
-                                }</span>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit
+          }</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${
-                                  curLeaderBoard[key].estimate_prize
-                                }</span>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize
+          }</span>
                             </td>
         </tr>
         `;
@@ -791,6 +782,7 @@ $(document).ready(function () {
 
   $("#withdraws").click(function () {
     $("#wd_confirmation").prop("disabled", false);
+    $("#withdraw_amount").val(0)
     let payment_methob = JSON.parse(localStorage.getItem("payment_methob"));
     $("#msg_withdraw").text("");
     if (payment_methob == null) {
@@ -808,6 +800,7 @@ $(document).ready(function () {
     $("#payment_methob_list").html(htmlPaymentMethob);
     $("#wd_confirmation").prop("disabled", false);
     $("#wd_confirmation").click(function () {
+      $("#wd_confirmation").prop("disabled", true);
       let userInfo = JSON.parse(localStorage.getItem("user"));
       if (userInfo.inreview === "not_yet") {
         $("#msg_withdraw")
@@ -818,15 +811,19 @@ $(document).ready(function () {
 
       let userWallet = JSON.parse(localStorage.getItem("data")).wallet;
       let inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
-
       if (!isValidAmount(inpAmount)) {
         $("#withdraw_amount").addClass("is-invalid");
         $("#fb_withdraw_amount")
           .addClass("invalid-feedback")
           .text("The amount of Gold to be entered must be greater than 0."); // Display an error message
+        setTimeout(function () {
+          $("#wd_confirmation").prop("disabled", false);
+        }, 3000);
         return;
+      } else {
+        $("#withdraw_amount").addClass("is-valid");
       }
-
+      $("#withdraw_amount").val(0)
       if (inpAmount > userWallet.balance) {
         $("#msg_withdraw").html(
           `<p id='err_message' class='text-danger'>The withdrawal amount must not exceed ${userWallet.balance} Gold.</p>`
@@ -835,7 +832,6 @@ $(document).ready(function () {
       }
 
       $("#withdraw_amount").removeClass("is-invalid").addClass("is-valid");
-      $("#wd_confirmation").prop("disabled", true);
       $("#msg_withdraw").empty();
 
       let payid = $("#payment_methob_list").val();
@@ -852,27 +848,36 @@ $(document).ready(function () {
       let headers = new Headers({
         Authorization: `Bearer ${jwtToken}`,
       });
-
-      fetch(urlWithdrawal, {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(inpWithdraw),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
+      $("#msg_withdraw").html(
+        `<p id='err_message' class='text-warning'>Processing</p>`
+      );
+      setTimeout(function () {
+        $("#msg_withdraw").html(
+          `<p id='err_message' class='text-warning'>Send order to server...</p>`
+        );
+        fetch(urlWithdrawal, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(inpWithdraw),
         })
-        .then((dataResponse) => {
-          $("#msg_withdraw").html(
-            `<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`
-          );
-          greetingFunc();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((dataResponse) => {
+            $("#msg_withdraw").html(
+              `<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`
+            );
+            setTimeout(function () {
+              greetingFunc();
+            }, 3000);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }, 3000);
     });
   });
 });
@@ -884,6 +889,7 @@ function isValidAmount(amount) {
 //Deposit
 $(document).ready(function () {
   $("#deposits").click(function () {
+    $("#withdraw_amount").val(0)
     $("#create_qr_code").prop("disabled", false);
     $("#qrcode").empty();
     $("#msg_deposit").empty();
@@ -931,25 +937,27 @@ $(document).ready(function () {
     let headers = new Headers({
       Authorization: `Bearer ${jwtToken}`,
     });
-
-    fetch(urlDeposit, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(inpDeposit),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+    setTimeout(function () {
+      fetch(urlDeposit, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(inpDeposit),
       })
-      .then((dataResponse) => {
-        $("#deposit_amount").val(0);
-        greetingFunc();
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((dataResponse) => {
+          setTimeout(function () {
+            greetingFunc();
+          }, 3000);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }, 1500);
   });
 });
 
