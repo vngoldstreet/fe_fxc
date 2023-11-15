@@ -76,7 +76,7 @@ $(document).ready(function () {
             "phone": inpPhone,
             "partnercode": inpPartnerCode
         };
-
+        console.log(JSON.stringify(registrationData))
         fetch(apiRegisterUrl, {
             method: "POST",
             headers: {
