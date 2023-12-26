@@ -28,9 +28,9 @@
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-    {{template "left-sidebar.html"}}
+    {{template "left-sidebar.html" .}}
     <div class="body-wrapper">
-      {{template "header.html"}}
+      {{template "header.html" .}}
       <div class="container-fluid">
         <!--  Row 1 -->
         <div class="row">
@@ -55,9 +55,10 @@
                     <h5 class="card-title mb-9 fw-semibold">Wallets</h5>
                     <div class="row align-items-center">
                       <div class="col-12">
-                        <h4 id="wallet_balance" class="fw-semibold mb-3 text-warning"></h4>
+                        <h4 class="fw-semibold mb-3 text-warning"><i class="ti ti-wallet text-warning"></i>
+                          {{.wallet_balance}} Gold</h4>
                         <div class="d-flex align-items-center mb-3">
-                          <p id="wallet_time"></p>
+                          <p class="text-dark me-1 fs-3 mb-0">Updated: {{.wallet_updated}}</p>
                         </div>
                       </div>
                       <div class="col-12">
@@ -80,10 +81,25 @@
                     <div class="mb-4">
                       <h5 class="card-title fw-semibold">Recent Notifications</h5>
                     </div>
-                    <div class="" id="out_notification">
-                      
-                      
-                      
+                    <div id="out_notification" class="">
+                      <ul class="timeline-widget mb-0 position-relative mb-n5">
+                        {{range .notifications}}
+                        <li class="timeline-item d-flex position-relative overflow-hidden">
+                          <div class="timeline-time text-dark flex-shrink-0 text-end">{{.Time}}</div>
+                          <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                            <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                          </div>
+                          <div class="timeline-desc fs-3 text-dark mt-n1">
+                            {{ if eq .Type 2 }} <h6 class="text-danger">{{.Title}}</h6>
+                            {{ else }}
+                            <h6 class="text-primary">{{.Title}}</h6>
+                            {{ end }}
+                            <p class="fs-3">{{.Message}}</p>
+                          </div>
+                        </li>
+                        {{end}}
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -133,7 +149,45 @@
                       </tr>
                     </thead>
                     <tbody id="all-contest-list">
-
+                      {{range .contests}}
+                      <tr>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal">{{.ID}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal">{{.ContestID}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal">{{.StartAt}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal">{{.ExpireAt}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal mb-0">{{.Amount}} G</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal mb-0">{{.Joined}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal mb-0">{{.TotalPrize}} G</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal mb-0">${{.Balance}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="badge {{.Class}} rounded-1 fw-semibold">{{.Status}}</span>
+                          </div>
+                        </td>
+                        <td class="border-bottom-0">
+                          <button id="joinToContest"
+                            onclick="joinContest('{{.ContestID}}','{{.StartAt}}','{{.ExpireAt}}','{{.Amount}}','{{.Balance}}')"
+                            type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal"
+                            data-bs-target="#join_contest">Join</button>
+                        </td>
+                      </tr>
+                      {{end}}
                     </tbody>
                   </table>
                 </div>
@@ -149,7 +203,7 @@
                     <thead class="text-dark fs-4">
                       <tr>
                         <th class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0">ID</h6>
+                          <h6 class="fw-semibold mb-0">TransactionID</h6>
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Type</h6>
@@ -166,12 +220,33 @@
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Status</h6>
                         </th>
-                        <th class="border-bottom-0">
-                        </th>
                       </tr>
                     </thead>
                     <tbody id="transaction-list">
-
+                      {{range .transactions}}
+                      <tr>
+                        <td class="border-bottom-0">
+                          <span class="fw-semibold">{{.TranID}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-semibold">{{.TypeString}}<br>{{.ContestID}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal">{{.CreatedAt}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal">{{.UpdatedAt}}</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <span class="fw-normal mb-0">{{.Amount}} G</span>
+                        </td>
+                        <td class="border-bottom-0">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="badge {{.Background}} rounded-1 fw-semibold">{{.Status}}</span>
+                          </div>
+                        </td>
+                      </tr>
+                      {{end}}
                     </tbody>
                   </table>
                 </div>
@@ -239,26 +314,6 @@
             <button id="create_qr_code" type="button" class="btn btn-secondary w-100">Confirmation</button>
             <div id="qrcode"></div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <br>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          <!-- <button type="button" class="btn btn-success">Save changes</button> -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal -->
-  <div class="modal fade" id="modal_transaction_info" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Transaction information</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div id="img_qrcode_info"></div>
         </div>
         <div class="modal-footer">
           <br>
@@ -336,7 +391,7 @@
       </div>
     </div>
   </div>
-<!-- 
+  <!-- 
   <div class="bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s" id="contact">
     <div class="container">
       <div class="copyright">
