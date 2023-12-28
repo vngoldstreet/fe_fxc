@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -195,6 +196,11 @@ func main() {
 			"title": "Login",
 		})
 	})
+	r.GET("/reset-password", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "authentication-reset-password.html", gin.H{
+			"title": "Reset Password",
+		})
+	})
 	r.GET("/register", func(c *gin.Context) {
 		code := c.Query("partner")
 		c.HTML(http.StatusOK, "authentication-register.html", gin.H{
@@ -232,6 +238,8 @@ func main() {
 			"title": "Partner",
 		})
 	})
+	r.POST("/api/reset-password", ResetPasswordHandle)
+
 	r.GET("/api/chart", func(c *gin.Context) {
 		myToken, err := c.Cookie("token")
 		if err != nil {
@@ -273,7 +281,48 @@ func main() {
 		})
 	})
 	r.Run(":4200")
+}
 
+type ResetPassword struct {
+	Email string `json:"email" binding:"required"`
+}
+
+func ResetPasswordHandle(c *gin.Context) {
+	var input ResetPassword
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	jsonData, err := json.Marshal(input)
+	if err != nil {
+		fmt.Println("Error encoding JSON:", err)
+		return
+	}
+
+	// Send the POST request with JSON body
+	resp, err := http.Post("https://admin.fxchampionship.com/public/reset-password", "application/json", bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println("Error sending POST request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Check the response status code
+	if resp.StatusCode != http.StatusOK {
+		fmt.Println("Unexpected status code:", resp.Status)
+		return
+	}
+
+	// Read the response body if needed
+	var result map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		fmt.Println("Error decoding response:", err)
+		return
+	}
+
+	// Print the result
+	c.JSON(http.StatusOK, gin.H{"message": "success"})
 }
 
 func formatNumberWithComma(number int) string {
