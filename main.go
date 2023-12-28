@@ -34,7 +34,9 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		myToken, err := c.Cookie("token")
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+			c.HTML(http.StatusOK, "authentication-login.html", gin.H{
+				"title": "Login",
+			})
 			return
 		}
 
