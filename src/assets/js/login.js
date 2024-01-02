@@ -31,7 +31,6 @@ $(document).ready(function () {
                 <span class="visually-hidden">Loading...</span>
             </div>
             `)
-
         let inpLoginData = {
             "email": inpEmail,
             "password": inpPassword
