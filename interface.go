@@ -176,3 +176,39 @@ type CompetitionDataResponses struct {
 		BuyinStatus  bool   `json:"buyin_status"`
 	} `json:"data"`
 }
+
+type HistoryCompetitions struct {
+	Data []struct {
+		ContestID    string    `json:"contest_id"`
+		CustomerID   int       `json:"customer_id"`
+		FxID         string    `json:"fx_id"`
+		FxMasterPw   string    `json:"fx_master_pw"`
+		FxInvesterPw string    `json:"fx_invester_pw"`
+		StatusID     int       `json:"status_id"`
+		Balance      float64   `json:"balance"`
+		Equity       float64   `json:"equity"`
+		Profit       float64   `json:"profit"`
+		StartBalance float64   `json:"start_balance"`
+		Rank         int       `json:"rank"`
+		StartAt      time.Time `json:"start_at"`
+		ExpiredAt    time.Time `json:"expired_at"`
+	} `json:"data"`
+}
+
+type HistoryCompetitionPrints struct {
+	ContestID    string `json:"contest_id"`
+	CustomerID   int    `json:"customer_id"`
+	FxID         string `json:"fx_id"`
+	FxMasterPw   string `json:"fx_master_pw"`
+	FxInvesterPw string `json:"fx_invester_pw"`
+	StatusID     string `json:"status_id"`
+	Balance      string `json:"balance"`
+	Equity       string `json:"equity"`
+	Profit       string `json:"profit"`
+	StartBalance string `json:"start_balance"`
+	Rank         int    `json:"rank"`
+	StartAt      string `json:"start_at"`
+	ExpiredAt    string `json:"expired_at"`
+	Class        string
+	Growth       string
+}

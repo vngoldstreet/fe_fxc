@@ -253,9 +253,78 @@ func main() {
 			}
 		}
 
+		requestHistoryUrl := "https://auth.fxchampionship.com/auth/contest/get-history-contest-by-uid"
+		// Create a new HTTP client
+		clientHistory := &http.Client{}
+
+		// Create a new GET request
+		reqHis, errHis := http.NewRequest("GET", requestHistoryUrl, nil)
+		if errHis != nil {
+			fmt.Println("Error creating request:", err)
+			return
+		}
+
+		// Add the Bearer token to the request header
+		reqHis.Header.Set("Authorization", "Bearer "+myToken)
+
+		// Send the request
+		respHistory, err2 := clientHistory.Do(reqHis)
+		if err2 != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Failure"})
+			return
+		}
+
+		defer resp.Body.Close()
+
+		var responseHistory HistoryCompetitions
+		if err := json.NewDecoder(respHistory.Body).Decode(&responseHistory); err != nil {
+			fmt.Println("Error decoding response:", err)
+			return
+		}
+
+		stringResponseHistory := []HistoryCompetitionPrints{}
+		for _, v := range responseHistory.Data {
+			status := ""
+			class := ""
+			switch v.StatusID {
+			case 0:
+				status = "Pending"
+				class = "bg-light"
+			case 1:
+				status = "Processing"
+				class = "bg-warning"
+			case 2:
+				status = "Finished"
+				class = "bg-success"
+			case 3:
+				status = "Cancelled"
+				class = "text-danger"
+			}
+			grow := (v.Balance - v.StartBalance) / v.StartBalance * 100
+			strGrow := fmt.Sprintf("%.2f", grow)
+			history := HistoryCompetitionPrints{
+				ContestID:    v.ContestID,
+				CustomerID:   v.CustomerID,
+				FxID:         v.FxID,
+				FxMasterPw:   v.FxMasterPw,
+				FxInvesterPw: v.FxInvesterPw,
+				StatusID:     status,
+				Balance:      formatNumberFloatWithComma(v.Balance),
+				Equity:       formatNumberFloatWithComma(v.Equity),
+				Profit:       formatNumberFloatWithComma(v.Profit),
+				StartBalance: formatNumberFloatWithComma(v.StartBalance),
+				Rank:         v.Rank,
+				StartAt:      v.StartAt.Format("2006-01-02 15:04:05"),
+				ExpiredAt:    v.ExpiredAt.Format("2006-01-02 15:04:05"),
+				Class:        class,
+				Growth:       strGrow,
+			}
+			stringResponseHistory = append(stringResponseHistory, history)
+		}
 		c.HTML(http.StatusOK, "competition.html", gin.H{
-			"title": "My Competitions",
-			"data":  responseData.Data,
+			"title":   "My Competitions",
+			"data":    responseData.Data,
+			"contest": stringResponseHistory,
 		})
 	})
 	r.GET("/security", func(c *gin.Context) {
@@ -367,6 +436,24 @@ func ResetPasswordHandle(c *gin.Context) {
 
 func formatNumberWithComma(number int) string {
 	strNumber := strconv.Itoa(number)
+	var formattedNumber []rune
+
+	for i := len(strNumber) - 1; i >= 0; i-- {
+		formattedNumber = append(formattedNumber, []rune(strNumber)[i])
+		if i > 0 && (len(strNumber)-i)%3 == 0 {
+			formattedNumber = append(formattedNumber, ',')
+		}
+	}
+
+	for i, j := 0, len(formattedNumber)-1; i < j; i, j = i+1, j-1 {
+		formattedNumber[i], formattedNumber[j] = formattedNumber[j], formattedNumber[i]
+	}
+
+	return string(formattedNumber)
+}
+
+func formatNumberFloatWithComma(number float64) string {
+	strNumber := fmt.Sprintf("%.0f", number)
 	var formattedNumber []rune
 
 	for i := len(strNumber) - 1; i >= 0; i-- {

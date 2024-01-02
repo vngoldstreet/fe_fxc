@@ -64,6 +64,81 @@
             </div>
           </div>
         </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title fw-semibold mb-4">My history of competitions</h5>
+            <div class="table-responsive table-option">
+              <table class="table text-nowrap mb-0 align-middle">
+                <thead class="text-dark fs-4">
+                  <tr>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">ContestID</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">StartAt</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">ExpireAt</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Login</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Start Balance</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Finish Balance</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Growth</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Rank</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0">Status</h6>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="all-history-contest-list">
+                  {{range .contest}}
+                  <tr>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal">{{.ContestID}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal">{{.StartAt}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal">{{.ExpiredAt}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal mb-0">{{.FxID}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal mb-0">${{.StartBalance}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal mb-0">${{.Balance}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal mb-0">{{.Growth}} %</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <span class="fw-normal mb-0">{{.Rank}}</span>
+                    </td>
+                    <td class="border-bottom-0">
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge {{.Class}} rounded-1 fw-semibold">{{.StatusID}}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  {{end}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
