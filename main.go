@@ -157,12 +157,7 @@ func main() {
 				status = "Cancelled"
 				class = "text-danger"
 			}
-			totalPrize := v.CurrentPerson * v.Amount
-			estimatePrize := v.MaximumPerson * v.Amount * 70 / 100
-
-			if totalPrize < estimatePrize {
-				totalPrize = estimatePrize
-			}
+			totalPrize := v.Account * v.Amount * 70 / 100
 
 			contest := ContestLists{
 				ID:         i + 1,
