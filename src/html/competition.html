@@ -36,15 +36,36 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title fw-semibold mb-4">My list of competitions</h5>
-            <div class="mt-5">
+            <div class="">
               <div id="competition" class="row">
+                {{range .data}}
+                <div class="col-lg-3 col-md-6 mt-3">
+                  <img class="w-100 rounded" src="src/assets/images/fxcentrum-live-Contest.jpg">
+                  <h5 class="fw-bolder mt-3 text-violet-fxc">Competition ID: {{.ContestID}}</h5>
+                  <p class="card-text"><span class="fw-bolder">FXID:</span> {{.FxID}}</p>
+                  <p class="card-text"><span class="fw-bolder">Server:</span> CPTMarkets-Intl</p>
+                  <p class="card-text" type="password"><span class="fw-bolder">Master Password:</span> <input
+                      id="master-{{.ContestID}}" type="password" class="border-0" value="{{.FxMasterPw}}"></p>
+                  <p class="card-text" type="password"><span class="fw-bolder">Master Password:</span> <input
+                      id="invester-{{.ContestID}}" type="password" class="border-0" value="{{.FxInvesterPw}}"></p>
+                  <div class="d-flex justify-content-between">
+                    <button id="btn-{{.ContestID}}" type="button" onclick="showpassword('{{.ContestID}}')"
+                      class="btn btn-outline-primary">Show
+                      password</button>
+                    {{if eq .BuyinStatus true}}
+                    <button type="button" onclick="confirmToReJoin('{{.ContestID}}')" class="btn btn-outline-success"
+                      data-bs-toggle="modal" data-bs-target="#re_join_contest">Join
+                      again</button>
+                    {{end}}
+                  </div>
+                  {{end}}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
   <div class="modal fade" id="re_join_contest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

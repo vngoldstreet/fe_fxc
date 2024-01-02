@@ -214,8 +214,53 @@ func main() {
 		})
 	})
 	r.GET("/my-competitions", func(c *gin.Context) {
+		myToken, err := c.Cookie("token")
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+			return
+		}
+
+		requestUrl := "https://auth.fxchampionship.com/auth/contest/get-contest-by-uid"
+		// Create a new HTTP client
+		client := &http.Client{}
+
+		// Create a new GET request
+		req, err := http.NewRequest("GET", requestUrl, nil)
+		if err != nil {
+			fmt.Println("Error creating request:", err)
+			return
+		}
+
+		// Add the Bearer token to the request header
+		req.Header.Set("Authorization", "Bearer "+myToken)
+
+		// Send the request
+		resp, err := client.Do(req)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Failure"})
+			return
+		}
+
+		defer resp.Body.Close()
+
+		var responseData CompetitionDataResponses
+		if err := json.NewDecoder(resp.Body).Decode(&responseData); err != nil {
+			fmt.Println("Error decoding response:", err)
+			return
+		}
+
+		for i := range responseData.Data {
+			v := &responseData.Data[i]
+			v.BuyinStatus = false
+			percent := v.Balance / v.StartBalance * 100
+			if percent < 5 {
+				v.BuyinStatus = true
+			}
+		}
+
 		c.HTML(http.StatusOK, "competition.html", gin.H{
 			"title": "My Competitions",
+			"data":  responseData.Data,
 		})
 	})
 	r.GET("/security", func(c *gin.Context) {
