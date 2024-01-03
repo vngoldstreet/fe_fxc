@@ -311,10 +311,10 @@ $(document).ready(function () {
 
             $("#wd_confirmation").prop("disabled", true);
             $("#wd_confirmation").html(`
-      <div class="spinner-border spinner-border-sm" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      `)
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                `)
 
             let inpWithdraw = {
                 amount: inpAmount, // Use the parsed input value
@@ -369,6 +369,7 @@ function isValidAmount(amount) {
 $(document).ready(function () {
     $("#deposits").on("click", function (e) {
         e.preventDefault()
+        $("#create_qr_code").prop("disabled", false);
         $("#withdraw_amount").val(0)
         $("#qrcode").empty();
         $("#msg_deposit").empty();
@@ -391,10 +392,10 @@ $(document).ready(function () {
 
         $("#create_qr_code").prop("disabled", true);
         $("#create_qr_code").html(`
-      <div class="spinner-border spinner-border-sm" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      `)
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            `)
 
         let bankNote = encodeURIComponent(
             `${userInfo.ID} ${inpAmount}G ${userInfo.name}`
@@ -437,10 +438,8 @@ $(document).ready(function () {
                     return response.json();
                 })
                 .then((dataResponse) => {
-                    setTimeout(function () {
-                        $("#create_qr_code").prop("disabled", false);
-                        $("#create_qr_code").text("Confirmation")
-                    }, 3000);
+                    $("#create_qr_code").text("Confirmation")
+                    $("#msg_deposit").removeClass().addClass("text-success").text("Please make a transfer to the bank account below or scan the QR code. After completing the transfer, if you do not receive Gold within 10 minutes from the time you initiate the bank transfer, please contact us via email: support@fxchampionship.com or hotline: +84 919 720 567. Thank you!")
                 })
                 .catch((error) => {
                     console.error("Error:", error);
