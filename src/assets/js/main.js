@@ -488,7 +488,7 @@ async function saveJoinContest(contest_id, amount) {
     try {
         let userWallet = await fetchAsync('api/get-wallet');
         if (amount > userWallet.balance) {
-            $("#join_contest_message").removeClass().addClass(`text-danger`).text("Insufficient funds to complete this transaction.")
+            $("#join_contest_message").removeClass().addClass(`text-danger`).text("Insufficient funds to join this competition!")
             return
         }
         $("#confirm_to_join").prop("disabled", true);
