@@ -1,32 +1,8 @@
-const baseUrl = "https://auth.fxchampionship.com";
-// const baseUrl = "http://localhost:8082";
-const urlGreetings = baseUrl + "/auth/greetings";
-const redirectLoginURL = "/login";
-const urlJoinContest = baseUrl + "/auth/contest/join-contest-by-uid";
-const urlDeposit = baseUrl + "/auth/user-wallet/deposit";
-const urlWithdrawal = baseUrl + "/auth/user-wallet/withdraw";
-const urlLeaderBoard = baseUrl + "/auth/contest/get-leaderboard-by-contestid";
-const urlGetPaymentMethob = baseUrl + "/auth/user-wallet/get-payment-method";
-
-//---
-const bankName = "acb";
-const bankNumber = "966965488";
-const bankUserName = "BUI ANH LINH";
-const rateGold = 24000;
-
-function getCookie(cookieName) {
-    var name = cookieName + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var cookieArray = decodedCookie.split(";");
-
-    for (var i = 0; i < cookieArray.length; i++) {
-        var cookie = cookieArray[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return "";
-}
+let bankName = "acb";
+let bankFullName = "ACB - Ngân hàng thương mại cổ phần Á Châu";
+let bankNumber = "966965488";
+let bankUserName = "BUI ANH LINH";
+let rateGold = 24000;
 
 function getInformationOfTransaction(amount, type, id, name) {
     if (Number(type) === 1) {
@@ -67,11 +43,11 @@ function getInformationOfTransaction(amount, type, id, name) {
         }
 
         let htmlText = `
-      <div id="this_contest_info">
-        <h6>Transaction type: ${textType}</h6>
-        <h6><span>Amount:</span> $${amount.toLocaleString()}</h6>
-      </div>
-    `;
+        <div id="this_contest_info">
+            <h6>Transaction type: ${textType}</h6>
+            <h6><span>Amount:</span> $${amount.toLocaleString()}</h6>
+        </div>
+        `;
         $("#img_qrcode_info").html(htmlText);
     }
 }
@@ -215,71 +191,70 @@ function setChartGreetings() {
         });
 }
 
-$(function () {
+$(document).ready(function () {
     setChartGreetings()
+    $("#withdrawls").on("click", function (e) {
+        e.preventDefault()
+        handleWithDrawls()
+    })
+
+    $("#deposits").on("click", function (e) {
+        e.preventDefault()
+        $("#create_qr_code").show()
+        $("#create_qr_code").prop("disabled", false);
+        $("#qrcode").empty();
+        $("#msg_deposit").empty();
+        handleDeposit()
+    });
 });
 
-$(document).ready(function () {
-    let jwtToken = getCookie("token");
-    if (!jwtToken) {
-        window.location.href = "/login";
-    }
-    let headers = new Headers({
-        Authorization: `Bearer ${jwtToken}`,
-    });
-    fetch(urlGetPaymentMethob, {
-        method: "GET",
-        headers: headers,
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json(); // Parse the response JSON if needed
-        })
-        .then((dataResponse) => {
-            let payment_methob = JSON.stringify(dataResponse.data);
-            localStorage.setItem("payment_methob", payment_methob);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+let fetchAsync = async (url) => {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+};
 
-    $("#withdraws").on("click", function (e) {
-        e.preventDefault()
-        // $("#wd_confirmation").prop("disabled", false);
-        $("#withdraw_amount").val(0)
-        let payment_methob = JSON.parse(localStorage.getItem("payment_methob"));
-        $("#msg_withdraw").text("");
-        if (payment_methob == null) {
+let handleWithDrawls = async () => {
+    try {
+        $("#wd_confirmation").prop("disabled", true);
+        let paymentMethob = await fetchAsync('api/get-payment-methob');
+        $("#msg_withdrawl").text("");
+        if (!paymentMethob) {
             let html_err = `<span class="text-danger">Please add payment methob first.<a href="https://crm.fxchampionship.com/user">Click
-            here!</a></span>`;
-            $("#msg_withdraw").html(html_err);
+                here!</a></span>`;
+            $("#msg_withdrawl").html(html_err);
             return;
         }
 
         let htmlPaymentMethob = "";
-        for (let key in payment_methob) {
+        for (let key in paymentMethob) {
             htmlPaymentMethob += `
-      <option value="${payment_methob[key].ID}">${payment_methob[key].bank_name} - ${payment_methob[key].holder_name} - ${payment_methob[key].holder_number}</option>
-      `;
+            <option value="${paymentMethob[key].ID}">${paymentMethob[key].bank_name} - ${paymentMethob[key].holder_name} - ${paymentMethob[key].holder_number}</option>
+            `;
         }
 
         $("#payment_methob_list").html(htmlPaymentMethob);
-        $("#wd_confirmation").prop("disabled", false);
 
+        let userInfo = await fetchAsync('api/get-user-info');
+        if (userInfo.in_review === "not_yet") {
+            $("#msg_withdrawl").removeClass()
+                .addClass("text-danger")
+                .text("Please verify your account first.");
+            return;
+        }
+
+        let userWallet = await fetchAsync('api/get-wallet');
+        if (!userWallet) {
+            $("#msg_withdrawl").removeClass()
+                .addClass("text-danger")
+                .text("Insufficient balance in the wallet to perform the withdrawal.");
+            return;
+        }
+        $("#wd_confirmation").prop("disabled", false);
         $("#wd_confirmation").on("click", function (e) {
             e.preventDefault()
-            let userInfo = JSON.parse(localStorage.getItem("user"));
-            if (userInfo.inreview === "not_yet") {
-                $("#msg_withdraw")
-                    .addClass("text-danger")
-                    .text("Please verify your account first.");
-                return;
-            }
-
-            let userWallet = parseInt($("#m_wallet_balance").val());
             let inpAmount = parseInt($("#withdraw_amount").val()); // Parse input value to float
+
             if (!isValidAmount(inpAmount)) {
                 $("#withdraw_amount").addClass("is-invalid");
                 $("#fb_withdraw_amount")
@@ -317,116 +292,106 @@ $(document).ready(function () {
                 `)
 
             let inpWithdraw = {
-                amount: inpAmount, // Use the parsed input value
-                payment_methob: Number(payid),
+                "amount": inpAmount, // Use the parsed input value
+                "payment_methob": Number(payid),
             };
 
-            let headers = new Headers({
-                Authorization: `Bearer ${jwtToken}`,
-            });
             $("#msg_withdraw").html(
                 `<p id='err_message' class='text-warning'>Processing</p>`
             );
+            console.log(inpWithdraw)
+            let headers = new Headers({
+                Authorization: `Bearer ${jwtToken}`,
+            });
 
-            setTimeout(function () {
-                $("#msg_withdraw").html(
-                    `<p id='err_message' class='text-warning'>Send order to server...</p>`
-                );
-                fetch(urlWithdrawal, {
-                    method: "POST",
-                    headers: headers,
-                    body: JSON.stringify(inpWithdraw),
+            fetch('api/withdrawal', {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(inpWithdraw),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
                 })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Network response was not ok");
-                        }
-                        return response.json();
-                    })
-                    .then((dataResponse) => {
-                        $("#msg_withdraw").html(
-                            `<p id='err_message' class='text-success'>You have successfully initiated a withdrawal request: ${inpAmount} Gold.</p>`
-                        );
+                .then((dataResponse) => {
+                    if (dataResponse.code === 429) {
+                        $("#msg_withdrawl").removeClass().addClass(dataResponse.class)
+                        startCountdown(15, dataResponse.message, "msg_withdrawl");
                         setTimeout(function () {
                             $("#wd_confirmation").prop("disabled", false);
                             $("#wd_confirmation").text("Confirmation")
-                            window.location.reload()
                         }, 3000);
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-            }, 3000);
-        });
-    });
-});
+                        return
+                    }
+                    $("#msg_withdrawl").html(
+                        `<p id='err_message' class='${dataResponse.class}'>${dataResponse.message}</p>`
+                    );
+                    setTimeout(function () {
+                        $("#wd_confirmation").prop("disabled", false);
+                        $("#wd_confirmation").text("Confirmation")
+                        window.location.reload()
+                    }, 3000);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        })
+    } catch (error) {
+        console.error('Error during fetch:', error);
+    }
+};
 
 function isValidAmount(amount) {
     return amount > 0 && amount !== null && amount !== undefined;
 }
 
-//Deposit
-$(document).ready(function () {
-    $("#deposits").on("click", function (e) {
-        e.preventDefault()
-        $("#create_qr_code").prop("disabled", false);
-        $("#withdraw_amount").val(0)
-        $("#qrcode").empty();
-        $("#msg_deposit").empty();
-    });
-
-    $("#create_qr_code").on("click", function (e) {
-        e.preventDefault()
-        let userInfo = JSON.parse(localStorage.getItem("user"));
-        let inpAmount = parseFloat($("#deposit_amount").val()); // Parse input value to float
-
-        if (!isValidAmount(inpAmount)) {
+let handleDeposit = async () => {
+    try {
+        let userInfo = await fetchAsync('api/get-user-info');
+        let checkDeposit = await fetchAsync('api/check-deposit');
+        if (!checkDeposit.deposit_accept) {
             $("#msg_deposit").html(
-                "<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>"
+                "<p id='err_message' class='text-danger'>Please complete your previous transaction before initiating a new one or contact support via email: support@fxchampionship.com or hotline: +84 919 720 567. Thank you!</p>"
             );
-            return;
+            return
         }
 
-        $("#qrcode").empty();
-        $("#msg_deposit").empty();
+        $("#create_qr_code").on("click", function (e) {
+            e.preventDefault()
+            let inpAmount = parseInt($("#deposit_amount").val()); // Parse input value to float
 
-        $("#create_qr_code").prop("disabled", true);
-        $("#create_qr_code").html(`
+            if (!isValidAmount(inpAmount)) {
+                $("#msg_deposit").html(
+                    "<p id='err_message' class='text-danger'>The amount must be greater than 0.</p>"
+                );
+                return;
+            }
+
+            $("#qrcode").empty();
+            $("#msg_deposit").empty();
+
+            $("#create_qr_code").prop("disabled", true);
+            $("#create_qr_code").html(`
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
             `)
 
-        let bankNote = encodeURIComponent(
-            `${userInfo.ID} ${inpAmount}G ${userInfo.name}`
-        );
+            let jwtToken = getCookie("token");
+            if (!jwtToken) {
+                window.location.href = "/login";
+            }
+            let inpDeposit = {
+                amount: inpAmount,
+            };
 
-        let paymentInfo = {
-            bank: bankName,
-            account: bankNumber,
-            name: bankUserName,
-            amount: inpAmount * rateGold, // Amount to be transferred
-            note: bankNote,
-        };
+            let headers = new Headers({
+                Authorization: `Bearer ${jwtToken}`,
+            });
 
-        let imgURL = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
-
-        let htmlPrintToQRCode = `<img id="img_qrcode" class="w-100" src="${imgURL}">`;
-        $("#qrcode").html(htmlPrintToQRCode);
-
-        let jwtToken = getCookie("token");
-        if (!jwtToken) {
-            window.location.href = "/login";
-        }
-        let inpDeposit = {
-            amount: inpAmount,
-        };
-
-        let headers = new Headers({
-            Authorization: `Bearer ${jwtToken}`,
-        });
-        setTimeout(function () {
-            fetch(urlDeposit, {
+            fetch('api/deposit', {
                 method: "POST",
                 headers: headers,
                 body: JSON.stringify(inpDeposit),
@@ -438,81 +403,166 @@ $(document).ready(function () {
                     return response.json();
                 })
                 .then((dataResponse) => {
+                    if (dataResponse.code == 429) {
+                        $("#msg_deposit").removeClass().addClass(dataResponse.class)
+                        startCountdown(15, dataResponse.message, "msg_deposit");
+                        setTimeout(function () {
+                            $("#create_qr_code").text("Confirmation")
+                            $("#create_qr_code").prop("disabled", false);
+                        }, 1000);
+                        return
+                    }
+
+                    $("#create_qr_code").hide()
                     $("#create_qr_code").text("Confirmation")
-                    $("#msg_deposit").removeClass().addClass("text-success").text("Please make a transfer to the bank account below or scan the QR code. After completing the transfer, if you do not receive Gold within 10 minutes from the time you initiate the bank transfer, please contact us via email: support@fxchampionship.com or hotline: +84 919 720 567. Thank you!")
+                    $("#msg_deposit").removeClass().addClass(dataResponse.class).text(dataResponse.message)
+                    let bankNote = encodeURIComponent(
+                        `${dataResponse.ID} ${userInfo.email}`
+                    );
+
+                    let paymentInfo = {
+                        bank: bankName,
+                        account: bankNumber,
+                        name: bankUserName,
+                        amount: inpAmount * rateGold, // Amount to be transferred
+                        note: bankNote,
+                    };
+
+                    let imgURL = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
+
+                    let htmlPrintToQRCode = `
+                        <div class="row mt-5">
+                            <div class="col-lg-6">
+                                <img id="img_qrcode" class="w-100" src="${imgURL}">
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="fs-5">
+                                Transfer information
+                                </h3>
+                                <p>
+                                    Account holder: ${paymentInfo.name}
+                                </p>
+                                <p>
+                                    Account number: ${paymentInfo.account}
+                                </p>
+                                <p>
+                                    Bank name: ${bankFullName}
+                                </p>
+                                <p>
+                                    Note: ${dataResponse.data.ID}_${userInfo.email}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    $("#qrcode").html(htmlPrintToQRCode);
+
                 })
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-        }, 1500);
-    });
-});
+        })
+    } catch (error) {
+        console.error('Error during fetch:', error);
+    }
+};
+
+function startCountdown(seconds, text, id_element) {
+    var countdownElement = $(`#${id_element}`);
+    // Bắt đầu đếm ngược
+    var countdownInterval = setInterval(function () {
+        seconds--;
+
+        // Hiển thị giá trị mới
+        countdownElement.text(`${text}. Please try again after ${seconds} seconds.`);
+
+        // Kiểm tra nếu đã đếm ngược đến 0
+        if (seconds <= 0) {
+            clearInterval(countdownInterval);
+            countdownElement.text("");
+        }
+    }, 1000); // Cập nhật mỗi giây
+}
 
 // Join a contest
-function saveJoinContest(contest_id) {
-    $("#confirm_to_join").prop("disabled", true);
-    $("#confirm_to_join").html(`
-      <div class="spinner-border spinner-border-sm" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      `)
-    let jwtToken = getCookie("token");
-    if (!jwtToken) {
-        window.location.href = "/login";
-    }
+async function saveJoinContest(contest_id, amount) {
+    try {
+        let userWallet = await fetchAsync('api/get-wallet');
+        if (amount > userWallet.balance) {
+            $("#join_contest_message").removeClass().addClass(`text-danger`).text("Insufficient funds to complete this transaction.")
+            return
+        }
+        $("#confirm_to_join").prop("disabled", true);
+        $("#confirm_to_join").html(`
+        <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        `)
+        let jwtToken = getCookie("token");
+        if (!jwtToken) {
+            window.location.href = "/login";
+        }
 
-    let inpJoinContest = {
-        contest_id: contest_id,
-    };
+        let inpJoinContest = {
+            "contest_id": contest_id,
+        };
 
-    let headers = new Headers({
-        Authorization: `Bearer ${jwtToken}`,
-    });
-    // console.log(JSON.stringify(inpJoinContest));
-
-    fetch(urlJoinContest, {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(inpJoinContest),
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not successful");
-            }
-            return response.json(); // Parse the response JSON if needed
-        })
-        .then((dataResponse) => {
-            $("#join_contest_message")
-                .removeClass()
-                .addClass(`fw-semibold ${dataResponse.class}`);
-            $("#join_contest_message").text(dataResponse.message);
-
-            setTimeout(function () {
-                $("#confirm_to_join").text("Join this competition")
-                window.location.reload()
-            }, 5000);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+        let headers = new Headers({
+            Authorization: `Bearer ${jwtToken}`,
         });
+        // console.log(JSON.stringify(inpJoinContest));
+
+        fetch('api/join-contest', {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(inpJoinContest),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not successful");
+                }
+                return response.json(); // Parse the response JSON if needed
+            })
+            .then((dataResponse) => {
+                if (dataResponse.code == 429) {
+                    $("#join_contest_message").removeClass().addClass(`fw-semibold ${dataResponse.class}`)
+                    startCountdown(15, dataResponse.message, "join_contest_message");
+                    setTimeout(function () {
+                        $("#confirm_to_join").text("Join this competition")
+                        $("#confirm_to_join").prop("disabled", false);
+                    }, 1000);
+                    return
+                }
+
+                $("#confirm_to_join").text("Join this competition")
+                $("#join_contest_message").removeClass().addClass(`fw-semibold ${dataResponse.class}`).text(dataResponse.message)
+                setTimeout(function () {
+                    window.location.reload()
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function joinContest(contest_id, start_at, expired_at, amount, start_balance) {
     $("#confirm_to_join").prop("disabled", false);
     $("#this_contest_info").remove();
     let html_text = `
-  <div id="this_contest_info">
-  <h6><span class="fw-semibold">ID:</span> ${contest_id}</h6>
-  <p><span class="fw-semibold">StartAt:</span> ${start_at}</p>
-  <p><span class="fw-semibold">ExpireAt:</span> ${expired_at}</p>
-  <p><span class="fw-semibold">Amount:</span> ${amount} G</p>
-  <p><span class="fw-semibold">Start Balance:</span> $${start_balance.toLocaleString()}</p>
-  <p id="join_contest_message" class="fw-semibold"></p>
-  </div>
-  `;
+        <div id="this_contest_info">
+        <h6><span class="fw-semibold">ID:</span> ${contest_id}</h6>
+        <p><span class="fw-semibold">StartAt:</span> ${start_at}</p>
+        <p><span class="fw-semibold">ExpireAt:</span> ${expired_at}</p>
+        <p><span class="fw-semibold">Amount:</span> ${amount} G</p>
+        <p><span class="fw-semibold">Start Balance:</span> $${start_balance.toLocaleString()}</p>
+        <p id="join_contest_message" class="fw-semibold"></p>
+        </div>
+    `;
     $("#contest_info").html(html_text);
     $("#confirm_to_join").on("click", function (e) {
         e.preventDefault()
-        saveJoinContest(contest_id);
+        saveJoinContest(contest_id, amount);
     });
 }

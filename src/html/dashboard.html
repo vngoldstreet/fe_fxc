@@ -69,8 +69,8 @@
                               data-bs-toggle="modal" data-bs-target="#modal_finance_deposit">Deposit</button>
                           </div>
                           <div class="col-6">
-                            <button id="withdraws" type="button" class="btn btn-outline-danger m-1 w-100 fw-bolder"
-                              data-bs-toggle="modal" data-bs-target="#modal_finance_withdraw">Withdrawal</button>
+                            <button id="withdrawls" type="button" class="btn btn-outline-danger m-1 w-100 fw-bolder"
+                              data-bs-toggle="modal" data-bs-target="#modal_finance_withdrawl">Withdrawal</button>
                           </div>
                         </div>
                       </div>
@@ -254,12 +254,11 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="modal_finance_withdraw" tabindex="-1" aria-labelledby="exampleModalLabel"
+  <div class="modal fade" id="modal_finance_withdrawl" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -276,12 +275,12 @@
             </div>
             <div class="mb-3">
               <div class="input-group mb-3">
-                <input type="number" step="50" value="0" class="form-control" placeholder="Amount" aria-label="Amount"
+                <input type="number" step="50" class="form-control" placeholder="Amount" aria-label="Amount"
                   aria-describedby="basic-addon1" id="withdraw_amount">
                 <span class="input-group-text" id="basic-addon1">Gold</span>
               </div>
             </div>
-            <span id="msg_withdraw"></span>
+            <span id="msg_withdrawl"></span>
           </form>
         </div>
         <div class="modal-footer">
@@ -312,7 +311,7 @@
               </div>
             </div>
             <span id="msg_deposit"></span>
-            <button id="create_qr_code" type="button" class="btn btn-secondary w-100 mt-2 mb-5">Confirmation</button>
+            <button id="create_qr_code" type="button" class="btn btn-secondary w-100 mt-2">Confirmation</button>
             <div id="qrcode"></div>
           </form>
         </div>

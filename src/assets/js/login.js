@@ -2,8 +2,6 @@
 $(document).ready(function () {
     $("#submit_form_login").on("click", function (e) {
         e.preventDefault()
-        let baseUrl = "https://auth.fxchampionship.com";
-        let apiLoginUrl = baseUrl + "/public/login";
         let inpEmail = $('#email').val();
 
         let emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/; // Regular expression for email validation
@@ -43,7 +41,7 @@ $(document).ready(function () {
             body: JSON.stringify(inpLoginData),
         };
 
-        fetch(apiLoginUrl, requestOptions)
+        fetch("api/login", requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -52,14 +50,14 @@ $(document).ready(function () {
             })
             .then(responseData => {
                 localStorage.setItem('user', JSON.stringify(responseData.user));
-                const token = responseData.token;
+                let token = responseData.token;
 
                 // Enhanced security: Use HttpOnly and Secure flags for the cookie
-                const expirationDays = 7; // Adjust as needed
-                const expirationDate = new Date();
+                let expirationDays = 7; // Adjust as needed
+                let expirationDate = new Date();
                 expirationDate.setDate(expirationDate.getDate() + expirationDays);
-                const expires = expirationDate.toUTCString();
-                const cookieString = `token=${token}; expires=${expires}; path=/`;
+                let expires = expirationDate.toUTCString();
+                let cookieString = `token=${token}; expires=${expires}; path=/`;
                 // Set the cookie
                 document.cookie = cookieString;
                 // Instead of immediately redirecting the user, provide a success message and then redirect
