@@ -134,4 +134,25 @@ $(document).ready(function () {
                 $("#messagefailure").addClass("text-danger").html("Please contact the support department. Thank you!");
             });
     });
+
+    handleCheckLogin()
 });
+
+
+let fetchAsync = async (url) => {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+};
+
+let handleCheckLogin = async () => {
+    try {
+        let userInfo = await fetchAsync('api/get-user-info');
+        if (userInfo.message === "Unauthorized") {
+            return
+        }
+        window.location.href = "/";
+    } catch (error) {
+        console.error('Error during fetch:', error);
+    }
+};
