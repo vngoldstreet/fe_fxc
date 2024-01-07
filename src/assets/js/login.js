@@ -1,5 +1,11 @@
 // Tạo đối tượng JSON từ giá trị thu thập
 $(document).ready(function () {
+    let jwtToken = getCookie("token");
+    if (jwtToken) {
+        window.location.href = "/";
+        return
+    }
+
     $("#submit_form_login").on("click", function (e) {
         e.preventDefault()
         let inpEmail = $('#email').val();
@@ -134,25 +140,18 @@ $(document).ready(function () {
                 $("#messagefailure").addClass("text-danger").html("Please contact the support department. Thank you!");
             });
     });
-
-    handleCheckLogin()
 });
 
+function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
 
-let fetchAsync = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-};
-
-let handleCheckLogin = async () => {
-    try {
-        let userInfo = await fetchAsync('api/get-user-info');
-        if (userInfo.message === "Unauthorized") {
-            return
+    for (var i = 0; i < cookieArray.length; i++) {
+        var cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
         }
-        window.location.href = "/";
-    } catch (error) {
-        console.error('Error during fetch:', error);
     }
-};
+    return "";
+}

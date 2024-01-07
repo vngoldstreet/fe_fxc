@@ -227,6 +227,11 @@ function setChartGreetings() {
 }
 
 $(document).ready(function () {
+    let jwtToken = getCookie("token");
+    if (!jwtToken) {
+        window.location.href = "/login";
+        return
+    }
     setChartGreetings()
     $("#withdrawls").on("click", function (e) {
         e.preventDefault()

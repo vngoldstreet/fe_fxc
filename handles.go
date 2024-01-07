@@ -113,7 +113,7 @@ func formatNumberFloatWithComma(number float64) string {
 
 func getHomepage(c *gin.Context) {
 	myToken, err := c.Cookie("token")
-	if err != nil {
+	if err != nil || myToken == "" {
 		c.HTML(http.StatusOK, "authentication-login.html", gin.H{
 			"title": "Login",
 		})
