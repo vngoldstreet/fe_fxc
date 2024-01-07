@@ -63,9 +63,9 @@ $(document).ready(function () {
                 $("#messagefailure").removeClass("text-danger").addClass("text-success").html("Success! Redirecting...");
                 $("#submit_form_login").prop("disabled", false);
                 $("#submit_form_login").text("Login")
-                // setTimeout(function () {
-                //     window.location.href = "/";
-                // }, 2000);
+                setTimeout(function () {
+                    window.location.href = "/";
+                }, 2000);
             })
             .catch(error => {
                 console.error("Error:", error);
