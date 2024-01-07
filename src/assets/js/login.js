@@ -51,7 +51,7 @@ $(document).ready(function () {
             .then(responseData => {
                 localStorage.setItem('user', JSON.stringify(responseData.user));
                 let token = responseData.token;
-
+                console.location(responseData)
                 // Enhanced security: Use HttpOnly and Secure flags for the cookie
                 let expirationDays = 7; // Adjust as needed
                 let expirationDate = new Date();
@@ -64,9 +64,9 @@ $(document).ready(function () {
                 $("#messagefailure").removeClass("text-danger").addClass("text-success").html("Success! Redirecting...");
                 $("#submit_form_login").prop("disabled", false);
                 $("#submit_form_login").text("Login")
-                setTimeout(function () {
-                    window.location.href = "/";
-                }, 2000);
+                // setTimeout(function () {
+                //     window.location.href = "/";
+                // }, 2000);
             })
             .catch(error => {
                 console.error("Error:", error);
