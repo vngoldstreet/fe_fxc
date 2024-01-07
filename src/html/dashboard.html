@@ -250,7 +250,7 @@
                           </div>
                         </td>
                         <td class="border-bottom-0">
-                          {{if eq .TypeID 1}}
+                          {{if and (eq .TypeID 1) (eq .Status "Processing")}}
                           <button id="getTransactionInfo"
                             onclick="getInformationOfTransaction('{{.Amount}}','{{.TypeID}}','{{.TranID}}')"
                             type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal"
