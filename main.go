@@ -21,7 +21,6 @@ var mutex sync.Mutex
 
 func main() {
 	r := gin.Default()
-
 	r.Static("/src/assets", "./src/assets")
 	r.LoadHTMLGlob("src/html/*")
 	r.Use(
@@ -73,7 +72,6 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/chart", getCharts)
-		api.POST("/reset-password", ResetPasswordHandle)
 		api.GET("/get-promotion", getPromoCode)
 		api.GET("/get-contest-by-uid", apiListContestByUID)
 		api.GET("/get-payment-methob", apiGetPaymentMethob)
@@ -81,12 +79,17 @@ func main() {
 		api.GET("/get-wallet", apiGetWallet)
 		api.GET("/get-customer", apiGetCustomer)
 		api.GET("/check-deposit", apiCheckDeposit)
+		api.GET("/get-indentify", apiCheckInreview)
+
+		api.POST("/reset-password", ResetPasswordHandle)
 		api.POST("/rejoin-a-competition", apiRejoinContest)
 		api.POST("/get-leaderboard-by-contestid", apiLeaderBoardByContestID)
 		api.POST("/login", apiLogin)
 		api.POST("/withdrawal", apiWithdrawal)
 		api.POST("/deposit", apiDeposit)
 		api.POST("/join-contest", apiJoinContest)
+		api.POST("/create-payment-method", apiCreatePaymentMethob)
+		api.POST("/indentify-update", apiIndentifyUpdate)
 	}
 
 	r.Run(":4200")

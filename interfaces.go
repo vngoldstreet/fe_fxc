@@ -204,8 +204,20 @@ type InputDeposit struct {
 	Amount int `json:"amount" binding:"required"`
 }
 
+type InputIndentify struct {
+	ImageFront string `json:"image_front" binding:"required"`
+	ImageBack  string `json:"image_back" binding:"required"`
+}
+
 type InputJoinContest struct {
 	ContestID string `json:"contest_id" binding:"required"`
+}
+
+type InputCreatePaymentMehob struct {
+	HolderName   string `json:"holder_name" binding:"required"`
+	HolderNumber string `json:"holder_number" binding:"required"`
+	BankName     string `json:"bank_name" binding:"required"`
+	IsCard       int    `json:"is_card"`
 }
 
 type ResponseLogin struct {
@@ -369,4 +381,17 @@ type ResponsePartner struct {
 type ResponseCheckDeposit struct {
 	Count         int  `json:"count"`
 	DepositAccept bool `json:"deposit_accept"`
+}
+
+type IndentifyInfo struct {
+	Data struct {
+		ID         int       `json:"ID"`
+		CreatedAt  time.Time `json:"CreatedAt"`
+		UpdatedAt  time.Time `json:"UpdatedAt"`
+		DeletedAt  any       `json:"DeletedAt"`
+		CustomerID int       `json:"customer_id"`
+		ImageFront string    `json:"image_front"`
+		ImageBack  string    `json:"image_back"`
+		Status     string    `json:"status"`
+	} `json:"data"`
 }

@@ -791,3 +791,135 @@ func apiCheckDeposit(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
+
+func apiCheckInreview(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+	urlRequest := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_USER_GET_INDENTIFY"))
+
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	var response IndentifyInfo
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response 3:", err)
+		return
+	}
+	c.JSON(http.StatusOK, response.Data)
+}
+
+func apiCreatePaymentMethob(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	var input InputCreatePaymentMehob
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_USER_CREATE_PAYMENT_METHOB"))
+	postData := []byte(fmt.Sprintf(`{"holder_name": "%s","holder_number": "%s","bank_name": "%s","is_card": %d}`, input.HolderName, input.HolderNumber, input.BankName, input.IsCard))
+
+	respPost, errPost := ExamplePostRequest(url, myToken, postData)
+	if errPost != nil {
+		fmt.Println("Error errPost:", errPost)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errPost,
+		})
+		return
+	}
+
+	defer respPost.Body.Close()
+
+	if respPost.StatusCode == 429 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Don't operate too quickly!",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
+	if respPost.StatusCode != 200 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Failure!",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
+	var response ResponseUserJoinContest
+	if err := json.NewDecoder(respPost.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response 3:", err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": response.Message,
+		"class":   response.Class,
+		"code":    http.StatusOK,
+	})
+}
+
+func apiIndentifyUpdate(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	var input InputIndentify
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_USER_INDENTIFY_UPDATE"))
+	postData := []byte(fmt.Sprintf(`{"image_front": "%s","image_back": "%s"}`, input.ImageFront, input.ImageBack))
+
+	respPost, errPost := ExamplePostRequest(url, myToken, postData)
+	if errPost != nil {
+		fmt.Println("Error errPost:", errPost)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errPost,
+		})
+		return
+	}
+
+	defer respPost.Body.Close()
+
+	if respPost.StatusCode == 429 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Don't operate too quickly!",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
+	if respPost.StatusCode != 200 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Failure!",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"class": "text-success",
+		"code":  respPost.StatusCode,
+	})
+}

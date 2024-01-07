@@ -221,6 +221,9 @@
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Status</h6>
                         </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0"></h6>
+                        </th>
                       </tr>
                     </thead>
                     <tbody id="transaction-list">
@@ -245,6 +248,12 @@
                           <div class="d-flex align-items-center gap-2">
                             <span class="badge {{.Background}} rounded-1 fw-semibold">{{.Status}}</span>
                           </div>
+                        </td>
+                        <td class="border-bottom-0">
+                          <button id="getTransactionInfo"
+                            onclick="getInformationOfTransaction('{{.Amount}}','{{.TypeID}}','{{.TranID}}')"
+                            type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal"
+                            data-bs-target="#modal_transaction_info">Join</button>
                         </td>
                       </tr>
                       {{end}}
@@ -391,6 +400,26 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="modal_transaction_info" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Transaction information</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="img_qrcode_info"></div>
+        </div>
+        <div class="modal-footer">
+          <br>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-success">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 
   <div class="bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s" id="contact">
     <div class="container">

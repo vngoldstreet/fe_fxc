@@ -8,6 +8,11 @@ Orange #ffa500
 Violet #8f12fd
 */
 
+.indentify-img {
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }
@@ -19812,7 +19817,7 @@ ul {
     border: 2px solid #5D87FF
 }
 
-#out_notification{
+#out_notification {
     max-height: 400px;
     overflow-y: scroll;
 }

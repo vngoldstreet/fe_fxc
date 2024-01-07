@@ -4,51 +4,86 @@ let bankNumber = "966965488";
 let bankUserName = "BUI ANH LINH";
 let rateGold = 24000;
 
-function getInformationOfTransaction(amount, type, id, name) {
-    if (Number(type) === 1) {
-        let bankNote = encodeURIComponent(`${id} ${Number(amount)}G ${name}`);
-        let paymentInfo = {
-            bank: bankName,
-            account: bankNumber,
-            name: bankUserName,
-            amount: Number(amount) * rateGold, // The amount to transfer
-            note: bankNote,
-        };
-        let imgUrl = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
-        let htmlPrintToContest = `<img id="img_qrcode_info_1" class="w-100" src="${imgUrl}">`;
-        $("#img_qrcode_info").html(htmlPrintToContest);
-    } else if (Number(type) > 1) {
-        let textType = "";
+async function getInformationOfTransaction(inp_amount, type, tran_id) {
+    try {
+        if (Number(type) === 1) {
+            let userInfo = await fetchAsync('api/get-user-info');
 
-        switch (type) {
-            case 1:
-                textType = "Deposit";
-                break;
-            case 2:
-                textType = "Withdrawal";
-                break;
-            case 3:
-            case 5:
-                textType = "Earning";
-                break;
-            case 4:
-                textType = "Join a contest";
-                break;
-            case 6:
-                text_type = "Re-Join a contest";
-                text_id_contest = `${transactionData[key].contest_id}`;
-                break;
-            default:
-                break;
-        }
+            let bankNote = encodeURIComponent(
+                `${tran_id} ${userInfo.email}`
+            );
 
-        let htmlText = `
+            let paymentInfo = {
+                bank: bankName,
+                account: bankNumber,
+                name: bankUserName,
+                amount: inp_amount * rateGold, // Amount to be transferred
+                note: bankNote,
+            };
+
+            let imgURL = `https://img.vietqr.io/image/${paymentInfo.bank}-${paymentInfo.account}-compact2.jpg?amount=${paymentInfo.amount}&addInfo=${paymentInfo.note}&accountName=${paymentInfo.name}`;
+
+            let htmlPrintToQRCode = `
+                        <div class="row mt-5">
+                            <div class="col-lg-6">
+                                <img id="img_qrcode" class="w-100" src="${imgURL}">
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="fs-5">
+                                Transfer information
+                                </h3>
+                                <p>
+                                    Account holder: ${paymentInfo.name}
+                                </p>
+                                <p>
+                                    Account number: ${paymentInfo.account}
+                                </p>
+                                <p>
+                                    Bank name: ${bankFullName}
+                                </p>
+                                <p>
+                                    Transfer description: <br>
+                                    ${tran_id} ${userInfo.email}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+            $("#img_qrcode_info").html(htmlPrintToQRCode);
+        } else if (Number(type) > 1) {
+            let textType = "";
+
+            switch (type) {
+                case 1:
+                    textType = "Deposit";
+                    break;
+                case 2:
+                    textType = "Withdrawal";
+                    break;
+                case 3:
+                case 5:
+                    textType = "Earning";
+                    break;
+                case 4:
+                    textType = "Join a contest";
+                    break;
+                case 6:
+                    text_type = "Re-Join a contest";
+                    text_id_contest = `${transactionData[key].contest_id}`;
+                    break;
+                default:
+                    break;
+            }
+
+            let htmlText = `
         <div id="this_contest_info">
             <h6>Transaction type: ${textType}</h6>
             <h6><span>Amount:</span> $${amount.toLocaleString()}</h6>
         </div>
         `;
-        $("#img_qrcode_info").html(htmlText);
+            $("#img_qrcode_info").html(htmlText);
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -234,7 +269,6 @@ let handleWithDrawls = async () => {
         }
 
         $("#payment_methob_list").html(htmlPaymentMethob);
-
         let userInfo = await fetchAsync('api/get-user-info');
         if (userInfo.in_review === "not_yet") {
             $("#msg_withdrawl").removeClass()
@@ -417,7 +451,7 @@ let handleDeposit = async () => {
                     $("#create_qr_code").text("Confirmation")
                     $("#msg_deposit").removeClass().addClass(dataResponse.class).text(dataResponse.message)
                     let bankNote = encodeURIComponent(
-                        `${dataResponse.ID} ${userInfo.email}`
+                        `${dataResponse.data.ID} ${userInfo.email}`
                     );
 
                     let paymentInfo = {
@@ -449,7 +483,8 @@ let handleDeposit = async () => {
                                     Bank name: ${bankFullName}
                                 </p>
                                 <p>
-                                    Note: ${dataResponse.data.ID}_${userInfo.email}
+                                    Transfer description: <br>
+                                    ${dataResponse.data.ID} ${userInfo.email}
                                 </p>
                             </div>
                         </div>
