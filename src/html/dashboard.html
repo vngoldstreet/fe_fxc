@@ -222,7 +222,7 @@
                           <h6 class="fw-semibold mb-0">Status</h6>
                         </th>
                         <th class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0"></h6>
+                          <h6 class="fw-semibold mb-0">Information</h6>
                         </th>
                       </tr>
                     </thead>
@@ -250,10 +250,12 @@
                           </div>
                         </td>
                         <td class="border-bottom-0">
+                          {{if eq .TypeID 1}}
                           <button id="getTransactionInfo"
                             onclick="getInformationOfTransaction('{{.Amount}}','{{.TypeID}}','{{.TranID}}')"
                             type="button" class="btn btn-secondary w-100 p-1" data-bs-toggle="modal"
-                            data-bs-target="#modal_transaction_info">Join</button>
+                            data-bs-target="#modal_transaction_info">Show</button>
+                          {{end}}
                         </td>
                       </tr>
                       {{end}}
