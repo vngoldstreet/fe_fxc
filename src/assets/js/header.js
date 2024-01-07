@@ -1,17 +1,3 @@
-function getCookie(cookieName) {
-    var name = cookieName + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var cookieArray = decodedCookie.split(';');
-
-    for (var i = 0; i < cookieArray.length; i++) {
-        var cookie = cookieArray[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return "";
-}
-
 $(document).ready(function () {
     handleHeader()
 });
@@ -24,11 +10,6 @@ let fetchAsync = async (url) => {
 
 let handleHeader = async () => {
     try {
-        let jwtToken = getCookie("token");
-        if (!jwtToken) {
-            window.location.href = "/login";
-            return
-        }
         let userInfo = await fetchAsync('api/get-user-info');
         let now = new Date();
         let currentHour = now.getHours();

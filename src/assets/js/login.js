@@ -1,11 +1,5 @@
 // Tạo đối tượng JSON từ giá trị thu thập
 $(document).ready(function () {
-    let jwtToken = getCookie("token");
-    if (jwtToken) {
-        window.location.href = "/";
-        return
-    }
-
     $("#submit_form_login").on("click", function (e) {
         e.preventDefault()
         let inpEmail = $('#email').val();
@@ -141,17 +135,3 @@ $(document).ready(function () {
             });
     });
 });
-
-function getCookie(cookieName) {
-    var name = cookieName + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var cookieArray = decodedCookie.split(';');
-
-    for (var i = 0; i < cookieArray.length; i++) {
-        var cookie = cookieArray[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return "";
-}
