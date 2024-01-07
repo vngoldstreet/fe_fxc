@@ -51,7 +51,6 @@ $(document).ready(function () {
             .then(responseData => {
                 localStorage.setItem('user', JSON.stringify(responseData.user));
                 let token = responseData.token;
-                console.location(responseData)
                 // Enhanced security: Use HttpOnly and Secure flags for the cookie
                 let expirationDays = 7; // Adjust as needed
                 let expirationDate = new Date();
