@@ -72,7 +72,7 @@ async function handlePaymentMethob() {
         if (checkInreview.status === "uploaded") {
             $("#front_selectedImage").addClass("w-100 indentify-img").attr("src", checkInreview.image_front)
             $("#back_selectedImage").addClass("w-100 indentify-img").attr("src", checkInreview.image_back)
-            $("#indentify_status").removeClass('text-danger').addClass('text-success').html(`<i class="ti ti-circle-check-filled"></i>Your information is being verified, please contact support via email: support@fxchampionship.com or hotline: +84 919 720 567. Thank you!`)
+            $("#indentify_status").removeClass('text-danger').addClass('text-warning').html(`<i class="ti ti-circle-check-filled"></i>Your information is being verified, please contact support via email: support@fxchampionship.com or hotline: +84 919 720 567. Thank you!`)
             $("#indentify_update").addClass("disabled")
             $("#front_formFile").hide()
             $("#back_formFile").hide()
