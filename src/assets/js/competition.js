@@ -100,7 +100,7 @@ function confirmToReJoin(param_contest_id) {
             })
             .catch(error => {
                 console.error("Error:", error);
-                $("#fb_rejoin").addClass('text-danger').text(`Fail to re-join: ${param_contest_id}`)
+                $("#fb_rejoin").removeClass().addClass('text-danger').text(`You have registered for the re-examination: ${param_contest_id}`)
                 setTimeout(function () {
                     $("#confirm_to_re_join").text("Re-Join this competition")
                     window.location.reload()
