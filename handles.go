@@ -482,22 +482,21 @@ func apiLeaderBoardByContestID(c *gin.Context) {
 		return
 	}
 
-	url := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_LEADERBOARD_GET_LEADERBOARD"))
-	postData := []byte(fmt.Sprintf(`{"contest_id": "%s"}`, input.ContestID))
-	respPost, errPost := ExamplePostRequest(url, myToken, postData)
-	if errPost != nil {
-		fmt.Println("Error errPost:", errPost)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": errPost,
-		})
+	urlRequest := fmt.Sprintf("%s%s?contest_id=%s", os.Getenv("API_BASE_URL"), os.Getenv("API_LEADERBOARD_GET_LEADERBOARD"), input.ContestID)
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
 		return
 	}
-	defer respPost.Body.Close()
+
+	defer resp.Body.Close()
+
 	var response LeaderBoardByContestID
-	if err := json.NewDecoder(respPost.Body).Decode(&response); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		fmt.Println("Error decoding response 3:", err)
 		return
 	}
+
 	c.JSON(http.StatusOK, response)
 }
 
