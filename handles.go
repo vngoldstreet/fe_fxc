@@ -428,6 +428,24 @@ func apiRejoinContest(c *gin.Context) {
 	}
 	defer respPost.Body.Close()
 
+	if respPost.StatusCode == 429 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Don't operate too quickly!",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
+	if respPost.StatusCode != 200 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Failure!",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": fmt.Sprintf("Success to re-join: %s", input.ContestID),
 	})
@@ -530,6 +548,7 @@ func apiLogin(c *gin.Context) {
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, response)
 }
 

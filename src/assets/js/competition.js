@@ -19,6 +19,7 @@ function showPassword(param) {
     }
 }
 
+
 function confirmToReJoin(param_contest_id) {
     $("#this_contest_info").remove();
     $("#fb_rejoin").text('')
@@ -62,7 +63,7 @@ function confirmToReJoin(param_contest_id) {
             "contest_id": param_contest_id,
             "promo_code": promo
         };
-        console.log(JSON.stringify(rejoinContest))
+
         $("#confirm_to_re_join").prop('disabled', true);
         $("#confirm_to_re_join").html(`
         <div class="spinner-border spinner-border-sm" role="status">
@@ -82,7 +83,17 @@ function confirmToReJoin(param_contest_id) {
                 return response.json();
             })
             .then(dataResponse => {
-                $("#fb_rejoin").addClass('text-success').text(dataResponse.message)
+                console.log(dataResponse)
+                if (dataResponse.code === 429) {
+                    $("#fb_rejoin").removeClass().addClass(dataResponse.class)
+                    startCountdown(15, dataResponse.message, "fb_rejoin");
+                    setTimeout(function () {
+                        $("#confirm_to_re_join").prop("disabled", false);
+                        $("#confirm_to_re_join").text("Re-Join this competition")
+                    }, 3000);
+                    return
+                }
+                $("#fb_rejoin").removeClass().addClass('text-success').text(dataResponse.message)
                 setTimeout(function () {
                     $("#confirm_to_re_join").text("Re-Join this competition")
                     window.location.reload()
@@ -97,4 +108,21 @@ function confirmToReJoin(param_contest_id) {
                 }, 3000);
             });
     });
+}
+
+function startCountdown(seconds, text, id_element) {
+    var countdownElement = $(`#${id_element}`);
+    // Bắt đầu đếm ngược
+    var countdownInterval = setInterval(function () {
+        seconds--;
+
+        // Hiển thị giá trị mới
+        countdownElement.text(`${text}. Please try again after ${seconds} seconds.`);
+
+        // Kiểm tra nếu đã đếm ngược đến 0
+        if (seconds <= 0) {
+            clearInterval(countdownInterval);
+            countdownElement.text("");
+        }
+    }, 1000); // Cập nhật mỗi giây
 }
