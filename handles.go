@@ -516,6 +516,12 @@ func apiLogin(c *gin.Context) {
 		fmt.Println("Error decoding response 3:", err)
 		return
 	}
+	if response.Token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Incorrect username or password",
+		})
+		return
+	}
 	c.JSON(http.StatusOK, response)
 }
 
