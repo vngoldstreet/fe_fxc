@@ -83,21 +83,20 @@ function confirmToReJoin(param_contest_id) {
                 return response.json();
             })
             .then(dataResponse => {
-                console.log(dataResponse)
                 if (dataResponse.code === 429) {
                     $("#fb_rejoin").removeClass().addClass(dataResponse.class)
                     startCountdown(15, dataResponse.message, "fb_rejoin");
                     setTimeout(function () {
                         $("#confirm_to_re_join").prop("disabled", false);
                         $("#confirm_to_re_join").text("Re-Join this competition")
-                    }, 3000);
+                    }, 15000);
                     return
                 }
                 $("#fb_rejoin").removeClass().addClass('text-success').text(dataResponse.message)
                 setTimeout(function () {
                     $("#confirm_to_re_join").text("Re-Join this competition")
                     window.location.reload()
-                }, 3000);
+                }, 15000);
             })
             .catch(error => {
                 console.error("Error:", error);
