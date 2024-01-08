@@ -63,7 +63,7 @@ type Greetings struct {
 		UpdatedAt  time.Time `json:"UpdatedAt"`
 		DeletedAt  any       `json:"DeletedAt"`
 		CustomerID int       `json:"customer_id"`
-		Balance    int       `json:"balance"`
+		Balance    float64   `json:"balance"`
 		LastChange int       `json:"last_change"`
 	} `json:"wallet"`
 	Transactions []struct {
@@ -72,10 +72,10 @@ type Greetings struct {
 		UpdatedAt     time.Time `json:"UpdatedAt"`
 		DeletedAt     any       `json:"DeletedAt"`
 		TypeID        int       `json:"type_id"`
-		CustomerID    int       `json:"customer_id"`
-		CBalance      int       `json:"c_balance"`
-		Amount        int       `json:"amount"`
-		NBalance      int       `json:"n_balance"`
+		CustomerID    uint      `json:"customer_id"`
+		CBalance      float64   `json:"c_balance"`
+		Amount        float64   `json:"amount"`
+		NBalance      float64   `json:"n_balance"`
 		PaymentMethob int       `json:"payment_methob"`
 		PaymentGate   int       `json:"payment_gate"`
 		StatusID      int       `json:"status_id"`
@@ -109,7 +109,7 @@ type Greetings struct {
 		CurrentPerson int       `json:"current_person"`
 		StartAt       time.Time `json:"start_at"`
 		ExpiredAt     time.Time `json:"expired_at"`
-		StartBalance  int       `json:"start_balance"`
+		StartBalance  float64   `json:"start_balance"`
 		EstimateTime  time.Time `json:"estimate_time"`
 		StatusID      int       `json:"status_id"`
 		Account       int       `json:"account"`
@@ -142,10 +142,10 @@ type ResponseLeaderBoards struct {
 		FxMasterPw   string    `json:"fx_master_pw"`
 		FxInvesterPw string    `json:"fx_invester_pw"`
 		StatusID     int       `json:"status_id"`
-		Balance      int       `json:"balance"`
-		Equity       int       `json:"equity"`
-		Profit       int       `json:"profit"`
-		StartBalance int       `json:"start_balance"`
+		Balance      float64   `json:"balance"`
+		Equity       float64   `json:"equity"`
+		Profit       float64   `json:"profit"`
+		StartBalance float64   `json:"start_balance"`
 		Rank         int       `json:"rank"`
 		StartAt      time.Time `json:"start_at"`
 		ExpiredAt    time.Time `json:"expired_at"`
@@ -279,9 +279,9 @@ type ResponseUserWallet struct {
 		CreatedAt  time.Time `json:"CreatedAt"`
 		UpdatedAt  time.Time `json:"UpdatedAt"`
 		DeletedAt  any       `json:"DeletedAt"`
-		CustomerID int       `json:"customer_id"`
-		Balance    int       `json:"balance"`
-		LastChange int       `json:"last_change"`
+		CustomerID uint      `json:"customer_id"`
+		Balance    float64   `json:"balance"`
+		LastChange float64   `json:"last_change"`
 	} `json:"data"`
 }
 
@@ -291,18 +291,18 @@ type ResponseUserWithdrawal struct {
 		CreatedAt  time.Time `json:"CreatedAt"`
 		UpdatedAt  time.Time `json:"UpdatedAt"`
 		DeletedAt  any       `json:"DeletedAt"`
-		CustomerID int       `json:"customer_id"`
-		Balance    int       `json:"balance"`
-		LastChange int       `json:"last_change"`
+		CustomerID uint      `json:"customer_id"`
+		Balance    float64   `json:"balance"`
+		LastChange float64   `json:"last_change"`
 	} `json:"new_wallet"`
 	OldWallet struct {
 		ID         int       `json:"ID"`
 		CreatedAt  time.Time `json:"CreatedAt"`
 		UpdatedAt  time.Time `json:"UpdatedAt"`
 		DeletedAt  any       `json:"DeletedAt"`
-		CustomerID int       `json:"customer_id"`
-		Balance    int       `json:"balance"`
-		LastChange int       `json:"last_change"`
+		CustomerID uint      `json:"customer_id"`
+		Balance    float64   `json:"balance"`
+		LastChange float64   `json:"last_change"`
 	} `json:"old_wallet"`
 }
 
@@ -313,10 +313,10 @@ type ResponseUserDeposit struct {
 		UpdatedAt     time.Time `json:"UpdatedAt"`
 		DeletedAt     any       `json:"DeletedAt"`
 		TypeID        int       `json:"type_id"`
-		CustomerID    int       `json:"customer_id"`
-		CBalance      int       `json:"c_balance"`
-		Amount        int       `json:"amount"`
-		NBalance      int       `json:"n_balance"`
+		CustomerID    uint      `json:"customer_id"`
+		CBalance      float64   `json:"c_balance"`
+		Amount        float64   `json:"amount"`
+		NBalance      float64   `json:"n_balance"`
 		PaymentMethob int       `json:"payment_methob"`
 		PaymentGate   int       `json:"payment_gate"`
 		StatusID      int       `json:"status_id"`
@@ -350,7 +350,7 @@ type ResponseUserJoinContest struct {
 		CurrentPerson int       `json:"current_person"`
 		StartAt       time.Time `json:"start_at"`
 		ExpiredAt     time.Time `json:"expired_at"`
-		StartBalance  int       `json:"start_balance"`
+		StartBalance  float64   `json:"start_balance"`
 		EstimateTime  time.Time `json:"estimate_time"`
 		StatusID      int       `json:"status_id"`
 		Account       int       `json:"account"`

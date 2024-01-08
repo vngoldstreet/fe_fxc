@@ -198,7 +198,7 @@ func getHomepage(c *gin.Context) {
 			ContestID:  v.ContestID,
 			CreatedAt:  v.CreatedAt.Format("2006-01-02 15:04:05"),
 			UpdatedAt:  v.UpdatedAt.Format("2006-01-02 15:04:05"),
-			Amount:     formatNumberWithComma(v.Amount),
+			Amount:     formatNumberFloatWithComma(v.Amount),
 			Class:      class,
 			Background: background,
 			Status:     status,
@@ -236,7 +236,7 @@ func getHomepage(c *gin.Context) {
 			Amount:     formatNumberWithComma(v.Amount),
 			Joined:     fmt.Sprintf("%d/%d", v.CurrentPerson, v.MaximumPerson),
 			TotalPrize: formatNumberWithComma(totalPrize),
-			Balance:    formatNumberWithComma(v.StartBalance),
+			Balance:    formatNumberFloatWithComma(v.StartBalance),
 			Status:     status,
 			Class:      class,
 		}
@@ -246,7 +246,7 @@ func getHomepage(c *gin.Context) {
 	c.HTML(http.StatusOK, "dashboard.html", gin.H{
 		"title":          "Dashbard",
 		"data":           greetingData,
-		"wallet_balance": formatNumberWithComma(greetingData.Wallet.Balance),
+		"wallet_balance": formatNumberFloatWithComma(greetingData.Wallet.Balance),
 		"wallet_updated": greetingData.Wallet.UpdatedAt.Format("2006-01-02 15:04:05"),
 		"notifications":  notifications,
 		"transactions":   transactions,
