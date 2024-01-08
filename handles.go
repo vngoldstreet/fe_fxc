@@ -256,8 +256,10 @@ func getHomepage(c *gin.Context) {
 
 func getCompetitionPage(c *gin.Context) {
 	myToken, err := c.Cookie("token")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+	if err != nil || myToken == "" {
+		c.HTML(http.StatusOK, "authentication-login.html", gin.H{
+			"title": "Login",
+		})
 		return
 	}
 
@@ -432,6 +434,13 @@ func apiRejoinContest(c *gin.Context) {
 }
 
 func getLeaderBoardPage(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil || myToken == "" {
+		c.HTML(http.StatusOK, "authentication-login.html", gin.H{
+			"title": "Login",
+		})
+		return
+	}
 	c.HTML(http.StatusOK, "leaderboard.html", gin.H{
 		"title": "Leader board",
 	})

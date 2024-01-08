@@ -51,18 +51,39 @@ func main() {
 		})
 	})
 	r.GET("/user", func(c *gin.Context) {
+		myToken, err := c.Cookie("token")
+		if err != nil || myToken == "" {
+			c.HTML(http.StatusOK, "authentication-login.html", gin.H{
+				"title": "Login",
+			})
+			return
+		}
 		c.HTML(http.StatusOK, "user.html", gin.H{
 			"title": "User",
 		})
 	})
 	r.GET("/my-competitions", getCompetitionPage)
 	r.GET("/security", func(c *gin.Context) {
+		myToken, err := c.Cookie("token")
+		if err != nil || myToken == "" {
+			c.HTML(http.StatusOK, "authentication-login.html", gin.H{
+				"title": "Login",
+			})
+			return
+		}
 		c.HTML(http.StatusOK, "security.html", gin.H{
 			"title": "Security",
 		})
 	})
 	r.GET("/leader-board", getLeaderBoardPage)
 	r.GET("/partner", func(c *gin.Context) {
+		myToken, err := c.Cookie("token")
+		if err != nil || myToken == "" {
+			c.HTML(http.StatusOK, "authentication-login.html", gin.H{
+				"title": "Login",
+			})
+			return
+		}
 		c.HTML(http.StatusOK, "partners.html", gin.H{
 			"title": "Partner",
 		})
