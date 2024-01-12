@@ -22,6 +22,7 @@
   <meta property="og:image:height" content="200">
   <meta property="og:image" content="src/assets/images/logos/apple-touch-icon.png">
   <meta property="og:image:alt" content="FXChampionship - A Gathering Place for World-Class Traders">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -36,17 +37,34 @@
           <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
               <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Partner Dashboard</h5>
+                <h5 class="card-title fw-semibold mb-4 text-primary">Referral link</h5>
                 <div class="partner-link">
                   <div class="input-group mb-2">
-                    <input type="text" id="partner-ref" class="form-control" placeholder="Recipient's username"
-                      aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="text" id="partner-ref" class="form-control" placeholder="ref_link"
+                      aria-label="ref_link" aria-describedby="basic-addon2">
                     <button class="input-group-text" id="copy-clipboard"><i id="icon-clipboard"
                         class="ti ti-clipboard"></i></button>
                   </div>
                   <p id="fb_copy" class="text-success"></p>
-                </div>
 
+                </div>
+                <h5 class="card-title fw-semibold mb-4 text-primary">Partner Infomations</h5>
+                <p id="partner_name"></p>
+                <p id="partner_email"></p>
+                <p id="partner_phone"></p>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+              <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4 text-center text-primary">
+                  Joined competitions per month: <span id="partner_join"></span>
+                </h5>
+                <div class="partner-commission">
+                  <h4 class="fw-semibold mb-3 text-primary fs-4">
+                    <span id="partner_total_joined"></span>
+                  </h4>
+                  <canvas id="myDoughnutChart" width="200" height="200"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -82,6 +100,15 @@
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Phone</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Day</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Week</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Month</h6>
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Review</h6>

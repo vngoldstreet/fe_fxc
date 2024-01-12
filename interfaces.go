@@ -359,22 +359,97 @@ type ResponseUserJoinContest struct {
 	Message string `json:"message"`
 }
 
+// type ResponsePartner struct {
+// 	Data []struct {
+// 		ID          int       `json:"ID"`
+// 		CreatedAt   time.Time `json:"CreatedAt"`
+// 		UpdatedAt   time.Time `json:"UpdatedAt"`
+// 		DeletedAt   any       `json:"DeletedAt"`
+// 		Name        string    `json:"name"`
+// 		Email       string    `json:"email"`
+// 		Phone       string    `json:"phone"`
+// 		Password    string    `json:"password"`
+// 		PartnerCode string    `json:"partner_code"`
+// 		Image       string    `json:"image"`
+// 		Description string    `json:"description"`
+// 		RefLink     string    `json:"ref_link"`
+// 		InReview    string    `json:"in_review"`
+// 		IsTest      int       `json:"is_test"`
+// 	} `json:"data"`
+// }
+
 type ResponsePartner struct {
-	Data []struct {
-		ID          int       `json:"ID"`
-		CreatedAt   time.Time `json:"CreatedAt"`
-		UpdatedAt   time.Time `json:"UpdatedAt"`
-		DeletedAt   any       `json:"DeletedAt"`
-		Name        string    `json:"name"`
-		Email       string    `json:"email"`
-		Phone       string    `json:"phone"`
-		Password    string    `json:"password"`
-		PartnerCode string    `json:"partner_code"`
-		Image       string    `json:"image"`
-		Description string    `json:"description"`
-		RefLink     string    `json:"ref_link"`
-		InReview    string    `json:"in_review"`
-		IsTest      int       `json:"is_test"`
+	Data struct {
+		Owner struct {
+			User struct {
+				ID          int       `json:"ID"`
+				CreatedAt   time.Time `json:"CreatedAt"`
+				UpdatedAt   time.Time `json:"UpdatedAt"`
+				DeletedAt   any       `json:"DeletedAt"`
+				Name        string    `json:"name"`
+				Email       string    `json:"email"`
+				Phone       string    `json:"phone"`
+				Password    string    `json:"password"`
+				PartnerCode string    `json:"partner_code"`
+				Image       string    `json:"image"`
+				Description string    `json:"description"`
+				RefLink     string    `json:"ref_link"`
+				InReview    string    `json:"in_review"`
+				IsTest      int       `json:"is_test"`
+			} `json:"user"`
+			TotalJoined int `json:"total_joined"`
+			Day         int `json:"day"`
+			Week        int `json:"week"`
+			Month       int `json:"month"`
+			Commission  []struct {
+				ID              int       `json:"ID"`
+				CreatedAt       time.Time `json:"CreatedAt"`
+				UpdatedAt       time.Time `json:"UpdatedAt"`
+				DeletedAt       any       `json:"DeletedAt"`
+				TransactionID   int       `json:"transaction_id"`
+				TransactionType int       `json:"transaction_type"`
+				ParentID        int       `json:"parent_id"`
+				ContestID       string    `json:"contest_id"`
+				Amount          int       `json:"amount"`
+				TypeID          int       `json:"type_id"`
+				Joined          int       `json:"joined"`
+			} `json:"commission"`
+		} `json:"owner"`
+		Customers []struct {
+			Customers struct {
+				ID          int       `json:"ID"`
+				CreatedAt   time.Time `json:"CreatedAt"`
+				UpdatedAt   time.Time `json:"UpdatedAt"`
+				DeletedAt   any       `json:"DeletedAt"`
+				Name        string    `json:"name"`
+				Email       string    `json:"email"`
+				Phone       string    `json:"phone"`
+				Password    string    `json:"password"`
+				PartnerCode string    `json:"partner_code"`
+				Image       string    `json:"image"`
+				Description string    `json:"description"`
+				RefLink     string    `json:"ref_link"`
+				InReview    string    `json:"in_review"`
+				IsTest      int       `json:"is_test"`
+			} `json:"customers"`
+			TotalJoined int `json:"total_joined"`
+			Day         int `json:"day"`
+			Week        int `json:"week"`
+			Month       int `json:"month"`
+			Commission  []struct {
+				ID              int       `json:"ID"`
+				CreatedAt       time.Time `json:"CreatedAt"`
+				UpdatedAt       time.Time `json:"UpdatedAt"`
+				DeletedAt       any       `json:"DeletedAt"`
+				TransactionID   int       `json:"transaction_id"`
+				TransactionType int       `json:"transaction_type"`
+				ParentID        int       `json:"parent_id"`
+				ContestID       string    `json:"contest_id"`
+				Amount          int       `json:"amount"`
+				TypeID          int       `json:"type_id"`
+				Joined          int       `json:"joined"`
+			} `json:"commission"`
+		} `json:"customers"`
 	} `json:"data"`
 }
 
