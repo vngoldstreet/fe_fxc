@@ -1,6 +1,10 @@
 package main
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type ResetPassword struct {
 	Email string `json:"email" binding:"required"`
@@ -378,6 +382,25 @@ type ResponseUserJoinContest struct {
 // 	} `json:"data"`
 // }
 
+type ResponsePartnerCommissionLevel struct {
+	ID          int       `json:"ID"`
+	CreatedAt   time.Time `json:"CreatedAt"`
+	UpdatedAt   time.Time `json:"UpdatedAt"`
+	DeletedAt   any       `json:"DeletedAt"`
+	TypeID      int       `json:"type_id"`
+	PartnerID   int       `json:"partner_id"`
+	Level1      int       `json:"level_1"`
+	Level2      int       `json:"level_2"`
+	Level3      int       `json:"level_3"`
+	Level4      int       `json:"level_4"`
+	Level5      int       `json:"level_5"`
+	Commission1 int       `json:"commission_1"`
+	Commission2 int       `json:"commission_2"`
+	Commission3 int       `json:"commission_3"`
+	Commission4 int       `json:"commission_4"`
+	Commission5 int       `json:"commission_5"`
+}
+
 type ResponsePartner struct {
 	Data struct {
 		Owner struct {
@@ -468,5 +491,34 @@ type IndentifyInfo struct {
 		ImageFront string    `json:"image_front"`
 		ImageBack  string    `json:"image_back"`
 		Status     string    `json:"status"`
+	} `json:"data"`
+}
+
+type CommissionLevels struct {
+	gorm.Model
+	TypeID       int     `json:"type_id"` //=1 day, =2 week,-3 month
+	PartnerID    uint    `json:"partner_id"`
+	Level_1      int     `json:"level_1"`
+	Level_2      int     `json:"level_2"`
+	Level_3      int     `json:"level_3"`
+	Level_4      int     `json:"level_4"`
+	Level_5      int     `json:"level_5"`
+	Commission_1 float64 `json:"commission_1"`
+	Commission_2 float64 `json:"commission_2"`
+	Commission_3 float64 `json:"commission_3"`
+	Commission_4 float64 `json:"commission_4"`
+	Commission_5 float64 `json:"commission_5"`
+}
+
+type InputCommissionUpdate struct {
+	Data []struct {
+		ParentID     int     `json:"parent_id" binding:"required"`
+		PartnerID    int     `json:"partner_id" binding:"required"`
+		Commission_1 float64 `json:"commission_1" binding:"required"`
+		Commission_2 float64 `json:"commission_2" binding:"required"`
+		Commission_3 float64 `json:"commission_3" binding:"required"`
+		Commission_4 float64 `json:"commission_4" binding:"required"`
+		Commission_5 float64 `json:"commission_5" binding:"required"`
+		TypeID       float64 `json:"type_id" binding:"required"`
 	} `json:"data"`
 }

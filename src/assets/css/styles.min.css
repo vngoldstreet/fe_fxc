@@ -141,8 +141,12 @@ table {
     white-space: nowrap;
 }
 
+.z-index-5 {
+    z-index: 5 !important;
+}
+
 .table-option {
-    max-height: 500px !important;
+    max-height: 600px !important;
 
     overflow-y: auto;
     overflow-x: auto;

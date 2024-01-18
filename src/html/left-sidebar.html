@@ -98,14 +98,23 @@
                         <span class="hide-menu">Leader Board</span>
                     </a>
                 </li>
-                <li class="nav-small-cap" id="partner_title">
 
+                <li class="nav-small-cap" id="partner_title">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Partner</span>
                 </li>
                 <li class="sidebar-item" id="partner_child">
-
+                    <a class="sidebar-link" href="/partner" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-users"></i>
+                        </span>
+                        <span class="hide-menu">Customers</span>
+                    </a>
                 </li>
                 <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>
                 <script>
+                    $("#partner_title").hide()
+                    $("#partner_child").hide()
                     let urlCheckPartner = "https://auth.fxchampionship.com/auth/uuser/check-partner";
                     $(document).ready(function () {
                         let jwtToken = getCookie("token");
@@ -127,22 +136,8 @@
                                 return response.json(); // Parse the response JSON if needed
                             })
                             .then(dataResponse => {
-                                if (dataResponse.is_partner) {
-                                    let htmlPartnerTitle = `
-                                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                                    <span class="hide-menu">Partner</span>
-                                    `
-                                    let htmlPartnerChild = `
-                                    <a class="sidebar-link" href="/partner" aria-expanded="false">
-                                        <span>
-                                            <i class="ti ti-users"></i>
-                                        </span>
-                                        <span class="hide-menu">Customers</span>
-                                    </a>
-                                    `
-                                    $("#partner_title").html(htmlPartnerTitle)
-                                    $("#partner_child").html(htmlPartnerChild)
-                                }
+                                $("#partner_title").show()
+                                $("#partner_child").show()
                             })
                             .catch(error => {
                                 console.error("Error:", error);

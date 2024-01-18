@@ -289,6 +289,7 @@ let handleWithDrawls = async () => {
                 .text("Insufficient balance in the wallet to perform the withdrawal.");
             return;
         }
+
         $("#wd_confirmation").prop("disabled", false);
         $("#wd_confirmation").on("click", function (e) {
             e.preventDefault()

@@ -99,6 +99,8 @@ func main() {
 		api.GET("/get-user-info", apiGetUserInfo)
 		api.GET("/get-wallet", apiGetWallet)
 		api.GET("/get-customer", apiGetCustomer)
+		api.GET("/get-commission-level", apiCommissionLevel)
+		api.GET("/get-commission-level-by-id", apiCommissionLevelByID)
 		api.GET("/check-deposit", apiCheckDeposit)
 		api.GET("/get-indentify", apiCheckInreview)
 
@@ -111,6 +113,7 @@ func main() {
 		api.POST("/join-contest", apiJoinContest)
 		api.POST("/create-payment-method", apiCreatePaymentMethob)
 		api.POST("/indentify-update", apiIndentifyUpdate)
+		api.POST("/commission-update", apiCommissionUpdate)
 	}
 
 	r.Run(":4200")

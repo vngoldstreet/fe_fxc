@@ -802,6 +802,63 @@ func apiGetCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Data)
 }
 
+func apiCommissionLevel(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+	urlRequest := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_PARTNER_GET_COMMISSION_LEVEL"))
+
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	var response []ResponsePartnerCommissionLevel
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response 3:", err)
+		return
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+func apiCommissionLevelByID(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	partner_id := c.Query("partner_id")
+	urlRequest := fmt.Sprintf("%s%s?partner_id=%s", os.Getenv("API_BASE_URL"), os.Getenv("API_PARTNER_GET_COMMISSION_LEVEL_BYID"), partner_id)
+
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "This account has not registered to become a partner of FXC.",
+			"code":    resp.StatusCode,
+		})
+		return
+	}
+	var response []ResponsePartnerCommissionLevel
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response 3:", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": resp.StatusCode,
+		"data": response,
+	})
+}
+
 func apiCheckDeposit(c *gin.Context) {
 	myToken, err := c.Cookie("token")
 	if err != nil {
@@ -826,6 +883,29 @@ func apiCheckDeposit(c *gin.Context) {
 }
 
 func apiCheckInreview(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+	urlRequest := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_USER_GET_INDENTIFY"))
+
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	var response IndentifyInfo
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response 3:", err)
+		return
+	}
+	c.JSON(http.StatusOK, response.Data)
+}
+
+func apiGetCommissionLevels(c *gin.Context) {
 	myToken, err := c.Cookie("token")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
@@ -955,4 +1035,54 @@ func apiIndentifyUpdate(c *gin.Context) {
 		"class": "text-success",
 		"code":  respPost.StatusCode,
 	})
+}
+
+func apiCommissionUpdate(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+	var input InputCommissionUpdate
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	byteArray := structToBytes(input)
+	url := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_PARTNER_POST_COMMISSION_LEVEL"))
+	// postData := []byte(fmt.Sprintf(`{"image_front": "%s","image_back": "%s"}`, input.ImageFront, input.ImageBack))
+
+	respPost, errPost := ExamplePostRequest(url, myToken, byteArray)
+	if errPost != nil {
+		fmt.Println("Error errPost:", errPost)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": errPost,
+		})
+		return
+	}
+
+	defer respPost.Body.Close()
+	if respPost.StatusCode != 200 {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Failed to update",
+			"class":   "text-danger",
+			"code":    respPost.StatusCode,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Successfully updated.",
+		"class":   "text-success",
+		"code":    respPost.StatusCode,
+	})
+}
+
+func structToBytes(data interface{}) []byte {
+	result, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return nil
+	}
+	return result
 }

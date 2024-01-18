@@ -44,10 +44,14 @@
                   <h5 class="fw-bolder mt-3 text-violet-fxc">Competition ID: {{.ContestID}}</h5>
                   <p class="card-text"><span class="fw-bolder">FXID:</span> {{.FxID}}</p>
                   <p class="card-text"><span class="fw-bolder">Server:</span> CPTMarkets-Intl</p>
-                  <p class="card-text" type="password"><span class="fw-bolder">Master Password:</span> <input
-                      id="master-{{.ContestID}}" type="password" class="border-0" value="{{.FxMasterPw}}"></p>
-                  <p class="card-text" type="password"><span class="fw-bolder">Investor Password:</span> <input
-                      id="invester-{{.ContestID}}" type="password" class="border-0" value="{{.FxInvesterPw}}"></p>
+                  <p class="card-text" type="password"><span class="fw-bolder">Master Password:</span>
+                    <input id="master-{{.ContestID}}" type="password" class="border-0" style="color: rgb(90, 106, 133);"
+                      value="{{.FxMasterPw}}">
+                  </p>
+                  <p class="card-text" type="password"><span class="fw-bolder">Investor Password:</span>
+                    <input id="invester-{{.ContestID}}" type="password" class="border-0"
+                      style="color: rgb(90, 106, 133);" value="{{.FxInvesterPw}}">
+                  </p>
                   <div class="d-flex justify-content-between">
                     <button id="btn-{{.ContestID}}" type="button" onclick="showPassword('{{.ContestID}}')"
                       class="btn btn-outline-primary">Show
