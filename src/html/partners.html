@@ -85,6 +85,7 @@
                 <h5 class="card-title fw-semibold mb-4 text-center text-primary">
                   Joined competitions per month: <span id="partner_join"></span>
                 </h5>
+
                 <div class="partner-commission">
                   <h4 class="fw-semibold mb-3 text-primary fs-4">
                     <span id="partner_total_joined"></span>
@@ -105,6 +106,18 @@
                     <input type="text" id="searchInput" class="form-control" placeholder="Search..."
                       aria-label="Search..." aria-describedby="basic-addon2">
                     <span class="input-group-text" id="basic-addon2"><i class="ti ti-search"></i></span>
+                  </div>
+                  <div>
+                    <div class="input-group mb-3">
+                      <!-- <span class="input-group-text w-25"></span> -->
+                      <input id="inpTimeStart" type="date" class="form-control" placeholder="Time start"
+                        aria-label="Time start" aria-describedby="basic-addon1" value="">
+                      <input id="inpTimeEnd" type="date" class="form-control" placeholder="Time end"
+                        aria-label="Time end" aria-describedby="basic-addon1" value="">
+                      <button type="button" id="submit_get_customer_bytime" class="btn btn-secondary">
+                        <i class="ti ti-eye"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div class="table-responsive table-option">

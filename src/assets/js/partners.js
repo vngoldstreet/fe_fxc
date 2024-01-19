@@ -1,3 +1,4 @@
+var currentChart = null;
 let handlePartner = async () => {
     try {
         let jwtToken = getCookie("token");
@@ -49,7 +50,12 @@ let handlePartner = async () => {
             'Authorization': `Bearer ${jwtToken}`
         });
 
-        fetch('api/get-customer', {
+        let time_start = $("#inpTimeStart").val()
+        let time_end = $("#inpTimeEnd").val()
+
+        let urlGetCustomer = `api/get-customer?time_start=${time_start}&time_end=${time_end}`
+        console.log(urlGetCustomer)
+        fetch(urlGetCustomer, {
             method: "GET",
             headers: headers
         })
@@ -82,10 +88,13 @@ let handlePartner = async () => {
                     }],
                     labels: [`Silver: ${owner.day}`, `Gold: ${owner.week}`, `Platinum: ${owner.month}`]
                 };
-
+                if (currentChart) {
+                    currentChart.destroy();
+                }
                 // Lựa chọn đối tượng canvas và vẽ biểu đồ doughnut
                 var ctx = document.getElementById('myDoughnutChart').getContext('2d');
-                var myDoughnutChart = new Chart(ctx, {
+
+                currentChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: data,
                     options: {
@@ -186,8 +195,30 @@ let fetchAsync = async (url, token) => {
 
 $(document).ready(function () {
     handlePartner()
+    var currentDate = new Date();
+
+    // Đặt ngày đầu tháng
+    var firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    var formattedFirstDay = formatDate(firstDayOfMonth);
+    $("#inpTimeStart").val(formattedFirstDay);
+
+    // Đặt ngày hiện tại + 1
+    currentDate.setDate(currentDate.getDate() + 1);
+    var formattedNextDay = formatDate(currentDate);
+    $("#inpTimeEnd").val(formattedNextDay);
+
+    $("#submit_get_customer_bytime").on("click", function (e) {
+        e.preventDefault()
+        handlePartner()
+    })
 })
 
+function formatDate(date) {
+    var year = date.getFullYear();
+    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+    var day = date.getDate().toString().padStart(2, '0');
+    return year + '-' + month + '-' + day;
+}
 async function showCommission(param_id, param_name) {
     try {
         $("#fb_messsage").empty()

@@ -785,7 +785,9 @@ func apiGetCustomer(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 		return
 	}
-	urlRequest := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_PARTNER"))
+	time_start := c.Query("time_start")
+	time_end := c.Query("time_end")
+	urlRequest := fmt.Sprintf("%s%s?time_start=%s&time_end=%s", os.Getenv("API_BASE_URL"), os.Getenv("API_PARTNER"), time_start, time_end)
 
 	resp, err := ExampleGetRequest(urlRequest, myToken)
 	if err != nil {
