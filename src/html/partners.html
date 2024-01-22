@@ -37,16 +37,34 @@
           <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
               <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4 text-primary">Referral link</h5>
-                <div class="partner-link">
-                  <div class="input-group mb-2">
-                    <input type="text" id="partner-ref" class="form-control" placeholder="ref_link"
-                      aria-label="ref_link" aria-describedby="basic-addon2">
-                    <button class="input-group-text" id="copy-clipboard"><i id="icon-clipboard"
-                        class="ti ti-clipboard"></i></button>
-                  </div>
-                  <p id="fb_copy" class="text-success"></p>
 
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5 class="card-title fw-semibold mb-4 text-primary">Partner Commission</h5>
+                    <h4 class="fw-semibold mb-3 text-warning">
+                      <i class="ti ti-wallet text-warning"></i>
+                      <span id="partner_receipt_dollar"></span>
+                      <div class="row fw-normal fs-2 text-dark mt-3">
+                        <div class="col-lg-4 border-start border-5">Day: <span id="partner_receipt_day"></span></div>
+                        <div class="col-lg-4 border-start border-5 border-warning-subtle">Week: <span
+                            id="partner_receipt_week"></span></div>
+                        <div class="col-lg-4 border-start border-5 border-primary">Month: <span
+                            id="partner_receipt_month"></span></div>
+                      </div>
+                    </h4>
+                  </div>
+                  <div class="col-lg-6">
+                    <h5 class="card-title fw-semibold mb-4 text-primary">Referral link</h5>
+                    <div class="partner-link">
+                      <div class="input-group mb-2">
+                        <input type="text" id="partner-ref" class="form-control" placeholder="ref_link"
+                          aria-label="ref_link" aria-describedby="basic-addon2">
+                        <button class="input-group-text" id="copy-clipboard"><i id="icon-clipboard"
+                            class="ti ti-clipboard"></i></button>
+                      </div>
+                      <p id="fb_copy" class="text-success"></p>
+                    </div>
+                  </div>
                 </div>
                 <h5 class="card-title fw-semibold mb-4 text-primary">Partner Infomations</h5>
                 <div class="table-responsive table-option">

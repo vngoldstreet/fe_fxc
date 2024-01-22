@@ -46,6 +46,13 @@ let handlePartner = async () => {
                 `;
         }
         $("#commission_levels").html(htmlPrintPartner)
+
+        let partnerCommissionTotal = await fetchAsync('api/get-commission-by-partner-id', jwtToken);
+        $("#partner_receipt_dollar").text(` $${partnerCommissionTotal.data.commission_total}`)
+        $("#partner_receipt_day").text(` $${partnerCommissionTotal.data.commission_day}`)
+        $("#partner_receipt_week").text(` $${partnerCommissionTotal.data.commission_week}`)
+        $("#partner_receipt_month").text(` $${partnerCommissionTotal.data.commission_month}`)
+
         let headers = new Headers({
             'Authorization': `Bearer ${jwtToken}`
         });
@@ -54,7 +61,7 @@ let handlePartner = async () => {
         let time_end = $("#inpTimeEnd").val()
 
         let urlGetCustomer = `api/get-customer?time_start=${time_start}&time_end=${time_end}`
-        console.log(urlGetCustomer)
+
         fetch(urlGetCustomer, {
             method: "GET",
             headers: headers
@@ -66,12 +73,14 @@ let handlePartner = async () => {
                 return response.json(); // Parse the response JSON if needed
             })
             .then(dataResponse => {
+
                 let partnerDatas = dataResponse
                 let owner = partnerDatas.owner
                 let customers = partnerDatas.customers
                 let html_partner = `https://crm.fxchampionship.com/register?partner=${owner.user.ref_link}`
                 $("#partner-ref").val(html_partner)
                 $("#partner_join").text(owner.total_joined)
+
                 $("#copy-clipboard").click(function () {
                     var copyText = $("#partner-ref");
                     copyText.select();

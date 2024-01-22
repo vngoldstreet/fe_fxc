@@ -212,3 +212,27 @@ type HistoryCompetitionPrints struct {
 	Class        string
 	Growth       string
 }
+
+type CommissionByPartnerID struct {
+	CommissionDay   int `json:"commission_day"`
+	CommissionMonth int `json:"commission_month"`
+	CommissionTotal int `json:"commission_total"`
+	CommissionWeek  int `json:"commission_week"`
+	Commissions     []struct {
+		ID              int       `json:"ID"`
+		CreatedAt       time.Time `json:"CreatedAt"`
+		UpdatedAt       time.Time `json:"UpdatedAt"`
+		DeletedAt       any       `json:"DeletedAt"`
+		TransactionID   int       `json:"transaction_id"`
+		TransactionType int       `json:"transaction_type"`
+		ParentID        int       `json:"parent_id"`
+		CustomerID      int       `json:"customer_id"`
+		ContestID       string    `json:"contest_id"`
+		Amount          int       `json:"amount"`
+		TypeID          int       `json:"type_id"`
+		Joined          int       `json:"joined"`
+	} `json:"commissions"`
+	TotalDay   int `json:"total_day"`
+	TotalMonth int `json:"total_month"`
+	TotalWeek  int `json:"total_week"`
+}

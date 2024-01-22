@@ -861,6 +861,40 @@ func apiCommissionLevelByID(c *gin.Context) {
 	})
 }
 
+func apiGetCommissionByPartnerID(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	urlRequest := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_PARTNER_GET_COMMISSION_BY_PARTNERID"))
+
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "This account has not registered to become a partner of FXC.",
+			"code":    resp.StatusCode,
+		})
+		return
+	}
+	var response CommissionByPartnerID
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response 3:", err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": resp.StatusCode,
+		"data": response,
+	})
+}
+
 func apiCheckDeposit(c *gin.Context) {
 	myToken, err := c.Cookie("token")
 	if err != nil {

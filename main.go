@@ -101,6 +101,7 @@ func main() {
 		api.GET("/get-customer", apiGetCustomer)
 		api.GET("/get-commission-level", apiCommissionLevel)
 		api.GET("/get-commission-level-by-id", apiCommissionLevelByID)
+		api.GET("/get-commission-by-partner-id", apiGetCommissionByPartnerID)
 		api.GET("/check-deposit", apiCheckDeposit)
 		api.GET("/get-indentify", apiCheckInreview)
 
