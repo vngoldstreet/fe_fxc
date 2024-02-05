@@ -500,7 +500,8 @@ func apiLeaderBoardByContestID(c *gin.Context) {
 		return
 	}
 
-	urlRequest := fmt.Sprintf("%s%s?contest_id=%s", os.Getenv("API_BASE_URL"), os.Getenv("API_LEADERBOARD_GET_LEADERBOARD"), input.ContestID)
+	urlRequest := fmt.Sprintf("%s%s?contest_id=%s&sort_by=%s", os.Getenv("API_BASE_URL"), os.Getenv("API_LEADERBOARD_GET_LEADERBOARD"), input.ContestID, input.SortType)
+
 	resp, err := ExampleGetRequest(urlRequest, myToken)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -924,6 +925,7 @@ func apiCheckInreview(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
 		return
 	}
+
 	urlRequest := fmt.Sprintf("%s%s", os.Getenv("API_BASE_URL"), os.Getenv("API_USER_GET_INDENTIFY"))
 
 	resp, err := ExampleGetRequest(urlRequest, myToken)
@@ -939,6 +941,35 @@ func apiCheckInreview(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, response.Data)
+}
+
+func apiGetInvestorPassword(c *gin.Context) {
+	myToken, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+	loginID := c.Query("login_id")
+	urlRequest := fmt.Sprintf("%s%s?login_id=%s", os.Getenv("API_BASE_URL"), os.Getenv("API_LEADERBOARD_GET_INVESTOR_PASSWORD"), loginID)
+
+	resp, err := ExampleGetRequest(urlRequest, myToken)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Error!"})
+		return
+	}
+
+	var response GetInvestorPassword
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		fmt.Println("Error decoding response GetInvestorPassword:", err)
+		return
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func apiGetCommissionLevels(c *gin.Context) {

@@ -158,6 +158,7 @@ type ResponseLeaderBoards struct {
 
 type InputLeaderBoards struct {
 	ContestID string `json:"contest_id" binding:"required"`
+	SortType  string `json:"sort_type"`
 }
 
 type LeaderBoardByContestID struct {
@@ -222,6 +223,11 @@ type InputCreatePaymentMehob struct {
 	HolderNumber string `json:"holder_number" binding:"required"`
 	BankName     string `json:"bank_name" binding:"required"`
 	IsCard       int    `json:"is_card"`
+}
+
+type GetInvestorPassword struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }
 
 type ResponseLogin struct {

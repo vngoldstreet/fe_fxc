@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var current_contest_id = ""
     let jwtToken = getCookie("token");
     if (!jwtToken) {
         window.location.href = "/login";
@@ -27,20 +28,22 @@ $(document).ready(function () {
                     contest_id = contest_list[key].contest_id;
                 }
                 listContestRender += `
-                <button class="nav-link ${class_active} fs-4 fw-bolder" onclick="setLeaderBoard('${contest_list[key].contest_id}')" id="${contest_list[key].contest_id}" data-bs-toggle="tab" data-bs-target="#${contest_list[key].contest_id}}"
+                <button class="nav-link ${class_active} fs-4 fw-bolder" onclick="setLeaderBoard('${contest_list[key].contest_id}','balance')" id="${contest_list[key].contest_id}" data-bs-toggle="tab" data-bs-target="#${contest_list[key].contest_id}}"
                 type="button" role="tab" aria-controls="${contest_list[key].contest_id}" aria-selected="true">${contest_list[key].contest_id}</button>
                 `;
             }
 
             $("#nav-tab-contest").html(listContestRender);
-            setLeaderBoard(contest_id);
+            setLeaderBoard(contest_id, "balance");
+            current_contest_id = contest_id
         })
         .catch((error) => {
             console.error("Error:", error);
         });
 });
 
-function setLeaderBoard(params) {
+function setLeaderBoard(params, sort_type) {
+    current_contest_id = params
     let jwtToken = getCookie("token");
     if (!jwtToken) {
         window.location.href = "/login";
@@ -50,6 +53,7 @@ function setLeaderBoard(params) {
     });
     let inpContest = {
         contest_id: params,
+        sort_type: sort_type
     };
 
     fetch("api/get-leaderboard-by-contestid", {
@@ -78,29 +82,25 @@ function setLeaderBoard(params) {
                                 <span class="fw-semibold" style="color:#8957FF !important;">${params}</span> 
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-semibold" style="color:#8957FF !important;">${myData.login
-                }</span> 
+                                <span class="fw-semibold" style="color:#8957FF !important;">${myData.login}</span> 
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(
-                    myData.email
-                )}</span>
+                                <span id="leaderboard_investor_password_${myData.login}" class="fw-normal" style="color:#8957FF !important;">******** <i onclick="ShowInvestorPassword(${myData.login})" class="ti ti-eye border-0 fs-5 leaderboard-eye-hover p-3"></i></span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance
-                }</span>
+                                <span class="fw-normal" style="color:#8957FF !important;">${maskEmail(myData.email)}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity
-                }</span>
+                                <span class="fw-normal" style="color:#8957FF !important;">$${myData.balance}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit
-                }</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.equity}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize
-                }</span>
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.profit}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0" style="color:#8957FF !important;">$${myData.estimate_prize}</span>
                             </td>
                             </tr>
                         `;
@@ -109,43 +109,40 @@ function setLeaderBoard(params) {
                 htmlRender += `
                             <tr class="fs-3">
                             <td class="border-bottom-0">
-                                <span class="fw-normal">${Number(key) + 1
-                    }</span>
+                                <span class="fw-normal">${Number(key) + 1}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal">${curLeaderBoard[key].contest_id
-                    }</span> 
+                                <span class="fw-normal">${curLeaderBoard[key].contest_id}</span> 
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-semibold">${curLeaderBoard[key].login
-                    }</span> 
+                                <span class="fw-semibold">${curLeaderBoard[key].login}</span> 
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal">${maskEmail(
-                        curLeaderBoard[key].email
-                    )}</span>
+                                <span id="leaderboard_investor_password_${curLeaderBoard[key].login}" class="fw-normal">******** <i onclick="ShowInvestorPassword(${curLeaderBoard[key].login})" class="ti ti-eye border-0 fs-5 leaderboard-eye-hover p-3"></i></span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal">$${curLeaderBoard[key].balance
-                    }</span>
+                                <span class="fw-normal">${maskEmail(curLeaderBoard[key].email)}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].equity
-                    }</span>
+                                <span class="fw-normal">$${curLeaderBoard[key].balance}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit
-                    }</span>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].equity}</span>
                             </td>
                             <td class="border-bottom-0">
-                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize
-                    }</span>
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].profit}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-normal mb-0">$${curLeaderBoard[key].estimate_prize}</span>
                             </td>
                             </tr>
                             `;
             }
             htmlRender += `
                         <tr class="">
+                        <td class="border-bottom-0">
+                            <span class="fw-normal">...</span>
+                        </td>
                         <td class="border-bottom-0">
                             <span class="fw-normal">...</span>
                         </td>
@@ -200,3 +197,39 @@ function maskEmail(email) {
         return email;
     }
 }
+
+function SortBy(params) {
+    if (params === "sort_balance") {
+        $("#sort_equity").removeClass()
+        $("#sort_balance").removeClass().addClass("ti ti-sort-descending border-0")
+        setLeaderBoard(current_contest_id, "balance");
+    } else {
+        $("#sort_balance").removeClass()
+        $("#sort_equity").removeClass().addClass("ti ti-sort-descending border-0")
+        setLeaderBoard(current_contest_id, "equity");
+    }
+}
+
+async function ShowInvestorPassword(params) {
+    try {
+        let jwtToken = getCookie("token");
+        if (!jwtToken) {
+            window.location.href = "/login";
+        }
+        let data = await fetchAsync(`api/get-investor-password?login_id=${params}`, jwtToken);
+        $(`#leaderboard_investor_password_${params}`).text(data.password)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+let fetchAsync = async (url, token) => {
+    const response = await fetch(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+    return data;
+};

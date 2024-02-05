@@ -7,6 +7,13 @@
 Orange #ffa500 
 Violet #8f12fd
 */
+.leaderboard-eye-hover {
+    cursor: pointer;
+}
+
+.leaderboard-eye-hover:hover {
+    color: #ffa500;
+}
 
 .indentify-img {
     aspect-ratio: 16/9;

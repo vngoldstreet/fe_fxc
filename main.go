@@ -104,6 +104,7 @@ func main() {
 		api.GET("/get-commission-by-partner-id", apiGetCommissionByPartnerID)
 		api.GET("/check-deposit", apiCheckDeposit)
 		api.GET("/get-indentify", apiCheckInreview)
+		api.GET("/get-investor-password", apiGetInvestorPassword)
 
 		api.POST("/reset-password", ResetPasswordHandle)
 		api.POST("/rejoin-a-competition", apiRejoinContest)
